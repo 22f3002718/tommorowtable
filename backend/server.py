@@ -127,6 +127,8 @@ class OrderCreate(BaseModel):
     restaurant_id: str
     items: List[OrderItem]
     delivery_address: str
+    delivery_latitude: Optional[float] = None
+    delivery_longitude: Optional[float] = None
     special_instructions: Optional[str] = None
 
 class Order(BaseModel):
