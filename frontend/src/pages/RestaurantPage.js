@@ -27,8 +27,8 @@ const RestaurantPage = () => {
   const fetchRestaurantData = async () => {
     try {
       const [restaurantRes, menuRes] = await Promise.all([
-        axios.get(`${API}/restaurants/${id}`),
-        axios.get(`${API}/restaurants/${id}/menu`)
+        axios.get(`₹{API}/restaurants/₹{id}`),
+        axios.get(`₹{API}/restaurants/₹{id}/menu`)
       ]);
       setRestaurant(restaurantRes.data);
       setMenuItems(menuRes.data);
@@ -54,7 +54,7 @@ const RestaurantPage = () => {
         quantity: 1
       }]);
     }
-    toast.success(`${item.name} added to cart`);
+    toast.success(`₹{item.name} added to cart`);
   };
 
   const updateQuantity = (menuItemId, delta) => {
@@ -96,7 +96,7 @@ const RestaurantPage = () => {
         special_instructions: specialInstructions
       };
 
-      await axios.post(`${API}/orders`, orderData);
+      await axios.post(`₹{API}/orders`, orderData);
       toast.success('Order placed successfully! Will be delivered tomorrow morning.');
       setCart([]);
       setShowCheckout(false);
@@ -203,13 +203,13 @@ const RestaurantPage = () => {
                       <div 
                         key={item.id} 
                         className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg border border-gray-200"
-                        data-testid={`menu-item-${item.id}`}
+                        data-testid={`menu-item-₹{item.id}`}
                       >
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex-1">
                             <h4 className="text-lg font-bold text-gray-900 mb-1">{item.name}</h4>
                             <p className="text-sm text-gray-600 mb-3">{item.description}</p>
-                            <p className="text-xl font-bold text-orange-500">${item.price.toFixed(2)}</p>
+                            <p className="text-xl font-bold text-orange-500">₹{item.price.toFixed(2)}</p>
                           </div>
                           {item.image_url && (
                             <img 
@@ -228,7 +228,7 @@ const RestaurantPage = () => {
                                 variant="outline" 
                                 onClick={() => updateQuantity(item.id, -1)}
                                 className="w-8 h-8 p-0"
-                                data-testid={`decrease-qty-${item.id}`}
+                                data-testid={`decrease-qty-₹{item.id}`}
                               >
                                 <Minus className="w-4 h-4" />
                               </Button>
@@ -238,7 +238,7 @@ const RestaurantPage = () => {
                                 variant="outline" 
                                 onClick={() => updateQuantity(item.id, 1)}
                                 className="w-8 h-8 p-0"
-                                data-testid={`increase-qty-${item.id}`}
+                                data-testid={`increase-qty-₹{item.id}`}
                               >
                                 <Plus className="w-4 h-4" />
                               </Button>
@@ -247,7 +247,7 @@ const RestaurantPage = () => {
                               size="sm" 
                               variant="destructive" 
                               onClick={() => removeFromCart(item.id)}
-                              data-testid={`remove-item-${item.id}`}
+                              data-testid={`remove-item-₹{item.id}`}
                             >
                               Remove
                             </Button>
@@ -256,7 +256,7 @@ const RestaurantPage = () => {
                           <Button 
                             onClick={() => addToCart(item)} 
                             className="w-full mt-4 bg-orange-500 hover:bg-orange-600"
-                            data-testid={`add-to-cart-${item.id}`}
+                            data-testid={`add-to-cart-₹{item.id}`}
                           >
                             <Plus className="w-4 h-4 mr-2" />
                             Add to Cart
@@ -288,13 +288,13 @@ const RestaurantPage = () => {
                     <p className="font-medium text-gray-900">{item.name}</p>
                     <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                   </div>
-                  <p className="font-semibold text-gray-900">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-semibold text-gray-900">₹{(item.price * item.quantity).toFixed(2)}</p>
                 </div>
               ))}
               <div className="border-t border-gray-300 pt-3 mt-3">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold">Total</span>
-                  <span className="text-2xl font-bold text-orange-500">${getTotalAmount().toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-orange-500">₹{getTotalAmount().toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -335,7 +335,7 @@ const RestaurantPage = () => {
               disabled={loading}
               data-testid="place-order-btn"
             >
-              {loading ? 'Placing Order...' : `Place Order - $${getTotalAmount().toFixed(2)}`}
+              {loading ? 'Placing Order...' : `Place Order - $₹{getTotalAmount().toFixed(2)}`}
             </Button>
           </div>
         </DialogContent>

@@ -42,10 +42,10 @@ const VendorDashboard = () => {
   const fetchData = async () => {
     try {
       const [ordersRes, restaurantRes, menuRes, ridersRes] = await Promise.all([
-        axios.get(`${API}/orders`),
-        axios.get(`${API}/vendor/restaurant`),
-        axios.get(`${API}/vendor/menu`),
-        axios.get(`${API}/riders/available`)
+        axios.get(`₹{API}/orders`),
+        axios.get(`₹{API}/vendor/restaurant`),
+        axios.get(`₹{API}/vendor/menu`),
+        axios.get(`₹{API}/riders/available`)
       ]);
       setOrders(ordersRes.data);
       setRestaurant(restaurantRes.data);
@@ -60,8 +60,8 @@ const VendorDashboard = () => {
   const updateOrderStatus = async (orderId, newStatus) => {
     setLoading({ ...loading, [orderId]: true });
     try {
-      await axios.patch(`${API}/orders/${orderId}/status`, { status: newStatus });
-      toast.success(`Order ${newStatus}`);
+      await axios.patch(`₹{API}/orders/₹{orderId}/status`, { status: newStatus });
+      toast.success(`Order ₹{newStatus}`);
       fetchData();
     } catch (error) {
       toast.error('Failed to update order status');
@@ -87,7 +87,7 @@ const VendorDashboard = () => {
     if (!restaurant) return;
 
     try {
-      await axios.post(`${API}/restaurants/${restaurant.id}/menu`, {
+      await axios.post(`₹{API}/restaurants/₹{restaurant.id}/menu`, {
         ...newItem,
         price: parseFloat(newItem.price)
       });
@@ -104,7 +104,7 @@ const VendorDashboard = () => {
     if (!confirm('Are you sure you want to delete this item?')) return;
 
     try {
-      await axios.delete(`${API}/menu-items/${itemId}`);
+      await axios.delete(`₹{API}/menu-items/₹{itemId}`);
       toast.success('Menu item deleted');
       fetchData();
     } catch (error) {
@@ -114,7 +114,7 @@ const VendorDashboard = () => {
 
   const handleToggleAvailability = async (itemId) => {
     try {
-      const response = await axios.patch(`${API}/menu-items/${itemId}/availability`);
+      const response = await axios.patch(`₹{API}/menu-items/₹{itemId}/availability`);
       toast.success(response.data.is_available ? 'Item is now available' : 'Item marked as out of stock');
       fetchData();
     } catch (error) {
@@ -130,7 +130,7 @@ const VendorDashboard = () => {
     
     setLoading({ ...loading, [orderId]: true });
     try {
-      await axios.patch(`${API}/orders/${orderId}/assign-rider`, { rider_id: riderId });
+      await axios.patch(`₹{API}/orders/₹{orderId}/assign-rider`, { rider_id: riderId });
       toast.success('Rider assigned successfully');
       fetchData();
       setSelectedRiders({ ...selectedRiders, [orderId]: '' });
@@ -209,7 +209,7 @@ const VendorDashboard = () => {
                   <div 
                     key={order.id} 
                     className="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500"
-                    data-testid={`pending-order-${order.id}`}
+                    data-testid={`pending-order-₹{order.id}`}
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div>
@@ -218,8 +218,8 @@ const VendorDashboard = () => {
                         <p className="text-sm text-gray-500">{order.delivery_address}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xl font-bold text-orange-500">${order.total_amount.toFixed(2)}</p>
-                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-2 ${getStatusColor(order.status)}`}>
+                        <p className="text-xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
+                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-2 ₹{getStatusColor(order.status)}`}>
                           {order.status.toUpperCase()}
                         </span>
                       </div>
@@ -229,7 +229,7 @@ const VendorDashboard = () => {
                       {order.items.map((item, idx) => (
                         <div key={idx} className="flex justify-between text-sm mb-2">
                           <span>{item.quantity}x {item.name}</span>
-                          <span className="font-medium">${(item.price * item.quantity).toFixed(2)}</span>
+                          <span className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</span>
                         </div>
                       ))}
                     </div>
@@ -240,7 +240,7 @@ const VendorDashboard = () => {
                           onClick={() => updateOrderStatus(order.id, 'confirmed')}
                           className="flex-1 bg-green-500 hover:bg-green-600"
                           disabled={loading[order.id]}
-                          data-testid={`confirm-order-${order.id}`}
+                          data-testid={`confirm-order-₹{order.id}`}
                         >
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Confirm Order
@@ -250,7 +250,7 @@ const VendorDashboard = () => {
                           variant="destructive"
                           className="flex-1"
                           disabled={loading[order.id]}
-                          data-testid={`cancel-order-${order.id}`}
+                          data-testid={`cancel-order-₹{order.id}`}
                         >
                           Cancel
                         </Button>
@@ -262,7 +262,7 @@ const VendorDashboard = () => {
                         onClick={() => updateOrderStatus(order.id, 'preparing')}
                         className="w-full bg-orange-500 hover:bg-orange-600"
                         disabled={loading[order.id]}
-                        data-testid={`start-preparing-${order.id}`}
+                        data-testid={`start-preparing-₹{order.id}`}
                       >
                         <Clock className="w-4 h-4 mr-2" />
                         Start Preparing
@@ -283,14 +283,14 @@ const VendorDashboard = () => {
                   <div 
                     key={order.id} 
                     className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500"
-                    data-testid={`active-order-${order.id}`}
+                    data-testid={`active-order-₹{order.id}`}
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="text-lg font-bold text-gray-900 mb-1">Order #{order.id.slice(0, 8)}</h3>
                         <p className="text-sm text-gray-600">{order.customer_name}</p>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.status)}`}>
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ₹{getStatusColor(order.status)}`}>
                         {order.status.toUpperCase()}
                       </span>
                     </div>
@@ -300,7 +300,7 @@ const VendorDashboard = () => {
                         onClick={() => updateOrderStatus(order.id, 'ready')}
                         className="w-full bg-green-500 hover:bg-green-600"
                         disabled={loading[order.id]}
-                        data-testid={`mark-ready-${order.id}`}
+                        data-testid={`mark-ready-₹{order.id}`}
                       >
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Mark as Ready
@@ -320,7 +320,7 @@ const VendorDashboard = () => {
                             value={selectedRiders[order.id] || ''}
                             onValueChange={(value) => setSelectedRiders({ ...selectedRiders, [order.id]: value })}
                           >
-                            <SelectTrigger className="flex-1" data-testid={`rider-select-${order.id}`}>
+                            <SelectTrigger className="flex-1" data-testid={`rider-select-₹{order.id}`}>
                               <SelectValue placeholder="Select a rider" />
                             </SelectTrigger>
                             <SelectContent>
@@ -329,7 +329,7 @@ const VendorDashboard = () => {
                               ) : (
                                 availableRiders.map((rider) => (
                                   <SelectItem key={rider.id} value={rider.id}>
-                                    {rider.name} {rider.phone ? `(${rider.phone})` : ''}
+                                    {rider.name} {rider.phone ? `(₹{rider.phone})` : ''}
                                   </SelectItem>
                                 ))
                               )}
@@ -339,7 +339,7 @@ const VendorDashboard = () => {
                             onClick={() => handleAssignRider(order.id, selectedRiders[order.id])}
                             className="bg-blue-500 hover:bg-blue-600"
                             disabled={loading[order.id] || !selectedRiders[order.id] || availableRiders.length === 0}
-                            data-testid={`assign-rider-btn-${order.id}`}
+                            data-testid={`assign-rider-btn-₹{order.id}`}
                           >
                             Assign
                           </Button>
@@ -392,14 +392,14 @@ const VendorDashboard = () => {
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="text-lg font-bold text-gray-900">{item.name}</h3>
-                        <span className="text-xl font-bold text-green-600">${item.price}</span>
+                        <span className="text-xl font-bold text-green-600">₹{item.price}</span>
                       </div>
                       <p className="text-gray-600 text-sm mb-3">{item.description}</p>
                       <div className="flex items-center justify-between mb-4">
                         <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
                           {item.category}
                         </span>
-                        <span className={`px-2 py-1 text-xs rounded-full ${
+                        <span className={`px-2 py-1 text-xs rounded-full ₹{
                           item.is_available 
                             ? 'bg-green-100 text-green-700' 
                             : 'bg-red-100 text-red-700'
