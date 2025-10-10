@@ -77,6 +77,46 @@ const VendorDashboard = () => {
     return colors[status] || 'bg-gray-100 text-gray-700';
   };
 
+  const handleAddMenuItem = async (e) => {
+    e.preventDefault();
+    if (!restaurant) return;
+
+    try {
+      await axios.post(`${API}/restaurants/${restaurant.id}/menu`, {
+        ...newItem,
+        price: parseFloat(newItem.price)
+      });
+      toast.success('Menu item added successfully');
+      setShowAddItem(false);
+      setNewItem({ name: '', description: '', price: '', category: '', image_url: '' });
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to add menu item');
+    }
+  };
+
+  const handleDeleteMenuItem = async (itemId) => {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+
+    try {
+      await axios.delete(`${API}/menu-items/${itemId}`);
+      toast.success('Menu item deleted');
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to delete menu item');
+    }
+  };
+
+  const handleToggleAvailability = async (itemId) => {
+    try {
+      const response = await axios.patch(`${API}/menu-items/${itemId}/availability`);
+      toast.success(response.data.is_available ? 'Item is now available' : 'Item marked as out of stock');
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to update availability');
+    }
+  };
+
   const pendingOrders = orders.filter(o => ['placed', 'confirmed'].includes(o.status));
   const activeOrders = orders.filter(o => ['preparing', 'ready'].includes(o.status));
   const completedOrders = orders.filter(o => ['out-for-delivery', 'delivered'].includes(o.status));
