@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { ArrowLeft, Package, CheckCircle, Clock, User, Plus, Trash2, Edit } from 'lucide-react';
+import { ArrowLeft, Package, CheckCircle, Clock, User, Plus, Trash2, Edit, Bike } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const VendorDashboard = () => {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ const VendorDashboard = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState({});
   const [showAddItem, setShowAddItem] = useState(false);
+  const [availableRiders, setAvailableRiders] = useState([]);
+  const [selectedRiders, setSelectedRiders] = useState({});
   
   // New item form states
   const [newItem, setNewItem] = useState({
