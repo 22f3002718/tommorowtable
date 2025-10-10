@@ -41,14 +41,16 @@ const VendorDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [ordersRes, restaurantRes, menuRes] = await Promise.all([
+      const [ordersRes, restaurantRes, menuRes, ridersRes] = await Promise.all([
         axios.get(`${API}/orders`),
         axios.get(`${API}/vendor/restaurant`),
-        axios.get(`${API}/vendor/menu`)
+        axios.get(`${API}/vendor/menu`),
+        axios.get(`${API}/riders/available`)
       ]);
       setOrders(ordersRes.data);
       setRestaurant(restaurantRes.data);
       setMenuItems(menuRes.data);
+      setAvailableRiders(ridersRes.data);
     } catch (error) {
       console.error('Failed to fetch data:', error);
       toast.error('Failed to load dashboard data');
