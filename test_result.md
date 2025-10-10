@@ -101,3 +101,74 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Once an order has been marked ready for pickup, give vendor the ability to assign it to a rider from available riders"
+
+backend:
+  - task: "Get Available Riders Endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added GET /api/riders/available endpoint that returns riders not currently on delivery (status != out-for-delivery). Only accessible by vendors and admins."
+
+  - task: "Assign Rider to Order Endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added PATCH /api/orders/{order_id}/assign-rider endpoint. Accepts rider_id, verifies authorization, assigns rider to order and automatically changes status to 'out-for-delivery'. Only vendors (for their restaurants) and admins can assign riders."
+
+  - task: "Rider Assignment Pydantic Model"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added RiderAssignment model with rider_id field for request validation."
+
+frontend:
+  - task: "Vendor Dashboard - Rider Assignment UI"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/VendorDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Modified VendorDashboard to fetch available riders on load. When order status is 'ready', show dropdown with available riders and 'Assign' button. On assignment, order status automatically changes to 'out-for-delivery'."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Get Available Riders Endpoint"
+    - "Assign Rider to Order Endpoint"
+    - "Vendor Dashboard - Rider Assignment UI"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Implemented rider assignment feature for vendors. Added two backend endpoints: 1) GET /api/riders/available - returns riders not currently on delivery, 2) PATCH /api/orders/{order_id}/assign-rider - assigns rider and changes status to out-for-delivery. Updated VendorDashboard UI to show rider dropdown for 'ready' orders with assign button. Ready for backend testing."
