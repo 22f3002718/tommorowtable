@@ -189,6 +189,23 @@ async def register(user_data: UserCreate):
     
     await db.users.insert_one(user_dict)
     
+    # Auto-create restaurant for vendors
+    if user_data.role == "vendor":
+        restaurant = Restaurant(
+            vendor_id=user.id,
+            name=f"{user_data.name}'s Restaurant",
+            description="Welcome to our restaurant! Update your description in the menu management section.",
+            cuisine="Various",
+            image_url=None,
+            rating=0.0,
+            delivery_time="7:00 AM - 11:00 AM",
+            is_active=True
+        )
+        
+        restaurant_dict = restaurant.model_dump()
+        restaurant_dict['created_at'] = restaurant_dict['created_at'].isoformat()
+        await db.restaurants.insert_one(restaurant_dict)
+    
     token = create_access_token({"user_id": user.id, "role": user.role})
     return {"token": token, "user": user}
 
