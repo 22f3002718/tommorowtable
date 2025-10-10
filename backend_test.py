@@ -35,35 +35,19 @@ class QuickBiteAPITester:
         """Make HTTP request with error handling"""
         url = f"{self.base_url}{endpoint}"
         try:
-            # Add timeout and SSL verification settings
-            kwargs = {
-                'timeout': 30,
-                'verify': True  # Enable SSL verification
-            }
-            
-            if headers:
-                kwargs['headers'] = headers
-                
-            if data is not None:
-                kwargs['json'] = data
-                
             if method.upper() == 'GET':
-                # Remove json parameter for GET requests
-                get_kwargs = {k: v for k, v in kwargs.items() if k != 'json'}
-                response = requests.get(url, **get_kwargs)
+                response = requests.get(url, headers=headers, timeout=30, verify=False)
             elif method.upper() == 'POST':
-                response = requests.post(url, **kwargs)
+                response = requests.post(url, json=data, headers=headers, timeout=30, verify=False)
             elif method.upper() == 'PATCH':
-                response = requests.patch(url, **kwargs)
+                response = requests.patch(url, json=data, headers=headers, timeout=30, verify=False)
             else:
                 raise ValueError(f"Unsupported method: {method}")
                 
             return response
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             self.log(f"❌ Request failed: {e}")
             self.log(f"URL: {url}")
-            self.log(f"Method: {method}")
-            self.log(f"Data: {data}")
             return None
             
     def authenticate_vendor(self):
