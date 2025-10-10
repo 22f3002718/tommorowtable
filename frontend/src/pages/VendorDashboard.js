@@ -293,14 +293,155 @@ const VendorDashboard = () => {
             </div>
           )}
 
-          {/* Empty State */}
-          {orders.length === 0 && (
-            <div className="text-center py-16 bg-white rounded-2xl">
-              <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-xl text-gray-500">No orders yet</p>
+            {/* Empty State */}
+            {orders.length === 0 && (
+              <div className="text-center py-16 bg-white rounded-2xl">
+                <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <p className="text-xl text-gray-500">No orders yet</p>
+              </div>
+            )}
+          </div>
+          </TabsContent>
+
+          {/* Menu Management Tab */}
+          <TabsContent value="menu">
+            <div className="space-y-6">
+              {/* Add Menu Item Button */}
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-gray-900">Menu Management</h2>
+                <Button 
+                  onClick={() => setShowAddItem(true)}
+                  className="bg-green-500 hover:bg-green-600"
+                  data-testid="add-menu-item-btn"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Menu Item
+                </Button>
+              </div>
+
+              {/* Menu Items Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {menuItems.map((item) => (
+                  <div key={item.id} className="bg-white rounded-xl shadow-md overflow-hidden">
+                    {item.image_url && (
+                      <img 
+                        src={item.image_url} 
+                        alt={item.name}
+                        className="w-full h-48 object-cover"
+                      />
+                    )}
+                    <div className="p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="text-lg font-bold text-gray-900">{item.name}</h3>
+                        <span className="text-xl font-bold text-green-600">${item.price}</span>
+                      </div>
+                      <p className="text-gray-600 text-sm mb-3">{item.description}</p>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+                          {item.category}
+                        </span>
+                        <span className={`px-2 py-1 text-xs rounded-full ${
+                          item.is_available 
+                            ? 'bg-green-100 text-green-700' 
+                            : 'bg-red-100 text-red-700'
+                        }`}>
+                          {item.is_available ? 'Available' : 'Out of Stock'}
+                        </span>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          onClick={() => handleToggleAvailability(item.id)}
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                        >
+                          {item.is_available ? 'Mark Unavailable' : 'Mark Available'}
+                        </Button>
+                        <Button
+                          onClick={() => handleDeleteMenuItem(item.id)}
+                          variant="destructive"
+                          size="sm"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Empty State for Menu */}
+              {menuItems.length === 0 && (
+                <div className="text-center py-16 bg-white rounded-2xl">
+                  <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-xl text-gray-500">No menu items yet</p>
+                  <Button 
+                    onClick={() => setShowAddItem(true)}
+                    className="mt-4 bg-green-500 hover:bg-green-600"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Your First Item
+                  </Button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* Add Menu Item Dialog */}
+        <Dialog open={showAddItem} onOpenChange={setShowAddItem}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Add New Menu Item</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleAddMenuItem} className="space-y-4">
+              <Input
+                placeholder="Item name"
+                value={newItem.name}
+                onChange={(e) => setNewItem({...newItem, name: e.target.value})}
+                required
+              />
+              <Input
+                placeholder="Description"
+                value={newItem.description}
+                onChange={(e) => setNewItem({...newItem, description: e.target.value})}
+                required
+              />
+              <Input
+                type="number"
+                step="0.01"
+                placeholder="Price"
+                value={newItem.price}
+                onChange={(e) => setNewItem({...newItem, price: e.target.value})}
+                required
+              />
+              <Input
+                placeholder="Category"
+                value={newItem.category}
+                onChange={(e) => setNewItem({...newItem, category: e.target.value})}
+                required
+              />
+              <Input
+                placeholder="Image URL (optional)"
+                value={newItem.image_url}
+                onChange={(e) => setNewItem({...newItem, image_url: e.target.value})}
+              />
+              <div className="flex space-x-3">
+                <Button type="submit" className="flex-1 bg-green-500 hover:bg-green-600">
+                  Add Item
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setShowAddItem(false)}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
