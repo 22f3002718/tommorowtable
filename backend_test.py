@@ -54,6 +54,8 @@ class QuickBiteAPITester:
         except requests.exceptions.RequestException as e:
             self.log(f"❌ Request failed: {e}")
             self.log(f"URL: {url}")
+            self.log(f"Method: {method}")
+            self.log(f"Data: {data}")
             return None
             
     def authenticate_vendor(self):
