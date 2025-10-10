@@ -279,6 +279,8 @@ class QuickBiteAPITester:
         self.log("\n🧪 Testing GET /api/riders/available (customer auth - should fail)...")
         
         headers = {"Authorization": f"Bearer {self.customer_token}"}
+        self.log(f"Using customer token: {self.customer_token[:20]}...")
+        
         response = self.make_request('GET', '/riders/available', headers=headers)
         
         if not response:
