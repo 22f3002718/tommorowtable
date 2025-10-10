@@ -155,6 +155,9 @@ class OrderRating(BaseModel):
     rating: int
     review: Optional[str] = None
 
+class RiderAssignment(BaseModel):
+    rider_id: str
+
 # Helper function to check if orders are allowed (before midnight)
 def is_ordering_allowed() -> bool:
     now = datetime.now(timezone.utc)
