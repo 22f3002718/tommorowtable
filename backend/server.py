@@ -488,6 +488,62 @@ async def rate_order(order_id: str, rating_data: OrderRating, current_user: dict
     await db.orders.update_one({"id": order_id}, {"$set": update_data})
     return {"message": "Rating submitted successfully"}
 
+# Rider Routes
+@api_router.get("/riders/available")
+async def get_available_riders(current_user: dict = Depends(get_current_user)):
+    """Get list of available riders (not currently on delivery)"""
+    if current_user['role'] not in ['vendor', 'admin']:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Get all riders
+    all_riders = await db.users.find({"role": "rider"}, {"_id": 0, "password": 0}).to_list(100)
+    
+    # Get riders currently on delivery (status = out-for-delivery)
+    busy_orders = await db.orders.find({"status": "out-for-delivery"}, {"_id": 0, "rider_id": 1}).to_list(1000)
+    busy_rider_ids = [order['rider_id'] for order in busy_orders if order.get('rider_id')]
+    
+    # Filter out busy riders
+    available_riders = [rider for rider in all_riders if rider['id'] not in busy_rider_ids]
+    
+    return available_riders
+
+@api_router.patch("/orders/{order_id}/assign-rider")
+async def assign_rider_to_order(order_id: str, assignment: RiderAssignment, current_user: dict = Depends(get_current_user)):
+    """Assign a rider to a ready order and change status to out-for-delivery"""
+    # Get the order
+    order = await db.orders.find_one({"id": order_id})
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    # Check if user is vendor and order belongs to their restaurant
+    if current_user['role'] == 'vendor':
+        restaurants = await db.restaurants.find({"vendor_id": current_user['id']}).to_list(100)
+        restaurant_ids = [r['id'] for r in restaurants]
+        if order['restaurant_id'] not in restaurant_ids:
+            raise HTTPException(status_code=403, detail="Not authorized to assign riders to this order")
+    elif current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Only vendors and admins can assign riders")
+    
+    # Verify the rider exists
+    rider = await db.users.find_one({"id": assignment.rider_id, "role": "rider"})
+    if not rider:
+        raise HTTPException(status_code=404, detail="Rider not found")
+    
+    # Update order with rider assignment and change status to out-for-delivery
+    update_data = {
+        "rider_id": assignment.rider_id,
+        "status": "out-for-delivery",
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.orders.update_one({"id": order_id}, {"$set": update_data})
+    
+    return {
+        "message": "Rider assigned successfully",
+        "rider_id": assignment.rider_id,
+        "status": "out-for-delivery"
+    }
+
 # Health check
 @api_router.get("/")
 async def root():
