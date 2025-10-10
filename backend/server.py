@@ -399,6 +399,8 @@ async def create_order(order_data: OrderCreate, current_user: dict = Depends(get
         items=order_data.items,
         total_amount=total_amount,
         delivery_address=order_data.delivery_address,
+        delivery_latitude=order_data.delivery_latitude,
+        delivery_longitude=order_data.delivery_longitude,
         special_instructions=order_data.special_instructions,
         delivery_slot=get_next_delivery_slot()
     )
