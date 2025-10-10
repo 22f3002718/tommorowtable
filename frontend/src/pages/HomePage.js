@@ -31,7 +31,7 @@ const HomePage = () => {
 
   const fetchRestaurants = async () => {
     try {
-      const response = await axios.get(`₹{API}/restaurants`);
+      const response = await axios.get(`${API}/restaurants`);
       setRestaurants(response.data);
     } catch (error) {
       console.error('Failed to fetch restaurants:', error);
@@ -49,9 +49,9 @@ const HomePage = () => {
         ? { email, password }
         : { email, password, name, phone, role };
 
-      const response = await axios.post(`₹{API}₹{endpoint}`, data);
+      const response = await axios.post(`${API}${endpoint}`, data);
       auth.login(response.data.token, response.data.user);
-      toast.success(`Welcome ₹{response.data.user.name}!`);
+      toast.success(`Welcome ${response.data.user.name}!`);
       setShowAuth(false);
       
       // Navigate based on role
@@ -188,9 +188,9 @@ const HomePage = () => {
             {filteredRestaurants.map((restaurant) => (
               <Link 
                 key={restaurant.id} 
-                to={`/restaurant/₹{restaurant.id}`}
+                to={`/restaurant/${restaurant.id}`}
                 className="restaurant-card"
-                data-testid={`restaurant-card-₹{restaurant.id}`}
+                data-testid={`restaurant-card-${restaurant.id}`}
               >
                 <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl border border-orange-100">
                   <div className="h-48 bg-gradient-to-br from-orange-200 to-red-200 relative overflow-hidden">

@@ -23,7 +23,7 @@ const RiderDashboard = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(`₹{API}/orders`);
+      const response = await axios.get(`${API}/orders`);
       // Filter orders that are ready for delivery or assigned to rider
       const deliveryOrders = response.data.filter(o => 
         o.status === 'ready' || 
@@ -39,8 +39,8 @@ const RiderDashboard = () => {
   const updateOrderStatus = async (orderId, newStatus) => {
     setLoading({ ...loading, [orderId]: true });
     try {
-      await axios.patch(`₹{API}/orders/₹{orderId}/status`, { status: newStatus });
-      toast.success(`Order marked as ₹{newStatus}`);
+      await axios.patch(`${API}/orders/${orderId}/status`, { status: newStatus });
+      toast.success(`Order marked as ${newStatus}`);
       fetchOrders();
     } catch (error) {
       toast.error('Failed to update order status');
@@ -109,7 +109,7 @@ const RiderDashboard = () => {
                 <div 
                   key={order.id} 
                   className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500"
-                  data-testid={`ready-order-₹{order.id}`}
+                  data-testid={`ready-order-${order.id}`}
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
@@ -121,8 +121,8 @@ const RiderDashboard = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-bold text-green-500">₹{order.total_amount.toFixed(2)}</p>
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-2 ₹{getStatusColor(order.status)}`}>
+                      <p className="text-xl font-bold text-green-500">${order.total_amount.toFixed(2)}</p>
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-2 ${getStatusColor(order.status)}`}>
                         READY
                       </span>
                     </div>
@@ -141,7 +141,7 @@ const RiderDashboard = () => {
                     onClick={() => updateOrderStatus(order.id, 'out-for-delivery')}
                     className="w-full bg-teal-500 hover:bg-teal-600"
                     disabled={loading[order.id]}
-                    data-testid={`pickup-order-₹{order.id}`}
+                    data-testid={`pickup-order-${order.id}`}
                   >
                     <Navigation className="w-4 h-4 mr-2" />
                     Pick Up & Start Delivery
@@ -161,7 +161,7 @@ const RiderDashboard = () => {
                 <div 
                   key={order.id} 
                   className="bg-white rounded-xl shadow-md p-6 border-l-4 border-teal-500"
-                  data-testid={`active-delivery-₹{order.id}`}
+                  data-testid={`active-delivery-${order.id}`}
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
@@ -172,17 +172,17 @@ const RiderDashboard = () => {
                         <span>{order.delivery_address}</span>
                       </div>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ₹{getStatusColor(order.status)}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.status)}`}>
                       OUT FOR DELIVERY
                     </span>
                   </div>
 
                   <div className="space-y-3">
                     <Button 
-                      onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=₹{encodeURIComponent(order.delivery_address)}`, '_blank')}
+                      onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.delivery_address)}`, '_blank')}
                       variant="outline"
                       className="w-full border-teal-500 text-teal-600 hover:bg-teal-50"
-                      data-testid={`navigate-₹{order.id}`}
+                      data-testid={`navigate-${order.id}`}
                     >
                       <Navigation className="w-4 h-4 mr-2" />
                       Navigate to Location
@@ -192,7 +192,7 @@ const RiderDashboard = () => {
                       onClick={() => updateOrderStatus(order.id, 'delivered')}
                       className="w-full bg-green-500 hover:bg-green-600"
                       disabled={loading[order.id]}
-                      data-testid={`mark-delivered-₹{order.id}`}
+                      data-testid={`mark-delivered-${order.id}`}
                     >
                       <CheckCircle className="w-4 h-4 mr-2" />
                       Mark as Delivered
@@ -213,7 +213,7 @@ const RiderDashboard = () => {
                 <div 
                   key={order.id} 
                   className="bg-white rounded-xl shadow-md p-6 opacity-75"
-                  data-testid={`completed-delivery-₹{order.id}`}
+                  data-testid={`completed-delivery-${order.id}`}
                 >
                   <div className="flex justify-between items-center">
                     <div>

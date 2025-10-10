@@ -26,8 +26,8 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     try {
       const [ordersRes, restaurantsRes] = await Promise.all([
-        axios.get(`₹{API}/orders`),
-        axios.get(`₹{API}/restaurants`)
+        axios.get(`${API}/orders`),
+        axios.get(`${API}/restaurants`)
       ]);
       setOrders(ordersRes.data);
       setRestaurants(restaurantsRes.data);
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
   const updateOrderStatus = async (orderId, newStatus) => {
     setLoading({ ...loading, [orderId]: true });
     try {
-      await axios.patch(`₹{API}/orders/₹{orderId}/status`, { status: newStatus });
+      await axios.patch(`${API}/orders/${orderId}/status`, { status: newStatus });
       toast.success(`Order status updated`);
       fetchData();
     } catch (error) {
@@ -99,7 +99,7 @@ const AdminDashboard = () => {
           <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp className="w-8 h-8" />
-              <span className="text-2xl font-bold">₹{totalRevenue.toFixed(0)}</span>
+              <span className="text-2xl font-bold">${totalRevenue.toFixed(0)}</span>
             </div>
             <p className="text-sm opacity-90">Total Revenue</p>
           </div>
@@ -154,13 +154,13 @@ const AdminDashboard = () => {
                     <div 
                       key={order.id} 
                       className="p-6 hover:bg-gray-50"
-                      data-testid={`admin-order-₹{order.id}`}
+                      data-testid={`admin-order-${order.id}`}
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <div className="flex items-center space-x-3 mb-2">
                             <h3 className="text-lg font-bold text-gray-900">#{order.id.slice(0, 8)}</h3>
-                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ₹{getStatusColor(order.status)}`}>
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.status)}`}>
                               {order.status.toUpperCase()}
                             </span>
                           </div>
@@ -178,7 +178,7 @@ const AdminDashboard = () => {
                         </div>
                         
                         <div className="text-right ml-6">
-                          <p className="text-2xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
+                          <p className="text-2xl font-bold text-orange-500">${order.total_amount.toFixed(2)}</p>
                           <p className="text-xs text-gray-500 mt-1">
                             {new Date(order.placed_at).toLocaleString()}
                           </p>
@@ -192,7 +192,7 @@ const AdminDashboard = () => {
                             value={order.status}
                             onChange={(e) => updateOrderStatus(order.id, e.target.value)}
                             disabled={loading[order.id]}
-                            data-testid={`status-select-₹{order.id}`}
+                            data-testid={`status-select-${order.id}`}
                           >
                             <option value="placed">Placed</option>
                             <option value="confirmed">Confirmed</option>
@@ -229,7 +229,7 @@ const AdminDashboard = () => {
                     <div 
                       key={restaurant.id} 
                       className="p-6 hover:bg-gray-50"
-                      data-testid={`restaurant-₹{restaurant.id}`}
+                      data-testid={`restaurant-${restaurant.id}`}
                     >
                       <div className="flex items-start space-x-4">
                         <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-200 to-red-200 flex-shrink-0" />
@@ -241,7 +241,7 @@ const AdminDashboard = () => {
                               {restaurant.cuisine}
                             </span>
                             <span className="text-gray-600">Rating: {restaurant.rating.toFixed(1)} ⭐</span>
-                            <span className={`px-2 py-1 rounded ₹{restaurant.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                            <span className={`px-2 py-1 rounded ${restaurant.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                               {restaurant.is_active ? 'Active' : 'Inactive'}
                             </span>
                           </div>

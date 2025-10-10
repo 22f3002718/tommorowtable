@@ -27,7 +27,7 @@ const OrdersPage = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(`₹{API}/orders`);
+      const response = await axios.get(`${API}/orders`);
       setOrders(response.data);
     } catch (error) {
       console.error('Failed to fetch orders:', error);
@@ -40,7 +40,7 @@ const OrdersPage = () => {
     
     setLoading(true);
     try {
-      await axios.post(`₹{API}/orders/₹{selectedOrder.id}/rating`, {
+      await axios.post(`${API}/orders/${selectedOrder.id}/rating`, {
         rating,
         review
       });
@@ -107,13 +107,13 @@ const OrdersPage = () => {
               <div 
                 key={order.id} 
                 className="bg-white rounded-xl shadow-md hover:shadow-lg border border-gray-200 p-6 animate-fade-in"
-                data-testid={`order-₹{order.id}`}
+                data-testid={`order-${order.id}`}
               >
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
                       <h3 className="text-xl font-bold text-gray-900">{order.restaurant_name}</h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ₹{getStatusColor(order.status)}`}>
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.status)}`}>
                         {getStatusText(order.status)}
                       </span>
                     </div>
@@ -131,7 +131,7 @@ const OrdersPage = () => {
                   </div>
                   
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-orange-500">${order.total_amount.toFixed(2)}</p>
                     <p className="text-xs text-gray-500 mt-1">
                       {new Date(order.placed_at).toLocaleDateString()}
                     </p>
@@ -145,7 +145,7 @@ const OrdersPage = () => {
                     {order.items.map((item, idx) => (
                       <div key={idx} className="flex justify-between text-sm">
                         <span className="text-gray-600">{item.quantity}x {item.name}</span>
-                        <span className="font-medium text-gray-900">₹{(item.price * item.quantity).toFixed(2)}</span>
+                        <span className="font-medium text-gray-900">${(item.price * item.quantity).toFixed(2)}</span>
                       </div>
                     ))}
                   </div>
@@ -168,7 +168,7 @@ const OrdersPage = () => {
                           {[...Array(5)].map((_, i) => (
                             <Star 
                               key={i} 
-                              className={`w-5 h-5 ₹{i < order.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`}
+                              className={`w-5 h-5 ${i < order.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`}
                             />
                           ))}
                         </div>
@@ -187,7 +187,7 @@ const OrdersPage = () => {
                         variant="outline"
                         size="sm"
                         className="border-orange-500 text-orange-500 hover:bg-orange-50"
-                        data-testid={`rate-order-₹{order.id}`}
+                        data-testid={`rate-order-${order.id}`}
                       >
                         <Star className="w-4 h-4 mr-2" />
                         Rate this order
@@ -217,10 +217,10 @@ const OrdersPage = () => {
                     key={star}
                     onClick={() => setRating(star)}
                     className="focus:outline-none"
-                    data-testid={`star-₹{star}`}
+                    data-testid={`star-${star}`}
                   >
                     <Star 
-                      className={`w-10 h-10 cursor-pointer transition-colors ₹{
+                      className={`w-10 h-10 cursor-pointer transition-colors ${
                         star <= rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'
                       }`}
                     />
