@@ -60,6 +60,23 @@ class QuickBiteAPITester:
         """Login as vendor to get authentication token"""
         self.log("🔐 Authenticating as vendor...")
         
+        # First try to register vendor (in case it doesn't exist)
+        register_data = {
+            "email": "vendor1@quickbite.com",
+            "password": "vendor123",
+            "name": "Test Vendor",
+            "role": "vendor",
+            "phone": "+1234567890"
+        }
+        
+        register_response = self.make_request('POST', '/auth/register', register_data)
+        if register_response and register_response.status_code == 200:
+            data = register_response.json()
+            self.vendor_token = data.get('token')
+            self.log(f"✅ Vendor registered and authenticated successfully")
+            return True
+        
+        # If registration failed (probably already exists), try login
         login_data = {
             "email": "vendor1@quickbite.com",
             "password": "vendor123"
