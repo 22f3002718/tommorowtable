@@ -122,6 +122,26 @@ const VendorDashboard = () => {
     }
   };
 
+  const handleAssignRider = async (orderId, riderId) => {
+    if (!riderId) {
+      toast.error('Please select a rider');
+      return;
+    }
+    
+    setLoading({ ...loading, [orderId]: true });
+    try {
+      await axios.patch(`${API}/orders/${orderId}/assign-rider`, { rider_id: riderId });
+      toast.success('Rider assigned successfully');
+      fetchData();
+      setSelectedRiders({ ...selectedRiders, [orderId]: '' });
+    } catch (error) {
+      toast.error('Failed to assign rider');
+      console.error(error);
+    } finally {
+      setLoading({ ...loading, [orderId]: false });
+    }
+  };
+
   const pendingOrders = orders.filter(o => ['placed', 'confirmed'].includes(o.status));
   const activeOrders = orders.filter(o => ['preparing', 'ready'].includes(o.status));
   const completedOrders = orders.filter(o => ['out-for-delivery', 'delivered'].includes(o.status));
