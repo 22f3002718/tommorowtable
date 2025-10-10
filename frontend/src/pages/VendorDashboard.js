@@ -158,10 +158,20 @@ const VendorDashboard = () => {
             <p className="text-3xl font-bold text-blue-600">{activeOrders.length}</p>
           </div>
           <div className="bg-green-50 rounded-xl shadow-md p-6">
-            <p className="text-sm text-green-700 mb-1">Completed</p>
-            <p className="text-3xl font-bold text-green-600">{completedOrders.length}</p>
+            <p className="text-sm text-green-700 mb-1">Menu Items</p>
+            <p className="text-3xl font-bold text-green-600">{menuItems.length}</p>
           </div>
         </div>
+
+        {/* Tabs */}
+        <Tabs defaultValue="orders" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="orders" data-testid="orders-tab">Orders</TabsTrigger>
+            <TabsTrigger value="menu" data-testid="menu-tab">Menu Management</TabsTrigger>
+          </TabsList>
+
+          {/* Orders Tab */}
+          <TabsContent value="orders">
 
         {/* Orders Sections */}
         <div className="space-y-8">
