@@ -168,11 +168,13 @@ class QuickBiteAPITester:
         if response and response.status_code == 200:
             self.log(f"✅ Test rider created successfully")
             return True
-        elif response and response.status_code == 400:
+        elif response and response.status_code == 400 and "already registered" in response.text:
             self.log(f"ℹ️ Test rider already exists")
             return True
         else:
             self.log(f"❌ Failed to create test rider: {response.status_code if response else 'No response'}")
+            if response:
+                self.log(f"Response: {response.text}")
             return False
             
     def create_test_order(self):
