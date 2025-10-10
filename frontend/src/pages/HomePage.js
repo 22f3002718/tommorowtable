@@ -85,7 +85,7 @@ const HomePage = () => {
                 <ShoppingCart className="w-6 h-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-                QuickBite
+                Tomorrow's Table
               </h1>
             </div>
 
