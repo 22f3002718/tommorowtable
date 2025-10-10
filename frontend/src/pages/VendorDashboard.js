@@ -3,8 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { API, useAuth } from '@/App';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { ArrowLeft, Package, CheckCircle, Clock, User } from 'lucide-react';
+import { ArrowLeft, Package, CheckCircle, Clock, User, Plus, Trash2, Edit } from 'lucide-react';
 
 const VendorDashboard = () => {
   const navigate = useNavigate();
