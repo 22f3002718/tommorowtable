@@ -171,8 +171,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Get Available Riders Endpoint"
-    - "Assign Rider to Order Endpoint"
     - "Vendor Dashboard - Rider Assignment UI"
   stuck_tasks: []
   test_all: false
@@ -181,3 +179,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Implemented rider assignment feature for vendors. Added two backend endpoints: 1) GET /api/riders/available - returns riders not currently on delivery, 2) PATCH /api/orders/{order_id}/assign-rider - assigns rider and changes status to out-for-delivery. Updated VendorDashboard UI to show rider dropdown for 'ready' orders with assign button. Ready for backend testing."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING COMPLETE: All rider assignment backend functionality tested and working perfectly. Comprehensive tests passed for: 1) GET /api/riders/available (proper authorization, correct filtering of busy riders), 2) PATCH /api/orders/{order_id}/assign-rider (successful assignment, authorization checks, error handling), 3) Integration flow (order lifecycle, rider availability updates). Created test accounts and verified complete end-to-end functionality. Backend APIs are production-ready."
