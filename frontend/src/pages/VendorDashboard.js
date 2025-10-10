@@ -308,8 +308,42 @@ const VendorDashboard = () => {
                     )}
 
                     {order.status === 'ready' && (
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                        <p className="text-green-700 font-medium">Order is ready for pickup by rider</p>
+                      <div className="space-y-3">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                          <p className="text-green-700 font-medium flex items-center">
+                            <Bike className="w-4 h-4 mr-2" />
+                            Assign Rider for Delivery
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Select 
+                            value={selectedRiders[order.id] || ''}
+                            onValueChange={(value) => setSelectedRiders({ ...selectedRiders, [order.id]: value })}
+                          >
+                            <SelectTrigger className="flex-1" data-testid={`rider-select-${order.id}`}>
+                              <SelectValue placeholder="Select a rider" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {availableRiders.length === 0 ? (
+                                <SelectItem value="no-riders" disabled>No available riders</SelectItem>
+                              ) : (
+                                availableRiders.map((rider) => (
+                                  <SelectItem key={rider.id} value={rider.id}>
+                                    {rider.name} {rider.phone ? `(${rider.phone})` : ''}
+                                  </SelectItem>
+                                ))
+                              )}
+                            </SelectContent>
+                          </Select>
+                          <Button 
+                            onClick={() => handleAssignRider(order.id, selectedRiders[order.id])}
+                            className="bg-blue-500 hover:bg-blue-600"
+                            disabled={loading[order.id] || !selectedRiders[order.id] || availableRiders.length === 0}
+                            data-testid={`assign-rider-btn-${order.id}`}
+                          >
+                            Assign
+                          </Button>
+                        </div>
                       </div>
                     )}
                   </div>
