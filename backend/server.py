@@ -366,6 +366,10 @@ async def update_order_status(order_id: str, status_update: OrderStatusUpdate, c
         "updated_at": datetime.now(timezone.utc).isoformat()
     }
     
+    # If rider is picking up order (status = out-for-delivery), assign rider_id
+    if status_update.status == "out-for-delivery" and current_user['role'] == 'rider':
+        update_data["rider_id"] = current_user['id']
+    
     await db.orders.update_one({"id": order_id}, {"$set": update_data})
     return {"message": "Order status updated", "status": status_update.status}
 
