@@ -34,15 +34,19 @@ class QuickBiteAPITester:
             # Add timeout and SSL verification settings
             kwargs = {
                 'timeout': 30,
-                'verify': True,  # Enable SSL verification
-                'headers': headers or {}
+                'verify': True  # Enable SSL verification
             }
             
+            if headers:
+                kwargs['headers'] = headers
+                
             if data is not None:
                 kwargs['json'] = data
                 
             if method.upper() == 'GET':
-                response = requests.get(url, **{k: v for k, v in kwargs.items() if k != 'json'})
+                # Remove json parameter for GET requests
+                get_kwargs = {k: v for k, v in kwargs.items() if k != 'json'}
+                response = requests.get(url, **get_kwargs)
             elif method.upper() == 'POST':
                 response = requests.post(url, **kwargs)
             elif method.upper() == 'PATCH':
