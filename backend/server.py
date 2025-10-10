@@ -553,7 +553,7 @@ async def assign_rider_to_order(order_id: str, assignment: RiderAssignment, curr
 # Health check
 @api_router.get("/")
 async def root():
-    return {"message": "QuickBite API", "status": "running"}
+    return {"message": "Tomorrow's Table API", "status": "running"}
 
 app.include_router(api_router)
 
