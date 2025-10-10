@@ -107,39 +107,48 @@ user_problem_statement: "Once an order has been marked ready for pickup, give ve
 backend:
   - task: "Get Available Riders Endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added GET /api/riders/available endpoint that returns riders not currently on delivery (status != out-for-delivery). Only accessible by vendors and admins."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED SUCCESSFULLY: GET /api/riders/available endpoint working correctly. Returns only riders with role='rider' who are not currently on delivery. Properly restricts access to vendors/admins only (returns 403 for customers). Correctly excludes riders assigned to orders with 'out-for-delivery' status."
 
   - task: "Assign Rider to Order Endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added PATCH /api/orders/{order_id}/assign-rider endpoint. Accepts rider_id, verifies authorization, assigns rider to order and automatically changes status to 'out-for-delivery'. Only vendors (for their restaurants) and admins can assign riders."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED SUCCESSFULLY: PATCH /api/orders/{order_id}/assign-rider endpoint working perfectly. Successfully assigns valid riders to orders, automatically updates order status to 'out-for-delivery', properly validates authorization (403 for customers), correctly rejects invalid rider IDs (404), and updates order with rider_id field. Integration test confirmed assigned riders are removed from available list."
 
   - task: "Rider Assignment Pydantic Model"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added RiderAssignment model with rider_id field for request validation."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED SUCCESSFULLY: RiderAssignment Pydantic model working correctly. Properly validates rider_id field in assignment requests and integrates seamlessly with the assignment endpoint."
 
 frontend:
   - task: "Vendor Dashboard - Rider Assignment UI"
