@@ -296,6 +296,80 @@ async def add_menu_item(restaurant_id: str, item_data: MenuItemCreate, current_u
     await db.menu_items.insert_one(item_dict)
     return menu_item
 
+@api_router.delete("/menu-items/{item_id}")
+async def delete_menu_item(item_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] not in ['vendor', 'admin']:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Get menu item
+    menu_item = await db.menu_items.find_one({"id": item_id})
+    if not menu_item:
+        raise HTTPException(status_code=404, detail="Menu item not found")
+    
+    # Verify restaurant ownership
+    restaurant = await db.restaurants.find_one({"id": menu_item['restaurant_id']})
+    if not restaurant or (restaurant['vendor_id'] != current_user['id'] and current_user['role'] != 'admin'):
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    await db.menu_items.delete_one({"id": item_id})
+    return {"message": "Menu item deleted successfully"}
+
+@api_router.patch("/menu-items/{item_id}/availability")
+async def toggle_menu_item_availability(item_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] not in ['vendor', 'admin']:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Get menu item
+    menu_item = await db.menu_items.find_one({"id": item_id})
+    if not menu_item:
+        raise HTTPException(status_code=404, detail="Menu item not found")
+    
+    # Verify restaurant ownership
+    restaurant = await db.restaurants.find_one({"id": menu_item['restaurant_id']})
+    if not restaurant or (restaurant['vendor_id'] != current_user['id'] and current_user['role'] != 'admin'):
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Toggle availability
+    new_availability = not menu_item.get('is_available', True)
+    await db.menu_items.update_one(
+        {"id": item_id}, 
+        {"$set": {"is_available": new_availability}}
+    )
+    
+    return {"message": "Availability updated", "is_available": new_availability}
+
+@api_router.get("/vendor/restaurant", response_model=Restaurant)
+async def get_vendor_restaurant(current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    restaurant = await db.restaurants.find_one({"vendor_id": current_user['id']}, {"_id": 0})
+    if not restaurant:
+        raise HTTPException(status_code=404, detail="Restaurant not found")
+    
+    if isinstance(restaurant.get('created_at'), str):
+        restaurant['created_at'] = datetime.fromisoformat(restaurant['created_at'])
+    
+    return restaurant
+
+@api_router.get("/vendor/menu", response_model=List[MenuItem])
+async def get_vendor_menu(current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Get vendor's restaurant
+    restaurant = await db.restaurants.find_one({"vendor_id": current_user['id']})
+    if not restaurant:
+        raise HTTPException(status_code=404, detail="Restaurant not found")
+    
+    # Get all menu items (including unavailable ones for vendor view)
+    menu_items = await db.menu_items.find({"restaurant_id": restaurant['id']}, {"_id": 0}).to_list(1000)
+    for item in menu_items:
+        if isinstance(item.get('created_at'), str):
+            item['created_at'] = datetime.fromisoformat(item['created_at'])
+    
+    return menu_items
+
 # Order Routes
 @api_router.post("/orders", response_model=Order)
 async def create_order(order_data: OrderCreate, current_user: dict = Depends(get_current_user)):
