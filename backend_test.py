@@ -8,10 +8,6 @@ import requests
 import json
 import os
 from datetime import datetime
-import urllib3
-
-# Disable SSL warnings for testing
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Get backend URL from environment
 BACKEND_URL = "https://delivery-handoff.preview.emergentagent.com/api"
