@@ -285,10 +285,10 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
       <div className="flex gap-2">
         <Button
           onClick={handleConfirm}
-          disabled={!position || !address}
+          disabled={!position || (!address && !manualAddress.trim())}
           className="flex-1 bg-orange-500 hover:bg-orange-600"
         >
-          Confirm Location
+          Confirm Location & Address
         </Button>
         {showSkip && onSkip && (
           <Button onClick={onSkip} variant="outline">
