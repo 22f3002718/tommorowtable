@@ -731,6 +731,56 @@ def haversine_distance(loc1: tuple, loc2: tuple) -> float:
     
     return R * c
 
+# Batch assign riders to optimized routes
+@api_router.post("/vendor/batch-assign-riders")
+async def batch_assign_riders(
+    routes: List[dict],
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Assign riders to orders based on optimized routes.
+    Each route should have: rider_id and order_ids
+    """
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    assigned_count = 0
+    errors = []
+    
+    for route in routes:
+        rider_id = route.get('rider_id')
+        order_ids = route.get('order_ids', [])
+        
+        if not rider_id or not order_ids:
+            continue
+        
+        # Verify rider exists
+        rider = await db.users.find_one({"id": rider_id, "role": "rider"})
+        if not rider:
+            errors.append(f"Rider {rider_id} not found")
+            continue
+        
+        # Update all orders in this route
+        for order_id in order_ids:
+            try:
+                await db.orders.update_one(
+                    {"id": order_id},
+                    {"$set": {
+                        "rider_id": rider_id,
+                        "status": "out-for-delivery",
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }}
+                )
+                assigned_count += 1
+            except Exception as e:
+                errors.append(f"Failed to assign order {order_id}: {str(e)}")
+    
+    return {
+        "message": f"Successfully assigned {assigned_count} orders",
+        "assigned_count": assigned_count,
+        "errors": errors if errors else None
+    }
+
 # Health check
 @api_router.get("/")
 async def root():
