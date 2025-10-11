@@ -218,7 +218,7 @@ const VendorDashboard = () => {
                         <p className="text-sm text-gray-500">{order.delivery_address}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xl font-bold text-orange-500">${order.total_amount.toFixed(2)}</p>
+                        <p className="text-xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
                         <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-2 ${getStatusColor(order.status)}`}>
                           {order.status.toUpperCase()}
                         </span>
