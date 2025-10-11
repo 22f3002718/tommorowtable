@@ -7,7 +7,7 @@ import requests
 import json
 from datetime import datetime
 
-BACKEND_URL = "https://delivery-handoff.preview.emergentagent.com/api"
+BACKEND_URL = "https://localtokri.preview.emergentagent.com/api"
 
 def log(message):
     timestamp = datetime.now().strftime("%H:%M:%S")
