@@ -345,14 +345,39 @@ const RestaurantPage = () => {
 
             {/* Delivery Details */}
             <div className="space-y-3">
+              {/* Location Selection */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Address *</label>
-                <Input
-                  placeholder="Enter your delivery address"
-                  value={deliveryAddress}
-                  onChange={(e) => setDeliveryAddress(e.target.value)}
-                  data-testid="delivery-address-input"
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-2">Delivery Location *</label>
+                {locationSelected ? (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center text-green-800 mb-1">
+                          <MapPin className="w-4 h-4 mr-1" />
+                          <span className="font-medium text-sm">Selected Location:</span>
+                        </div>
+                        <p className="text-sm text-green-700">{deliveryAddress}</p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setShowLocationPicker(true)}
+                        className="ml-2"
+                      >
+                        Change
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={() => setShowLocationPicker(true)}
+                    variant="outline"
+                    className="w-full border-2 border-dashed border-gray-300 hover:border-orange-500 h-12"
+                  >
+                    <MapPin className="w-5 h-5 mr-2" />
+                    Select Delivery Location
+                  </Button>
+                )}
               </div>
               
               <div>
@@ -379,7 +404,7 @@ const RestaurantPage = () => {
               disabled={loading}
               data-testid="place-order-btn"
             >
-              {loading ? 'Placing Order...' : `Place Order - ₹${getTotalAmount().toFixed(2)}`}
+              {loading ? 'Placing Order...' : locationSelected ? `Place Order - ₹${getTotalAmount().toFixed(2)}` : 'Continue to Place Order'}
             </Button>
           </div>
         </DialogContent>
