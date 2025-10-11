@@ -121,7 +121,7 @@ const RiderDashboard = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-bold text-green-500">${order.total_amount.toFixed(2)}</p>
+                      <p className="text-xl font-bold text-green-500">₹{order.total_amount.toFixed(2)}</p>
                       <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-2 ${getStatusColor(order.status)}`}>
                         READY
                       </span>
