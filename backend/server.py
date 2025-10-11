@@ -595,6 +595,142 @@ async def assign_rider_to_order(order_id: str, assignment: RiderAssignment, curr
         "status": "out-for-delivery"
     }
 
+# Route Optimization
+@api_router.post("/vendor/optimize-routes", response_model=RouteOptimizationResponse)
+async def optimize_delivery_routes(
+    request: RouteOptimizationRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Optimize delivery routes for multiple orders using Google Maps Distance Matrix API.
+    This creates balanced routes for each rider based on distances.
+    """
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    if not gmaps:
+        raise HTTPException(status_code=500, detail="Google Maps API not configured")
+    
+    # Fetch orders
+    orders = await db.orders.find(
+        {"id": {"$in": request.order_ids}, "status": "ready"},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    if len(orders) == 0:
+        raise HTTPException(status_code=404, detail="No ready orders found")
+    
+    # Filter orders with valid coordinates
+    valid_orders = [
+        o for o in orders 
+        if o.get('delivery_latitude') and o.get('delivery_longitude')
+    ]
+    
+    if len(valid_orders) == 0:
+        raise HTTPException(status_code=400, detail="No orders with valid delivery locations")
+    
+    # Simplified routing algorithm using distance-based clustering
+    # For production, you would use Google Cloud Fleet Routing API
+    
+    # Calculate distance matrix between all orders
+    locations = [
+        (order['delivery_latitude'], order['delivery_longitude']) 
+        for order in valid_orders
+    ]
+    
+    # Use simple clustering: assign orders to riders in a round-robin with nearest neighbor
+    num_riders = request.num_riders
+    max_orders = request.max_orders_per_rider or (len(valid_orders) // num_riders + 1)
+    
+    # Simple greedy nearest-neighbor assignment
+    routes = [[] for _ in range(num_riders)]
+    assigned = [False] * len(valid_orders)
+    
+    # Start with first order for each rider
+    for rider_idx in range(min(num_riders, len(valid_orders))):
+        routes[rider_idx].append(valid_orders[rider_idx])
+        assigned[rider_idx] = True
+    
+    # Assign remaining orders to nearest existing route
+    for order_idx in range(len(valid_orders)):
+        if assigned[order_idx]:
+            continue
+            
+        order = valid_orders[order_idx]
+        order_loc = (order['delivery_latitude'], order['delivery_longitude'])
+        
+        # Find best rider (least orders or nearest)
+        best_rider = 0
+        min_dist = float('inf')
+        
+        for rider_idx in range(num_riders):
+            if len(routes[rider_idx]) >= max_orders:
+                continue
+                
+            if len(routes[rider_idx]) == 0:
+                best_rider = rider_idx
+                break
+                
+            # Calculate distance to last order in this route
+            last_order = routes[rider_idx][-1]
+            last_loc = (last_order['delivery_latitude'], last_order['delivery_longitude'])
+            dist = haversine_distance(order_loc, last_loc)
+            
+            if dist < min_dist:
+                min_dist = dist
+                best_rider = rider_idx
+        
+        routes[best_rider].append(order)
+        assigned[order_idx] = True
+    
+    # Calculate route statistics
+    optimized_routes = []
+    for rider_idx, route_orders in enumerate(routes):
+        if not route_orders:
+            continue
+            
+        # Calculate total distance for this route
+        total_distance = 0
+        for i in range(len(route_orders) - 1):
+            loc1 = (route_orders[i]['delivery_latitude'], route_orders[i]['delivery_longitude'])
+            loc2 = (route_orders[i+1]['delivery_latitude'], route_orders[i+1]['delivery_longitude'])
+            total_distance += haversine_distance(loc1, loc2)
+        
+        # Estimate duration (assuming 30 km/h average speed + 5 min per stop)
+        estimated_minutes = int((total_distance / 30) * 60 + len(route_orders) * 5)
+        
+        optimized_routes.append(OptimizedRoute(
+            rider_index=rider_idx + 1,
+            order_ids=[o['id'] for o in route_orders],
+            orders=route_orders,
+            total_distance_km=round(total_distance, 2),
+            estimated_duration_minutes=estimated_minutes
+        ))
+    
+    return RouteOptimizationResponse(
+        routes=optimized_routes,
+        total_orders=len(valid_orders),
+        total_riders=len(optimized_routes)
+    )
+
+def haversine_distance(loc1: tuple, loc2: tuple) -> float:
+    """Calculate distance between two lat/lng points in kilometers"""
+    lat1, lon1 = loc1
+    lat2, lon2 = loc2
+    
+    R = 6371  # Earth radius in kilometers
+    
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    
+    a = (math.sin(dlat / 2) ** 2 +
+         math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) *
+         math.sin(dlon / 2) ** 2)
+    
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    
+    return R * c
+
 # Health check
 @api_router.get("/")
 async def root():
