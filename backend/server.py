@@ -614,8 +614,8 @@ async def optimize_delivery_routes(
     if current_user['role'] != 'vendor':
         raise HTTPException(status_code=403, detail="Not authorized")
     
-    if not gmaps:
-        raise HTTPException(status_code=500, detail="Google Maps API not configured")
+    # Note: This function works with or without Google Maps API key
+    # It uses haversine distance calculation for route optimization
     
     # Fetch orders
     orders = await db.orders.find(
