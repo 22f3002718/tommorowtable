@@ -259,3 +259,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Implemented multiple UI and feature changes: 1) Currency: Replaced all $ with ₹ across all pages, 2) Branding: Changed 'Tomorrow's Table' to 'localtokri', removed 'Restaurant' suffix from vendor names, 3) Location Feature: Created LocationPicker component with OpenStreetMap/Leaflet, browser geolocation, address search (Nominatim), and map click selection. Integrated in checkout flow - customers must select location when placing order. Created MapView component for riders to see customer location on map. Added PATCH /api/auth/update-location endpoint to save user location. Ready for testing."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING COMPLETE: All requested backend changes tested and working correctly. 1) Vendor registration creates restaurant without 'Restaurant' suffix ✅ 2) Location update endpoint (PATCH /api/auth/update-location) saves user location correctly ✅ 3) Order creation with delivery coordinates working and persisting data ✅. Created comprehensive test suite in localtokri_backend_test.py. All backend APIs functioning as expected."
