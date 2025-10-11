@@ -165,6 +165,11 @@ class OrderRating(BaseModel):
 class RiderAssignment(BaseModel):
     rider_id: str
 
+class LocationUpdate(BaseModel):
+    address: str
+    latitude: float
+    longitude: float
+
 # Helper function to check if orders are allowed (before midnight)
 def is_ordering_allowed() -> bool:
     now = datetime.now(timezone.utc)
