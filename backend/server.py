@@ -240,6 +240,19 @@ async def login(credentials: UserLogin):
 async def get_me(current_user: dict = Depends(get_current_user)):
     return current_user
 
+@api_router.patch("/auth/update-location")
+async def update_location(location_data: LocationUpdate, current_user: dict = Depends(get_current_user)):
+    """Update user's location"""
+    await db.users.update_one(
+        {"id": current_user['id']},
+        {"$set": {
+            "address": location_data.address,
+            "latitude": location_data.latitude,
+            "longitude": location_data.longitude
+        }}
+    )
+    return {"message": "Location updated successfully"}
+
 # Restaurant Routes
 @api_router.get("/restaurants", response_model=List[Restaurant])
 async def get_restaurants():
