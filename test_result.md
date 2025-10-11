@@ -102,7 +102,10 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Once an order has been marked ready for pickup, give vendor the ability to assign it to a rider from available riders"
+user_problem_statement: "1. Change currency from dollar to rupees (₹)
+2. Remove 'restaurant' suffix from vendor names  
+3. Change website name from 'Tomorrow's Table' to 'localtokri'
+4. Add location functionality for customers - ask permission when placing order, allow setting location on maps or via search bar, show location to rider when delivering"
 
 backend:
   - task: "Get Available Riders Endpoint"
