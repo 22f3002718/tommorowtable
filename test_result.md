@@ -219,19 +219,22 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "1.0"
-  test_sequence: 1
+  version: "2.0"
+  test_sequence: 2
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Vendor Dashboard - Rider Assignment UI"
+    - "Remove Restaurant Suffix from Vendor Names"
+    - "Replace Dollar with Rupee Symbol"
+    - "Change Website Name to localtokri"
+    - "LocationPicker Component"
+    - "Integrate Location in Order Flow"
+    - "Show Customer Location to Rider"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
-    message: "Implemented rider assignment feature for vendors. Added two backend endpoints: 1) GET /api/riders/available - returns riders not currently on delivery, 2) PATCH /api/orders/{order_id}/assign-rider - assigns rider and changes status to out-for-delivery. Updated VendorDashboard UI to show rider dropdown for 'ready' orders with assign button. Ready for backend testing."
-  - agent: "testing"
-    message: "✅ BACKEND TESTING COMPLETE: All rider assignment backend functionality tested and working perfectly. Comprehensive tests passed for: 1) GET /api/riders/available (proper authorization, correct filtering of busy riders), 2) PATCH /api/orders/{order_id}/assign-rider (successful assignment, authorization checks, error handling), 3) Integration flow (order lifecycle, rider availability updates). Created test accounts and verified complete end-to-end functionality. Backend APIs are production-ready."
+    message: "Implemented multiple UI and feature changes: 1) Currency: Replaced all $ with ₹ across all pages, 2) Branding: Changed 'Tomorrow's Table' to 'localtokri', removed 'Restaurant' suffix from vendor names, 3) Location Feature: Created LocationPicker component with OpenStreetMap/Leaflet, browser geolocation, address search (Nominatim), and map click selection. Integrated in checkout flow - customers must select location when placing order. Created MapView component for riders to see customer location on map. Added PATCH /api/auth/update-location endpoint to save user location. Ready for testing."
