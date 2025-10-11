@@ -64,25 +64,25 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
     }
 
     setSearching(true);
+    setShowSearchResults(false);
     try {
+      // Search with higher limit and include Surat, India context
+      const searchTerm = searchQuery.includes('Surat') || searchQuery.includes('Gujarat') 
+        ? searchQuery 
+        : `${searchQuery}, Surat, Gujarat, India`;
+      
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=1`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchTerm)}&limit=10&addressdetails=1`
       );
       const data = await response.json();
       
       if (data && data.length > 0) {
-        const result = data[0];
-        const newPos = { lat: parseFloat(result.lat), lng: parseFloat(result.lon) };
-        setPosition(newPos);
-        setAddress(result.display_name);
-        
-        // Pan map to the new location
-        if (mapRef.current) {
-          mapRef.current.flyTo([newPos.lat, newPos.lng], 15);
-        }
-        toast.success('Location found!');
+        setSearchResults(data);
+        setShowSearchResults(true);
+        toast.success(`Found ${data.length} result${data.length > 1 ? 's' : ''}`);
       } else {
-        toast.error('Location not found. Try a different search.');
+        setSearchResults([]);
+        toast.error('Location not found. Try a different search term.');
       }
     } catch (error) {
       console.error('Search failed:', error);
@@ -90,6 +90,19 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
     } finally {
       setSearching(false);
     }
+  };
+
+  const selectSearchResult = (result) => {
+    const newPos = { lat: parseFloat(result.lat), lng: parseFloat(result.lon) };
+    setPosition(newPos);
+    setAddress(result.display_name);
+    setShowSearchResults(false);
+    
+    // Pan map to the new location
+    if (mapRef.current) {
+      mapRef.current.flyTo([newPos.lat, newPos.lng], 16);
+    }
+    toast.success('Location selected!');
   };
 
   // Get current location from browser
