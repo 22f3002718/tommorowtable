@@ -170,6 +170,23 @@ class LocationUpdate(BaseModel):
     latitude: float
     longitude: float
 
+class RouteOptimizationRequest(BaseModel):
+    order_ids: List[str]
+    num_riders: int
+    max_orders_per_rider: Optional[int] = None
+
+class OptimizedRoute(BaseModel):
+    rider_index: int
+    order_ids: List[str]
+    orders: List[dict]
+    total_distance_km: float
+    estimated_duration_minutes: int
+
+class RouteOptimizationResponse(BaseModel):
+    routes: List[OptimizedRoute]
+    total_orders: int
+    total_riders: int
+
 # Helper function to check if orders are allowed (before midnight)
 def is_ordering_allowed() -> bool:
     now = datetime.now(timezone.utc)
