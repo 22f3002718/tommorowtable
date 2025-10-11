@@ -294,7 +294,7 @@ const RestaurantPage = () => {
               <div className="border-t border-gray-300 pt-3 mt-3">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold">Total</span>
-                  <span className="text-2xl font-bold text-orange-500">${getTotalAmount().toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-orange-500">₹{getTotalAmount().toFixed(2)}</span>
                 </div>
               </div>
             </div>
