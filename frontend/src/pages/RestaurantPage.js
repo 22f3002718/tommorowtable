@@ -416,7 +416,7 @@ const RestaurantPage = () => {
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold">Select Delivery Location</DialogTitle>
           </DialogHeader>
-          <LocationPicker
+          <GoogleLocationPicker
             onLocationSelect={handleLocationSelect}
             initialLocation={deliveryLatitude && deliveryLongitude ? { lat: deliveryLatitude, lng: deliveryLongitude } : null}
             showSkip={false}
