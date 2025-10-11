@@ -200,8 +200,8 @@ async def register(user_data: UserCreate):
     if user_data.role == "vendor":
         restaurant = Restaurant(
             vendor_id=user.id,
-            name=f"{user_data.name}'s Restaurant",
-            description="Welcome to our restaurant! Update your description in the menu management section.",
+            name=user_data.name,
+            description="Welcome! Update your description in the menu management section.",
             cuisine="Various",
             image_url=None,
             rating=0.0,
