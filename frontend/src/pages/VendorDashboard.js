@@ -276,6 +276,37 @@ const VendorDashboard = () => {
             </div>
           )}
 
+          {/* Route Optimization Button - Show when all orders are ready */}
+          {activeOrders.filter(o => o.status === 'ready').length > 1 && (
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-300 rounded-xl p-6 mb-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center">
+                    <TrendingUp className="w-6 h-6 mr-2 text-orange-500" />
+                    All Orders Ready for Delivery!
+                  </h3>
+                  <p className="text-gray-700 mb-4">
+                    You have {activeOrders.filter(o => o.status === 'ready').length} orders ready. 
+                    Optimize delivery routes to save time and assign multiple orders to riders efficiently.
+                  </p>
+                  <Button
+                    onClick={() => setShowRouteOptimization(true)}
+                    className="bg-orange-500 hover:bg-orange-600"
+                    disabled={availableRiders.length === 0}
+                  >
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    Batch & Route Optimize
+                  </Button>
+                  {availableRiders.length === 0 && (
+                    <p className="text-sm text-red-600 mt-2">
+                      No riders available. Please ensure riders are registered.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Active Orders */}
           {activeOrders.length > 0 && (
             <div>
