@@ -168,10 +168,16 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
   return (
     <div className="space-y-4">
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
+        <p className="text-sm font-medium text-blue-900 mb-2">
           <MapPin className="inline w-4 h-4 mr-1" />
-          Select your delivery location by clicking on the map, searching for an address, or using your current location.
+          How to set your delivery location:
         </p>
+        <ol className="text-sm text-blue-800 space-y-1 ml-5 list-decimal">
+          <li>Search for your area/residence using the search bar</li>
+          <li>Or click on the map to select your location</li>
+          <li>Or use "My Current Location" button</li>
+          <li>Then add your complete address with flat/house details</li>
+        </ol>
       </div>
 
       {/* Search Bar */}
