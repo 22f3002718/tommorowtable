@@ -35,6 +35,9 @@ class LocalTokriAPITester:
         """Make HTTP request with error handling"""
         url = f"{self.base_url}{endpoint}"
         try:
+            import urllib3
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            
             if method.upper() == 'GET':
                 response = requests.get(url, headers=headers, timeout=30, verify=False)
             elif method.upper() == 'POST':
