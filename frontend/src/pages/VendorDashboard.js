@@ -392,7 +392,7 @@ const VendorDashboard = () => {
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="text-lg font-bold text-gray-900">{item.name}</h3>
-                        <span className="text-xl font-bold text-green-600">${item.price}</span>
+                        <span className="text-xl font-bold text-green-600">₹{item.price}</span>
                       </div>
                       <p className="text-gray-600 text-sm mb-3">{item.description}</p>
                       <div className="flex items-center justify-between mb-4">
