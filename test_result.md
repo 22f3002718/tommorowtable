@@ -238,6 +238,42 @@ frontend:
         agent: "main"
         comment: "Updated RiderDashboard to show customer location map for active deliveries. Displays MapView component with customer pin location. Updated Navigate button to use coordinates for Google Maps directions when available."
 
+  - task: "Replace OpenStreetMap with Google Maps"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/GoogleLocationPicker.js, /app/frontend/src/components/GoogleMapView.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Replaced OpenStreetMap/Leaflet with Google Maps JavaScript API for better location accuracy. Created GoogleLocationPicker with Google Places Autocomplete for address search, interactive map, and geolocation. Created GoogleMapView for riders to display customer locations. Updated RestaurantPage and RiderDashboard to use new Google Maps components."
+
+  - task: "Add Route Optimization Backend Endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added POST /api/vendor/optimize-routes endpoint using distance-based clustering algorithm. Accepts num_riders and max_orders_per_rider parameters. Returns optimized routes with order sequences, distances, and estimated durations. Added POST /api/vendor/batch-assign-riders endpoint for bulk rider assignments. Installed googlemaps==4.10.0 and google-cloud-optimization==1.11.2 packages."
+
+  - task: "Add Route Optimization UI in VendorDashboard"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/VendorDashboard.js, /app/frontend/src/components/RouteOptimizationDialog.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created RouteOptimizationDialog component with Google Maps visualization. Shows 'Batch & Route Optimize' button in VendorDashboard when 2+ orders have 'ready' status. Dialog allows vendor to specify number of riders and max orders per rider. Displays color-coded routes on map with sequence markers. Shows route details including distance, duration, and order sequence. Allows vendor to assign specific riders to each optimized route before confirmation. Installed @googlemaps/js-api-loader package."
+
 metadata:
   created_by: "main_agent"
   version: "2.0"
