@@ -335,7 +335,7 @@ const RestaurantPage = () => {
               disabled={loading}
               data-testid="place-order-btn"
             >
-              {loading ? 'Placing Order...' : `Place Order - $${getTotalAmount().toFixed(2)}`}
+              {loading ? 'Placing Order...' : `Place Order - ₹${getTotalAmount().toFixed(2)}`}
             </Button>
           </div>
         </DialogContent>
