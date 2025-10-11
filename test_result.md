@@ -276,18 +276,15 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "2.0"
-  test_sequence: 2
+  version: "3.0"
+  test_sequence: 3
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Remove Restaurant Suffix from Vendor Names"
-    - "Replace Dollar with Rupee Symbol"
-    - "Change Website Name to localtokri"
-    - "LocationPicker Component"
-    - "Integrate Location in Order Flow"
-    - "Show Customer Location to Rider"
+    - "Replace OpenStreetMap with Google Maps"
+    - "Add Route Optimization Backend Endpoint"
+    - "Add Route Optimization UI in VendorDashboard"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -297,3 +294,5 @@ agent_communication:
     message: "Implemented multiple UI and feature changes: 1) Currency: Replaced all $ with ₹ across all pages, 2) Branding: Changed 'Tomorrow's Table' to 'localtokri', removed 'Restaurant' suffix from vendor names, 3) Location Feature: Created LocationPicker component with OpenStreetMap/Leaflet, browser geolocation, address search (Nominatim), and map click selection. Integrated in checkout flow - customers must select location when placing order. Created MapView component for riders to see customer location on map. Added PATCH /api/auth/update-location endpoint to save user location. Ready for testing."
   - agent: "testing"
     message: "✅ BACKEND TESTING COMPLETE: All requested backend changes tested and working correctly. 1) Vendor registration creates restaurant without 'Restaurant' suffix ✅ 2) Location update endpoint (PATCH /api/auth/update-location) saves user location correctly ✅ 3) Order creation with delivery coordinates working and persisting data ✅. Created comprehensive test suite in localtokri_backend_test.py. All backend APIs functioning as expected."
+  - agent: "main"
+    message: "GOOGLE MAPS INTEGRATION & ROUTE OPTIMIZATION COMPLETE: 1) Replaced OpenStreetMap with Google Maps JavaScript API for better location accuracy and search. Created GoogleLocationPicker with Places Autocomplete and GoogleMapView components. 2) Implemented route optimization backend endpoint (POST /api/vendor/optimize-routes) using distance-based clustering algorithm. Added batch rider assignment endpoint (POST /api/vendor/batch-assign-riders). 3) Created RouteOptimizationDialog with interactive map visualization showing color-coded routes. Shows 'Batch & Route Optimize' button when 2+ orders are ready. Vendor can specify number of riders, view optimized routes with distances/durations, and assign specific riders before confirmation. 4) Added GOOGLE_MAPS_API_KEY to environment (placeholder: YOUR_GOOGLE_MAPS_API_KEY_HERE - needs to be replaced with actual key). Installed required packages: @googlemaps/js-api-loader (frontend), googlemaps, google-cloud-optimization (backend). Ready for testing with valid Google Maps API key."
