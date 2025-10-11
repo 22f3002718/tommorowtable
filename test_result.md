@@ -145,17 +145,77 @@ backend:
         comment: "Added PATCH /api/auth/update-location endpoint to save customer location. Accepts LocationUpdate model with address, latitude, longitude and updates user document."
 
 frontend:
-  - task: "Vendor Dashboard - Rider Assignment UI"
+  - task: "Change Website Name to localtokri"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/pages/VendorDashboard.js"
+    file: "/app/frontend/src/pages/HomePage.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Modified VendorDashboard to fetch available riders on load. When order status is 'ready', show dropdown with available riders and 'Assign' button. On assignment, order status automatically changes to 'out-for-delivery'."
+        comment: "Updated website name from 'Tomorrow's Table' to 'localtokri' in HomePage header."
+
+  - task: "Replace Dollar with Rupee Symbol"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/*.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Replaced all $ symbols with ₹ (Indian Rupee) across all pages: RestaurantPage, OrdersPage, VendorDashboard, RiderDashboard, AdminDashboard."
+
+  - task: "LocationPicker Component"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/LocationPicker.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created LocationPicker component with OpenStreetMap/Leaflet integration. Features: browser geolocation API, interactive map with click to select, address search using Nominatim geocoding, shows selected address."
+
+  - task: "MapView Component for Riders"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/MapView.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created MapView component to display customer location on map for riders. Shows marker at customer location with address popup."
+
+  - task: "Integrate Location in Order Flow"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/RestaurantPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Integrated LocationPicker in checkout flow. When placing order, customer must select location using map/search/geolocation. Location is saved to user profile and included in order (delivery_latitude, delivery_longitude). Added location picker dialog with skip option."
+
+  - task: "Show Customer Location to Rider"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/RiderDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated RiderDashboard to show customer location map for active deliveries. Displays MapView component with customer pin location. Updated Navigate button to use coordinates for Google Maps directions when available."
 
 metadata:
   created_by: "main_agent"
