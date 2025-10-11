@@ -182,7 +182,7 @@ const RiderDashboard = () => {
                   {order.delivery_latitude && order.delivery_longitude && (
                     <div className="mb-4">
                       <p className="text-sm font-medium text-gray-700 mb-2">Customer Location:</p>
-                      <MapView
+                      <GoogleMapView
                         latitude={order.delivery_latitude}
                         longitude={order.delivery_longitude}
                         address={order.delivery_address}
