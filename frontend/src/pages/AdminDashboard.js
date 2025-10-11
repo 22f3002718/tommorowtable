@@ -178,7 +178,7 @@ const AdminDashboard = () => {
                         </div>
                         
                         <div className="text-right ml-6">
-                          <p className="text-2xl font-bold text-orange-500">${order.total_amount.toFixed(2)}</p>
+                          <p className="text-2xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
                           <p className="text-xs text-gray-500 mt-1">
                             {new Date(order.placed_at).toLocaleString()}
                           </p>
