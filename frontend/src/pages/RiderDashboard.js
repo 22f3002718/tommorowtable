@@ -5,6 +5,7 @@ import { API, useAuth } from '@/App';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { ArrowLeft, Package, MapPin, User, Navigation, CheckCircle } from 'lucide-react';
+import MapView from '@/components/MapView';
 
 const RiderDashboard = () => {
   const navigate = useNavigate();
