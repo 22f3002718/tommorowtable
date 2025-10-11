@@ -409,6 +409,20 @@ const RestaurantPage = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Location Picker Dialog */}
+      <Dialog open={showLocationPicker} onOpenChange={setShowLocationPicker}>
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">Select Delivery Location</DialogTitle>
+          </DialogHeader>
+          <LocationPicker
+            onLocationSelect={handleLocationSelect}
+            initialLocation={deliveryLatitude && deliveryLongitude ? { lat: deliveryLatitude, lng: deliveryLongitude } : null}
+            showSkip={false}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
