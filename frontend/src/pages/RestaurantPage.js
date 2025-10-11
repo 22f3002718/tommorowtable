@@ -18,6 +18,10 @@ const RestaurantPage = () => {
   const [cart, setCart] = useState([]);
   const [showCheckout, setShowCheckout] = useState(false);
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryLatitude, setDeliveryLatitude] = useState(null);
+  const [deliveryLongitude, setDeliveryLongitude] = useState(null);
+  const [showLocationPicker, setShowLocationPicker] = useState(false);
+  const [locationSelected, setLocationSelected] = useState(false);
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [loading, setLoading] = useState(false);
 
