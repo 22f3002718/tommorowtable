@@ -178,9 +178,28 @@ const RiderDashboard = () => {
                     </span>
                   </div>
 
+                  {/* Customer Location Map */}
+                  {order.delivery_latitude && order.delivery_longitude && (
+                    <div className="mb-4">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Customer Location:</p>
+                      <MapView
+                        latitude={order.delivery_latitude}
+                        longitude={order.delivery_longitude}
+                        address={order.delivery_address}
+                        height="250px"
+                      />
+                    </div>
+                  )}
+
                   <div className="space-y-3">
                     <Button 
-                      onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.delivery_address)}`, '_blank')}
+                      onClick={() => {
+                        if (order.delivery_latitude && order.delivery_longitude) {
+                          window.open(`https://www.google.com/maps/dir/?api=1&destination=${order.delivery_latitude},${order.delivery_longitude}`, '_blank');
+                        } else {
+                          window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.delivery_address)}`, '_blank');
+                        }
+                      }}
                       variant="outline"
                       className="w-full border-teal-500 text-teal-600 hover:bg-teal-50"
                       data-testid={`navigate-${order.id}`}
