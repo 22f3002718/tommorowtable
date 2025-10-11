@@ -108,50 +108,41 @@ user_problem_statement: "1. Change currency from dollar to rupees (₹)
 4. Add location functionality for customers - ask permission when placing order, allow setting location on maps or via search bar, show location to rider when delivering"
 
 backend:
-  - task: "Get Available Riders Endpoint"
+  - task: "Remove Restaurant Suffix from Vendor Names"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Added GET /api/riders/available endpoint that returns riders not currently on delivery (status != out-for-delivery). Only accessible by vendors and admins."
-      - working: true
-        agent: "testing"
-        comment: "✅ TESTED SUCCESSFULLY: GET /api/riders/available endpoint working correctly. Returns only riders with role='rider' who are not currently on delivery. Properly restricts access to vendors/admins only (returns 403 for customers). Correctly excludes riders assigned to orders with 'out-for-delivery' status."
+        comment: "Updated vendor registration to use vendor name directly without adding 'Restaurant' suffix. Changed from f\"{user_data.name}'s Restaurant\" to user_data.name."
 
-  - task: "Assign Rider to Order Endpoint"
+  - task: "Add Location Fields to User Model"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Added PATCH /api/orders/{order_id}/assign-rider endpoint. Accepts rider_id, verifies authorization, assigns rider to order and automatically changes status to 'out-for-delivery'. Only vendors (for their restaurants) and admins can assign riders."
-      - working: true
-        agent: "testing"
-        comment: "✅ TESTED SUCCESSFULLY: PATCH /api/orders/{order_id}/assign-rider endpoint working perfectly. Successfully assigns valid riders to orders, automatically updates order status to 'out-for-delivery', properly validates authorization (403 for customers), correctly rejects invalid rider IDs (404), and updates order with rider_id field. Integration test confirmed assigned riders are removed from available list."
+        comment: "Added address, latitude, and longitude fields to User model to store customer location."
 
-  - task: "Rider Assignment Pydantic Model"
+  - task: "Add Location Update Endpoint"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Added RiderAssignment model with rider_id field for request validation."
-      - working: true
-        agent: "testing"
-        comment: "✅ TESTED SUCCESSFULLY: RiderAssignment Pydantic model working correctly. Properly validates rider_id field in assignment requests and integrates seamlessly with the assignment endpoint."
+        comment: "Added PATCH /api/auth/update-location endpoint to save customer location. Accepts LocationUpdate model with address, latitude, longitude and updates user document."
 
 frontend:
   - task: "Vendor Dashboard - Rider Assignment UI"
