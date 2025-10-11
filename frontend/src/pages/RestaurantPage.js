@@ -80,6 +80,34 @@ const RestaurantPage = () => {
     return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   };
 
+  const handleLocationSelect = async (locationData) => {
+    setDeliveryAddress(locationData.address);
+    setDeliveryLatitude(locationData.latitude);
+    setDeliveryLongitude(locationData.longitude);
+    setLocationSelected(true);
+    setShowLocationPicker(false);
+    
+    // Save location to user profile
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        await axios.patch(
+          `${API}/auth/update-location`,
+          {
+            address: locationData.address,
+            latitude: locationData.latitude,
+            longitude: locationData.longitude
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+      }
+    } catch (error) {
+      console.error('Failed to save location:', error);
+    }
+  };
+
   const handleCheckout = async () => {
     if (!auth?.user) {
       toast.error('Please login to place an order');
@@ -87,8 +115,13 @@ const RestaurantPage = () => {
       return;
     }
 
+    if (!locationSelected) {
+      setShowLocationPicker(true);
+      return;
+    }
+
     if (!deliveryAddress.trim()) {
-      toast.error('Please enter delivery address');
+      toast.error('Please select delivery location');
       return;
     }
 
@@ -98,6 +131,8 @@ const RestaurantPage = () => {
         restaurant_id: id,
         items: cart,
         delivery_address: deliveryAddress,
+        delivery_latitude: deliveryLatitude,
+        delivery_longitude: deliveryLongitude,
         special_instructions: specialInstructions
       };
 
@@ -105,6 +140,10 @@ const RestaurantPage = () => {
       toast.success('Order placed successfully! Will be delivered tomorrow morning.');
       setCart([]);
       setShowCheckout(false);
+      setLocationSelected(false);
+      setDeliveryAddress('');
+      setDeliveryLatitude(null);
+      setDeliveryLongitude(null);
       navigate('/orders');
     } catch (error) {
       console.error('Order failed:', error);
