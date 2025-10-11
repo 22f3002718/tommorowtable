@@ -147,17 +147,21 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
 
   const handleConfirm = () => {
     if (!position) {
-      toast.error('Please select a location');
+      toast.error('Please select a location on the map');
       return;
     }
-    if (!address) {
-      toast.error('Please wait while we fetch the address');
+    
+    const finalAddress = manualAddress.trim() || address;
+    
+    if (!finalAddress) {
+      toast.error('Please enter your complete address');
       return;
     }
+    
     onLocationSelect({
       latitude: position.lat,
       longitude: position.lng,
-      address: address,
+      address: finalAddress,
     });
   };
 
