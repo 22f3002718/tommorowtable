@@ -175,25 +175,52 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
       </div>
 
       {/* Search Bar */}
-      <div className="flex gap-2">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <Input
-            type="text"
-            placeholder="Search for your address..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && searchAddress()}
-            className="pl-10"
-          />
+      <div className="space-y-2">
+        <div className="flex gap-2">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Input
+              type="text"
+              placeholder="Search: residence name, street, area, landmark..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && searchAddress()}
+              className="pl-10"
+            />
+          </div>
+          <Button 
+            onClick={searchAddress} 
+            disabled={searching}
+            className="bg-orange-500 hover:bg-orange-600"
+          >
+            {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Search'}
+          </Button>
         </div>
-        <Button 
-          onClick={searchAddress} 
-          disabled={searching}
-          className="bg-orange-500 hover:bg-orange-600"
-        >
-          {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Search'}
-        </Button>
+
+        {/* Search Results Dropdown */}
+        {showSearchResults && searchResults.length > 0 && (
+          <div className="bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto">
+            <p className="text-xs font-medium text-gray-500 px-3 py-2 border-b">
+              Select a location from results:
+            </p>
+            {searchResults.map((result, idx) => (
+              <button
+                key={idx}
+                onClick={() => selectSearchResult(result)}
+                className="w-full text-left px-3 py-2 hover:bg-orange-50 border-b border-gray-100 last:border-b-0 transition-colors"
+              >
+                <p className="text-sm font-medium text-gray-900">{result.display_name}</p>
+                {result.address && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    {[result.address.neighbourhood, result.address.suburb, result.address.city]
+                      .filter(Boolean)
+                      .join(', ')}
+                  </p>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Current Location Button */}
