@@ -21,6 +21,7 @@ const VendorDashboard = () => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [availableRiders, setAvailableRiders] = useState([]);
   const [selectedRiders, setSelectedRiders] = useState({});
+  const [showRouteOptimization, setShowRouteOptimization] = useState(false);
   
   // New item form states
   const [newItem, setNewItem] = useState({
