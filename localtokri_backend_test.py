@@ -321,8 +321,13 @@ class LocalTokriAPITester:
         # Try without authorization header
         response = self.make_request('PATCH', '/auth/update-location', location_data)
         
-        if not response or response.status_code != 401:
-            self.log(f"❌ Expected 401 for unauthorized request, got {response.status_code if response else 'No response'}")
+        if not response:
+            self.log(f"❌ No response received for unauthorized request")
+            return False
+            
+        if response.status_code != 401:
+            self.log(f"❌ Expected 401 for unauthorized request, got {response.status_code}")
+            self.log(f"Response: {response.text}")
             return False
             
         self.log(f"✅ Location update correctly requires authentication (401)")
