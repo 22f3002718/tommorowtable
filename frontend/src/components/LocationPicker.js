@@ -256,9 +256,28 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
 
       {/* Selected Address Display */}
       {address && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-          <p className="text-sm font-medium text-green-800">Selected Address:</p>
-          <p className="text-sm text-green-700 mt-1">{address}</p>
+        <div className="space-y-3">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+            <p className="text-sm font-medium text-green-800">Location Selected:</p>
+            <p className="text-sm text-green-700 mt-1">{address}</p>
+          </div>
+
+          {/* Manual Address Input */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Enter Complete Address (Flat/House No, Building Name, Landmark) *
+            </label>
+            <textarea
+              value={manualAddress}
+              onChange={(e) => setManualAddress(e.target.value)}
+              placeholder="e.g., Flat 201, Sunrise Apartments, Near City Mall"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 min-h-[80px] text-sm"
+              rows="3"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Add specific details so the delivery rider can find you easily
+            </p>
+          </div>
         </div>
       )}
 
