@@ -99,7 +99,7 @@ const AdminDashboard = () => {
           <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp className="w-8 h-8" />
-              <span className="text-2xl font-bold">${totalRevenue.toFixed(0)}</span>
+              <span className="text-2xl font-bold">₹{totalRevenue.toFixed(0)}</span>
             </div>
             <p className="text-sm opacity-90">Total Revenue</p>
           </div>
