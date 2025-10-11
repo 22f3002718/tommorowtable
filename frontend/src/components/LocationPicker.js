@@ -33,7 +33,10 @@ function LocationMarker({ position, setPosition }) {
 const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, onSkip }) => {
   const [position, setPosition] = useState(initialLocation || null);
   const [address, setAddress] = useState('');
+  const [manualAddress, setManualAddress] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const [searching, setSearching] = useState(false);
   const [gettingLocation, setGettingLocation] = useState(false);
   const mapRef = useRef(null);
