@@ -145,7 +145,7 @@ const OrdersPage = () => {
                     {order.items.map((item, idx) => (
                       <div key={idx} className="flex justify-between text-sm">
                         <span className="text-gray-600">{item.quantity}x {item.name}</span>
-                        <span className="font-medium text-gray-900">${(item.price * item.quantity).toFixed(2)}</span>
+                        <span className="font-medium text-gray-900">₹{(item.price * item.quantity).toFixed(2)}</span>
                       </div>
                     ))}
                   </div>
