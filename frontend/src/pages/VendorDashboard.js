@@ -534,6 +534,18 @@ const VendorDashboard = () => {
             </form>
           </DialogContent>
         </Dialog>
+
+        {/* Route Optimization Dialog */}
+        <RouteOptimizationDialog
+          open={showRouteOptimization}
+          onClose={() => setShowRouteOptimization(false)}
+          orders={activeOrders.filter(o => o.status === 'ready')}
+          availableRiders={availableRiders}
+          onConfirm={() => {
+            fetchData();
+            setShowRouteOptimization(false);
+          }}
+        />
       </div>
     </div>
   );
