@@ -153,6 +153,18 @@ backend:
         agent: "testing"
         comment: "✅ TESTED: PATCH /api/auth/update-location endpoint working perfectly. Successfully updates user document with location data and requires authentication. Location data persists correctly in database."
 
+  - task: "Order Creation with Location Coordinates"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Order creation with delivery_latitude and delivery_longitude fields working correctly. Created order with coordinates (19.0825, 72.8811) and verified location data persists in order document. Order retrieval also returns location data intact."
+
 frontend:
   - task: "Change Website Name to localtokri"
     implemented: true
