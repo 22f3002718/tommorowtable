@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { ArrowLeft, ShoppingCart, Plus, Minus, Clock, Star, MapPin } from 'lucide-react';
-import LocationPicker from '@/components/LocationPicker';
+import GoogleLocationPicker from '@/components/GoogleLocationPicker';
 
 const RestaurantPage = () => {
   const { id } = useParams();
