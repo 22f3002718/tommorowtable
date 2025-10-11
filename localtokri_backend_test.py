@@ -14,7 +14,7 @@ from datetime import datetime
 import uuid
 
 # Get backend URL from environment
-BACKEND_URL = "https://localtokri.preview.emergentagent.com/api"
+BACKEND_URL = "https://route-optimizer-43.preview.emergentagent.com/api"
 
 class LocalTokriAPITester:
     def __init__(self):
