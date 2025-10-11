@@ -209,7 +209,7 @@ const RestaurantPage = () => {
                           <div className="flex-1">
                             <h4 className="text-lg font-bold text-gray-900 mb-1">{item.name}</h4>
                             <p className="text-sm text-gray-600 mb-3">{item.description}</p>
-                            <p className="text-xl font-bold text-orange-500">${item.price.toFixed(2)}</p>
+                            <p className="text-xl font-bold text-orange-500">₹{item.price.toFixed(2)}</p>
                           </div>
                           {item.image_url && (
                             <img 
