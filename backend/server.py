@@ -26,7 +26,13 @@ db = client[os.environ['DB_NAME']]
 
 # Google Maps client
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', '')
-gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY) if GOOGLE_MAPS_API_KEY else None
+# Only initialize gmaps client if a valid API key is provided (not the placeholder)
+gmaps = None
+if GOOGLE_MAPS_API_KEY and GOOGLE_MAPS_API_KEY != 'YOUR_GOOGLE_MAPS_API_KEY_HERE':
+    try:
+        gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
+    except Exception as e:
+        logger.warning(f"Failed to initialize Google Maps client: {e}")
 
 # Create the main app
 app = FastAPI()
