@@ -386,12 +386,21 @@ class JWTAuthTester:
             "platform": "ios"
         }
         
+        # Add a small delay to avoid connection issues
+        import time
+        time.sleep(0.5)
+        
         # No authorization header
         response = self.make_request('POST', '/auth/register-push-token', push_token_data)
         
         if not response:
             self.log("❌ No response received")
-            return False
+            # Try once more with a longer delay
+            time.sleep(2)
+            response = self.make_request('POST', '/auth/register-push-token', push_token_data)
+            if not response:
+                self.log("❌ Still no response after retry")
+                return False
             
         if response.status_code != 401:
             self.log(f"❌ Expected 401 for unauthorized request, got: {response.status_code}")
