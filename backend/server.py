@@ -187,6 +187,10 @@ class LocationUpdate(BaseModel):
     latitude: float
     longitude: float
 
+class PushTokenUpdate(BaseModel):
+    push_token: str
+    platform: str  # 'ios' or 'android'
+
 class RouteOptimizationRequest(BaseModel):
     order_ids: List[str]
     num_riders: int
