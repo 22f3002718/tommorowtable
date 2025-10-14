@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Loader } from '@googlemaps/js-api-loader';
+import { importLibrary } from '@googlemaps/js-api-loader';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,21 +31,28 @@ const RouteOptimizationDialog = ({
   
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
+  const googleMapsRef = useRef(null);
 
   useEffect(() => {
     if (!open) return;
     
-    const loader = new Loader({
-      apiKey: GOOGLE_MAPS_API_KEY,
-      version: 'weekly',
-      libraries: ['places', 'geometry']
-    });
+    const loadGoogleMaps = async () => {
+      try {
+        // Import required libraries
+        const coreLib = await importLibrary('core', { apiKey: GOOGLE_MAPS_API_KEY });
+        const { Map } = await importLibrary('maps', { apiKey: GOOGLE_MAPS_API_KEY });
+        const { Marker } = await importLibrary('marker', { apiKey: GOOGLE_MAPS_API_KEY });
+        const { Polyline } = await importLibrary('maps', { apiKey: GOOGLE_MAPS_API_KEY });
+        
+        // Store references for later use
+        googleMapsRef.current = { Map, Marker, Polyline, SymbolPath: coreLib.SymbolPath };
+        setMapLoaded(true);
+      } catch (err) {
+        console.error('Error loading Google Maps:', err);
+      }
+    };
 
-    loader.load().then(() => {
-      setMapLoaded(true);
-    }).catch(err => {
-      console.error('Error loading Google Maps:', err);
-    });
+    loadGoogleMaps();
   }, [open]);
 
   const handleOptimize = async () => {
