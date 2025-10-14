@@ -10,7 +10,7 @@ import urllib3
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BACKEND_URL = "https://delivery-sequence.preview.emergentagent.com/api"
+BACKEND_URL = "https://ui-revamp-17.preview.emergentagent.com/api"
 
 def test_route_optimization():
     """Test route optimization endpoint accessibility"""
