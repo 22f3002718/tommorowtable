@@ -167,8 +167,15 @@ const RiderDashboard = () => {
                   data-testid={`active-delivery-${order.id}`}
                 >
                   <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-1">{order.customer_name}</h3>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3 className="text-lg font-bold text-gray-900">{order.customer_name}</h3>
+                        {order.delivery_sequence && (
+                          <span className="bg-gradient-to-r from-teal-500 to-teal-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                            #{order.delivery_sequence}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-sm text-gray-600">Order #{order.id.slice(0, 8)}</p>
                       <div className="flex items-center text-sm text-gray-900 font-medium mt-2">
                         <MapPin className="w-4 h-4 mr-1 text-teal-500" />
