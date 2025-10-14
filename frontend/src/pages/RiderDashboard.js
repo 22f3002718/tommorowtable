@@ -192,21 +192,24 @@ const RiderDashboard = () => {
                   )}
 
                   <div className="space-y-3">
-                    <Button 
-                      onClick={() => {
-                        if (order.delivery_latitude && order.delivery_longitude) {
-                          window.open(`https://www.google.com/maps/dir/?api=1&destination=${order.delivery_latitude},${order.delivery_longitude}`, '_blank');
-                        } else {
-                          window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.delivery_address)}`, '_blank');
-                        }
-                      }}
-                      variant="outline"
-                      className="w-full border-teal-500 text-teal-600 hover:bg-teal-50"
+                    <a 
+                      href={order.delivery_latitude && order.delivery_longitude 
+                        ? `https://www.google.com/maps/dir/?api=1&destination=${order.delivery_latitude},${order.delivery_longitude}`
+                        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.delivery_address)}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
                       data-testid={`navigate-${order.id}`}
                     >
-                      <Navigation className="w-4 h-4 mr-2" />
-                      Navigate to Location
-                    </Button>
+                      <Button 
+                        variant="outline"
+                        className="w-full border-teal-500 text-teal-600 hover:bg-teal-50"
+                      >
+                        <Navigation className="w-4 h-4 mr-2" />
+                        Navigate to Location
+                      </Button>
+                    </a>
                     
                     <Button 
                       onClick={() => updateOrderStatus(order.id, 'delivered')}
