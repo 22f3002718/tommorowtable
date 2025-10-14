@@ -364,6 +364,33 @@ const RestaurantPage = () => {
               </div>
             </div>
 
+            {/* Wallet Balance */}
+            <div className={`rounded-lg p-4 ${walletBalance >= getTotalAmount() ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-700">Wallet Balance</p>
+                  <p className={`text-lg font-bold ${walletBalance >= getTotalAmount() ? 'text-green-600' : 'text-red-600'}`}>
+                    ₹{walletBalance.toFixed(2)}
+                  </p>
+                </div>
+                {walletBalance < getTotalAmount() && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate('/orders')}
+                    className="border-red-300 text-red-600 hover:bg-red-50"
+                  >
+                    Add Money
+                  </Button>
+                )}
+              </div>
+              {walletBalance < getTotalAmount() && (
+                <p className="text-xs text-red-600 mt-2">
+                  Insufficient balance! Need ₹{(getTotalAmount() - walletBalance).toFixed(2)} more.
+                </p>
+              )}
+            </div>
+
             {/* Delivery Details */}
             <div className="space-y-3">
               {/* Location Selection */}
