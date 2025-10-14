@@ -103,6 +103,7 @@ class User(BaseModel):
     longitude: Optional[float] = None
     push_token: Optional[str] = None
     push_platform: Optional[str] = None
+    wallet_balance: float = 0.0
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class Restaurant(BaseModel):
