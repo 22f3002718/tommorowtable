@@ -108,12 +108,42 @@ user_problem_statement: "1. Implement JWT authentication with 30-day token expir
 4. Update README with comprehensive local setup instructions"
 
 backend:
-  - task: "Remove Restaurant Suffix from Vendor Names"
+  - task: "JWT Authentication with 30-Day Token Expiry"
     implemented: true
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated create_access_token() to include 30-day expiry (timedelta(days=30)). Added exp field to JWT payload. Updated decode_token() to handle ExpiredSignatureError separately."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: JWT tokens generated with 30-day expiry verified. Token structure includes user_id, role, and exp fields. Expiry calculation confirmed at 30 days from issuance. Invalid/expired tokens properly rejected with 401."
+
+  - task: "Push Notification Token Registration Endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added POST /api/auth/register-push-token endpoint. Created PushTokenUpdate model with push_token and platform fields. Updates user document with push_token and push_platform. Added push_token and push_platform fields to User model."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Push token registration working correctly. Successfully saves push tokens and platform info (iOS/Android) to user profile. Tokens can be updated. User profile correctly shows push_token and push_platform fields."
+
+  - task: "Remove Restaurant Suffix from Vendor Names"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
     needs_retesting: false
     status_history:
       - working: "NA"
@@ -128,7 +158,7 @@ backend:
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
-    priority: "high"
+    priority: "medium"
     needs_retesting: false
     status_history:
       - working: "NA"
@@ -143,7 +173,7 @@ backend:
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
-    priority: "high"
+    priority: "medium"
     needs_retesting: false
     status_history:
       - working: "NA"
