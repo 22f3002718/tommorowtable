@@ -216,6 +216,40 @@ class RouteOptimizationResponse(BaseModel):
     total_orders: int
     total_riders: int
 
+# Wallet Models
+class WalletTransaction(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    transaction_type: str  # deposit, debit, refund
+    amount: float
+    payment_method: Optional[str] = None  # paytm, order_debit
+    paytm_order_id: Optional[str] = None
+    paytm_txn_id: Optional[str] = None
+    order_id: Optional[str] = None  # For order debits
+    status: str = "pending"  # pending, completed, failed
+    description: str
+    balance_before: float
+    balance_after: float
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    completed_at: Optional[datetime] = None
+
+class AddMoneyRequest(BaseModel):
+    amount: float
+
+class PaytmCallbackData(BaseModel):
+    orderId: str
+    txnToken: str
+    txnAmount: str
+    txnId: Optional[str] = None
+    bankTxnId: Optional[str] = None
+    txnDate: Optional[str] = None
+    gatewayName: Optional[str] = None
+    bankName: Optional[str] = None
+    paymentMode: Optional[str] = None
+    refundAmt: Optional[str] = None
+    status: str  # TXN_SUCCESS, TXN_FAILURE, PENDING
+
 # Helper function to check if orders are allowed (before midnight)
 def is_ordering_allowed() -> bool:
     now = datetime.now(timezone.utc)
