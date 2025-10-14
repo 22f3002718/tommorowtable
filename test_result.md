@@ -364,15 +364,18 @@ frontend:
 
   - task: "Delivery Sequence for Riders"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added delivery_sequence field to Order model. Updated batch-assign-riders endpoint to store sequence number (1, 2, 3...) for each order in a route. Sequence indicates the optimal delivery order for the rider."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Delivery sequence functionality working correctly. When orders are assigned to riders via batch-assign-riders endpoint, each order gets a delivery_sequence field set to 1, 2, 3... indicating the optimal delivery order. Verified that orders in the same route have sequential delivery_sequence numbers starting from 1. This allows riders to see the optimized delivery order in their dashboard."
 
 frontend:
   - task: "Fix Navigate Button Security Issue"
