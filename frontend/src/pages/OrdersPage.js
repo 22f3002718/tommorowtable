@@ -45,6 +45,50 @@ const OrdersPage = () => {
     }
   };
 
+  const fetchWalletBalance = async () => {
+    try {
+      const response = await axios.get(`${API}/wallet/balance`);
+      setWalletBalance(response.data.balance);
+    } catch (error) {
+      console.error('Failed to fetch wallet balance:', error);
+    }
+  };
+
+  const fetchTransactions = async () => {
+    try {
+      const response = await axios.get(`${API}/wallet/transactions`);
+      setTransactions(response.data);
+    } catch (error) {
+      console.error('Failed to fetch transactions:', error);
+    }
+  };
+
+  const handleAddMoney = async () => {
+    const amount = parseFloat(addAmount);
+    if (isNaN(amount) || amount <= 0) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+    if (amount > 50000) {
+      toast.error('Maximum top-up amount is ₹50,000');
+      return;
+    }
+    
+    setAddingMoney(true);
+    try {
+      const response = await axios.post(`${API}/wallet/add-money`, { amount });
+      toast.success(response.data.message);
+      setShowAddMoney(false);
+      setAddAmount('');
+      fetchWalletBalance();
+      fetchTransactions();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to add money');
+    } finally {
+      setAddingMoney(false);
+    }
+  };
+
   const submitRating = async () => {
     if (!selectedOrder) return;
     
