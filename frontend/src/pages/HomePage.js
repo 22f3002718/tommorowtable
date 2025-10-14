@@ -137,43 +137,56 @@ const HomePage = () => {
       </header>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-orange-50 via-white to-red-50 py-16">
+      <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center animate-fade-in">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-              Order Tonight,
-              <span className="block bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-                Delivered Tomorrow
-              </span>
+          <div className="text-center">
+            <h2 className="text-3xl md:text-5xl font-bold mb-3">
+              Fresh Breakfast 
+              <span className="block">Delivered Tomorrow</span>
             </h2>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Order before midnight for fresh breakfast delivery between 7-11 AM
+            <p className="text-white/90 mb-6 text-sm md:text-base">
+              Order before midnight • Delivery 7-11 AM
             </p>
 
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 z-10" />
               <Input
                 type="text"
-                placeholder="Search restaurants or cuisines..."
+                placeholder="Search for restaurants or cuisines..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-14 text-lg border-2 border-orange-200 focus:border-orange-500 rounded-2xl"
+                className="pl-12 h-12 md:h-14 text-base bg-white border-0 shadow-xl rounded-xl focus:ring-2 focus:ring-white"
                 data-testid="search-input"
               />
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* Delivery Info */}
-            <div className="mt-8 flex items-center justify-center space-x-8 text-sm text-gray-600">
-              <div className="flex items-center space-x-2">
-                <Clock className="w-5 h-5 text-orange-500" />
-                <span>Delivery: 7-11 AM</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <MapPin className="w-5 h-5 text-orange-500" />
-                <span>Order by Midnight</span>
-              </div>
+      {/* Quick Info Cards */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4">
+        <div className="grid grid-cols-3 gap-3 md:gap-4">
+          <div className="bg-white rounded-xl p-3 md:p-4 shadow-md text-center">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <Zap className="w-5 h-5 md:w-6 md:h-6 text-orange-500" />
             </div>
+            <p className="text-xs md:text-sm font-semibold text-gray-900">Fast Delivery</p>
+            <p className="text-xs text-gray-500 mt-1 hidden md:block">7-11 AM</p>
+          </div>
+          <div className="bg-white rounded-xl p-3 md:p-4 shadow-md text-center">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <Award className="w-5 h-5 md:w-6 md:h-6 text-green-500" />
+            </div>
+            <p className="text-xs md:text-sm font-semibold text-gray-900">Fresh Food</p>
+            <p className="text-xs text-gray-500 mt-1 hidden md:block">Quality First</p>
+          </div>
+          <div className="bg-white rounded-xl p-3 md:p-4 shadow-md text-center">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <Star className="w-5 h-5 md:w-6 md:h-6 text-blue-500" />
+            </div>
+            <p className="text-xs md:text-sm font-semibold text-gray-900">Top Rated</p>
+            <p className="text-xs text-gray-500 mt-1 hidden md:block">Best Quality</p>
           </div>
         </div>
       </div>
