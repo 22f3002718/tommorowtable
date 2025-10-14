@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { ArrowLeft, Package, Clock, MapPin, Star, Wallet, Plus, TrendingUp, TrendingDown } from 'lucide-react';
+import { ArrowLeft, Package, Clock, MapPin, Star, Wallet, Plus, TrendingUp, TrendingDown, CreditCard } from 'lucide-react';
+import BottomNav from '@/components/BottomNav';
 
 const OrdersPage = () => {
   const navigate = useNavigate();
