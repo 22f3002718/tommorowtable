@@ -17,6 +17,13 @@ const OrdersPage = () => {
   const [rating, setRating] = useState(5);
   const [review, setReview] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // Wallet states
+  const [walletBalance, setWalletBalance] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+  const [showAddMoney, setShowAddMoney] = useState(false);
+  const [addAmount, setAddAmount] = useState('');
+  const [addingMoney, setAddingMoney] = useState(false);
 
   useEffect(() => {
     if (!auth?.user) {
