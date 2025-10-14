@@ -88,29 +88,49 @@ function App() {
 
   useEffect(() => {
     checkAuth();
+    // Initialize push notifications
+    initializePushNotifications();
   }, []);
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('token');
+    const token = await authStorage.getToken();
     if (token) {
       try {
         const response = await axios.get(`${API}/auth/me`);
         setUser(response.data);
       } catch (error) {
         console.error('Auth check failed:', error);
-        localStorage.removeItem('token');
+        await authStorage.clearAuth();
       }
     }
     setLoading(false);
   };
 
-  const login = (token, userData) => {
-    localStorage.setItem('token', token);
-    setUser(userData);
+  const initializePushNotifications = async () => {
+    if (pushNotificationService.isAvailable()) {
+      await pushNotificationService.initialize((notification, actionId) => {
+        // Handle notification received
+        console.log('Notification received:', notification);
+        toast.info(notification.title || 'New Notification', {
+          description: notification.body
+        });
+      });
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
+  const login = async (token, userData) => {
+    await authStorage.setToken(token);
+    await authStorage.setUser(userData);
+    setUser(userData);
+    
+    // Register push notifications after login
+    if (pushNotificationService.isAvailable()) {
+      await pushNotificationService.initialize();
+    }
+  };
+
+  const logout = async () => {
+    await authStorage.clearAuth();
     setUser(null);
     window.location.href = '/';
   };
