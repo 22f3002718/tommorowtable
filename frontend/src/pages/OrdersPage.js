@@ -4,8 +4,9 @@ import axios from 'axios';
 import { API, useAuth } from '@/App';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { ArrowLeft, Package, Clock, MapPin, Star } from 'lucide-react';
+import { ArrowLeft, Package, Clock, MapPin, Star, Wallet, Plus, TrendingUp, TrendingDown } from 'lucide-react';
 
 const OrdersPage = () => {
   const navigate = useNavigate();
