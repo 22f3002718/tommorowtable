@@ -138,6 +138,14 @@ const RestaurantPage = () => {
       return;
     }
 
+    // Check wallet balance
+    const totalAmount = getTotalAmount();
+    if (walletBalance < totalAmount) {
+      toast.error(`Insufficient wallet balance! Required: ₹${totalAmount.toFixed(2)}, Available: ₹${walletBalance.toFixed(2)}. Please add money to your wallet.`);
+      navigate('/orders'); // Redirect to orders page where they can add money
+      return;
+    }
+
     setLoading(true);
     try {
       const orderData = {
