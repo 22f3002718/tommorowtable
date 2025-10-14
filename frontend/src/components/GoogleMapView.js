@@ -1,26 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { importLibrary } from '@googlemaps/js-api-loader';
+import { loadGoogleMapsLibrary } from '@/utils/googleMapsLoader';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-
-const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const GoogleMapView = ({ latitude, longitude, address, showRoute = false, riderLocation = null }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
-  const googleMapsRef = useRef(null);
 
   useEffect(() => {
-    const loadGoogleMaps = async () => {
+    const loadMaps = async () => {
       try {
-        // Import required libraries
-        const { Map } = await importLibrary('maps', { apiKey: GOOGLE_MAPS_API_KEY });
-        const { Marker } = await importLibrary('marker', { apiKey: GOOGLE_MAPS_API_KEY });
-        const { DirectionsService, DirectionsRenderer } = await importLibrary('routes', { apiKey: GOOGLE_MAPS_API_KEY });
-        
-        // Store references for later use
-        googleMapsRef.current = { Map, Marker, DirectionsService, DirectionsRenderer };
+        await loadGoogleMapsLibrary('maps');
+        await loadGoogleMapsLibrary('routes');
         setMapLoaded(true);
       } catch (err) {
         console.error('Error loading Google Maps:', err);
@@ -28,7 +20,7 @@ const GoogleMapView = ({ latitude, longitude, address, showRoute = false, riderL
       }
     };
 
-    loadGoogleMaps();
+    loadMaps();
   }, []);
 
   useEffect(() => {
