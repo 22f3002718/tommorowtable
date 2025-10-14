@@ -335,10 +335,95 @@ frontend:
         agent: "main"
         comment: "Fixed Google Maps API Loader error in RouteOptimizationDialog. Updated to use new bootstrap loader approach with googleMapsLoader.js utility. Component now loads maps correctly without Loader class deprecation errors."
 
+  - task: "Wallet System - Backend Implementation"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added wallet_balance field to User model (default 0.0). Created WalletTransaction model for tracking deposits, debits, and refunds. Implemented wallet endpoints: GET /api/wallet/balance, GET /api/wallet/transactions, POST /api/wallet/add-money (mock Paytm integration - directly credits wallet for demo), POST /api/wallet/payment-callback. Modified POST /api/orders to check wallet balance before order and deduct amount after successful order creation. Creates debit transaction for each order."
+
+  - task: "Wallet Validation - Check Balance Before Order"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated POST /api/orders endpoint to check wallet balance before allowing order placement. Returns 400 error with detailed message if insufficient balance. Atomically deducts order amount from wallet and creates corresponding transaction record after successful order creation."
+
+  - task: "Delivery Sequence for Riders"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added delivery_sequence field to Order model. Updated batch-assign-riders endpoint to store sequence number (1, 2, 3...) for each order in a route. Sequence indicates the optimal delivery order for the rider."
+
+frontend:
+  - task: "Fix Navigate Button Security Issue"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/RiderDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed browser security issue with Navigate button. Replaced window.open() with proper <a> tag with target='_blank' and rel='noopener noreferrer'. This prevents browser from blocking the Google Maps navigation link."
+
+  - task: "Display Delivery Sequence in RiderDashboard"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/RiderDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated RiderDashboard to display delivery sequence badges (#1, #2, #3) next to customer names in active deliveries. Orders are sorted by delivery_sequence so riders see them in optimal delivery order. Badge is prominently displayed with gradient background for easy visibility."
+
+  - task: "Wallet UI - Customer Dashboard"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/OrdersPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added comprehensive Wallet section to OrdersPage. Features: 1) Wallet balance card with gradient background showing current balance, 2) Add Money button opening dialog with amount input and quick select options (₹100, ₹500, ₹1000, ₹2000), 3) Recent transactions list showing last 5 transactions with deposit/debit indicators, 4) Mock mode notice explaining Paytm integration status. Uses MOCK implementation - directly credits wallet without real payment gateway."
+
+  - task: "Wallet Balance Check in Checkout"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/RestaurantPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added wallet balance display in checkout dialog. Shows balance with color-coded indicator (green if sufficient, red if insufficient). Validates balance before placing order - prevents order if insufficient funds with detailed error message. Provides 'Add Money' button that redirects to Orders page where users can top up their wallet."
+
 metadata:
   created_by: "main_agent"
-  version: "3.0"
-  test_sequence: 3
+  version: "4.0"
+  test_sequence: 4
   run_ui: false
 
 test_plan:
