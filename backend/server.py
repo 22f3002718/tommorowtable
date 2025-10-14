@@ -655,6 +655,16 @@ async def create_order(order_data: OrderCreate, current_user: dict = Depends(get
     # Calculate total
     total_amount = sum(item.price * item.quantity for item in order_data.items)
     
+    # Check wallet balance
+    user = await db.users.find_one({"id": current_user['id']}, {"_id": 0})
+    wallet_balance = user.get('wallet_balance', 0.0)
+    
+    if wallet_balance < total_amount:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Insufficient wallet balance. Required: ₹{total_amount}, Available: ₹{wallet_balance}"
+        )
+    
     order = Order(
         customer_id=current_user['id'],
         customer_name=current_user['name'],
@@ -674,6 +684,34 @@ async def create_order(order_data: OrderCreate, current_user: dict = Depends(get
     order_dict['updated_at'] = order_dict['updated_at'].isoformat()
     
     await db.orders.insert_one(order_dict)
+    
+    # Deduct amount from wallet
+    new_balance = wallet_balance - total_amount
+    await db.users.update_one(
+        {"id": current_user['id']},
+        {"$set": {"wallet_balance": new_balance}}
+    )
+    
+    # Create debit transaction
+    debit_transaction = WalletTransaction(
+        user_id=current_user['id'],
+        transaction_type="debit",
+        amount=total_amount,
+        payment_method="order_debit",
+        order_id=order.id,
+        status="completed",
+        description=f"Order payment for {restaurant['name']}",
+        balance_before=wallet_balance,
+        balance_after=new_balance,
+        completed_at=datetime.now(timezone.utc)
+    )
+    
+    debit_dict = debit_transaction.model_dump()
+    debit_dict['created_at'] = debit_dict['created_at'].isoformat()
+    debit_dict['completed_at'] = debit_dict['completed_at'].isoformat()
+    
+    await db.wallet_transactions.insert_one(debit_dict)
+    
     return order
 
 @api_router.get("/orders", response_model=List[Order])
