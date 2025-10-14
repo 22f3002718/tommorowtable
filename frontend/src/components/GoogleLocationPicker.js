@@ -45,18 +45,21 @@ const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = tr
 
   // Initialize map
   useEffect(() => {
-    if (!mapLoaded || !mapRef.current || mapInstanceRef.current) return;
+    if (!mapLoaded || !mapRef.current || mapInstanceRef.current || !googleMapsRef.current) return;
+
+    const { Map, Marker, Autocomplete } = googleMapsRef.current;
 
     const defaultCenter = position 
       ? { lat: position.lat, lng: position.lng }
       : { lat: 20.5937, lng: 78.9629 }; // India center
 
-    const map = new window.google.maps.Map(mapRef.current, {
+    const map = new Map(mapRef.current, {
       center: defaultCenter,
       zoom: position ? 15 : 5,
       mapTypeControl: true,
       streetViewControl: false,
       fullscreenControl: false,
+      mapId: 'DEMO_MAP_ID'
     });
 
     mapInstanceRef.current = map;
@@ -74,7 +77,7 @@ const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = tr
 
     // Initialize autocomplete
     if (searchInputRef.current) {
-      const autocomplete = new window.google.maps.places.Autocomplete(
+      const autocomplete = new Autocomplete(
         searchInputRef.current,
         {
           componentRestrictions: { country: 'in' },
