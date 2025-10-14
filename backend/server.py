@@ -794,14 +794,15 @@ async def batch_assign_riders(
             errors.append(f"Rider {rider_id} not found")
             continue
         
-        # Update all orders in this route
-        for order_id in order_ids:
+        # Update all orders in this route with sequence
+        for sequence_idx, order_id in enumerate(order_ids, start=1):
             try:
                 await db.orders.update_one(
                     {"id": order_id},
                     {"$set": {
                         "rider_id": rider_id,
                         "status": "out-for-delivery",
+                        "delivery_sequence": sequence_idx,
                         "updated_at": datetime.now(timezone.utc).isoformat()
                     }}
                 )
