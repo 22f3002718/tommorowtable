@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { importLibrary } from '@googlemaps/js-api-loader';
+import { loadGoogleMapsLibrary } from '@/utils/googleMapsLoader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MapPin, Search, Loader2, Navigation } from 'lucide-react';
 import { toast } from 'sonner';
-
-const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, onSkip }) => {
   const [position, setPosition] = useState(initialLocation || null);
@@ -20,19 +18,13 @@ const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = tr
   const markerRef = useRef(null);
   const autocompleteRef = useRef(null);
   const searchInputRef = useRef(null);
-  const googleMapsRef = useRef(null);
 
   // Load Google Maps
   useEffect(() => {
-    const loadGoogleMaps = async () => {
+    const loadMaps = async () => {
       try {
-        // Import required libraries
-        const { Map } = await importLibrary('maps', { apiKey: GOOGLE_MAPS_API_KEY });
-        const { Marker } = await importLibrary('marker', { apiKey: GOOGLE_MAPS_API_KEY });
-        const { Autocomplete, Geocoder } = await importLibrary('places', { apiKey: GOOGLE_MAPS_API_KEY });
-        
-        // Store references for later use
-        googleMapsRef.current = { Map, Marker, Autocomplete, Geocoder };
+        await loadGoogleMapsLibrary('maps');
+        await loadGoogleMapsLibrary('places');
         setMapLoaded(true);
       } catch (err) {
         console.error('Error loading Google Maps:', err);
@@ -40,7 +32,7 @@ const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = tr
       }
     };
 
-    loadGoogleMaps();
+    loadMaps();
   }, []);
 
   // Initialize map
