@@ -24,6 +24,7 @@ const RestaurantPage = () => {
   const [locationSelected, setLocationSelected] = useState(false);
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [loading, setLoading] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(0);
 
   useEffect(() => {
     fetchRestaurantData();
