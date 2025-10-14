@@ -102,10 +102,10 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "1. Change currency from dollar to rupees (₹)
-2. Remove 'restaurant' suffix from vendor names  
-3. Change website name from 'Tomorrow's Table' to 'localtokri'
-4. Add location functionality for customers - ask permission when placing order, allow setting location on maps or via search bar, show location to rider when delivering"
+user_problem_statement: "1. Implement JWT authentication with 30-day token expiry
+2. Add Capacitor integration for iOS and Android mobile apps
+3. Add push notification support for mobile apps
+4. Update README with comprehensive local setup instructions"
 
 backend:
   - task: "Remove Restaurant Suffix from Vendor Names"
