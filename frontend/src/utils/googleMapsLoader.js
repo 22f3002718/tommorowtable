@@ -69,13 +69,23 @@ function bootstrapGoogleMaps() {
  * @returns {Promise} Promise that resolves with the library object
  */
 export async function loadGoogleMapsLibrary(libraryName) {
-  await bootstrapGoogleMaps();
+  console.log(`[GoogleMapsLoader] Loading library: ${libraryName}`);
   
-  if (!window.google || !window.google.maps || !window.google.maps.importLibrary) {
-    throw new Error('Google Maps not loaded correctly');
-  }
+  try {
+    await bootstrapGoogleMaps();
+    console.log(`[GoogleMapsLoader] Bootstrap complete, importing ${libraryName}`);
+    
+    if (!window.google || !window.google.maps || !window.google.maps.importLibrary) {
+      throw new Error('Google Maps not loaded correctly');
+    }
 
-  return await window.google.maps.importLibrary(libraryName);
+    const library = await window.google.maps.importLibrary(libraryName);
+    console.log(`[GoogleMapsLoader] Library ${libraryName} loaded successfully`);
+    return library;
+  } catch (error) {
+    console.error(`[GoogleMapsLoader] Error loading ${libraryName}:`, error);
+    throw error;
+  }
 }
 
 /**
