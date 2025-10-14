@@ -4,8 +4,9 @@ import axios from 'axios';
 import { API, useAuth } from '@/App';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { ArrowLeft, Package, MapPin, User, Navigation, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Package, MapPin, User, Navigation, CheckCircle, Bike, TrendingUp } from 'lucide-react';
 import GoogleMapView from '@/components/GoogleMapView';
+import StatsCard from '@/components/StatsCard';
 
 const RiderDashboard = () => {
   const navigate = useNavigate();
