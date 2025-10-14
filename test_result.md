@@ -165,6 +165,30 @@ backend:
         agent: "testing"
         comment: "✅ TESTED: Order creation with delivery_latitude and delivery_longitude fields working correctly. Created order with coordinates (19.0825, 72.8811) and verified location data persists in order document. Order retrieval also returns location data intact."
 
+  - task: "JWT Authentication with 30-Day Token Expiry"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: JWT authentication working perfectly. User registration and login return valid JWT tokens with 30-day expiry (verified token payload shows exp field set to exactly 30.00 days from creation). Token authentication works correctly for protected endpoints like /api/auth/me. Invalid tokens properly rejected with 401 status."
+
+  - task: "Push Notification Token Registration"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Push notification token registration working correctly. POST /api/auth/register-push-token successfully saves push_token and push_platform to user profile. Token updates work properly (tested iOS to Android platform change). Unauthorized requests correctly rejected with 401. Fixed User model to include push_token and push_platform fields for proper API responses."
+
 frontend:
   - task: "Change Website Name to localtokri"
     implemented: true
