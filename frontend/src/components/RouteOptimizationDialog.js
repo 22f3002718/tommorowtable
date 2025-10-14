@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2, MapPin, Clock, TrendingUp, User } from 'lucide-react';
 import { toast } from 'sonner';
+import { API } from '@/App';
 
 const colors = [
   '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
@@ -55,10 +56,9 @@ const RouteOptimizationDialog = ({
     setOptimizedRoutes(null);
 
     try {
-      const API = process.env.REACT_APP_BACKEND_URL;
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`${API}/api/vendor/optimize-routes`, {
+      const response = await fetch(`${API}/vendor/optimize-routes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -209,7 +209,6 @@ const RouteOptimizationDialog = ({
     setConfirming(true);
 
     try {
-      const API = process.env.REACT_APP_BACKEND_URL;
       const token = localStorage.getItem('token');
       
       // Prepare routes data for batch assignment
@@ -218,7 +217,7 @@ const RouteOptimizationDialog = ({
         order_ids: route.order_ids
       }));
       
-      const response = await fetch(`${API}/api/vendor/batch-assign-riders`, {
+      const response = await fetch(`${API}/vendor/batch-assign-riders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

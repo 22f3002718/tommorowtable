@@ -215,6 +215,13 @@ class RouteOptimizationResponse(BaseModel):
     total_orders: int
     total_riders: int
 
+class BatchRiderAssignment(BaseModel):
+    rider_id: str
+    order_ids: List[str]
+
+class BatchAssignmentRequest(BaseModel):
+    routes: List[BatchRiderAssignment]
+
 # Wallet Models
 class WalletTransaction(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -990,7 +997,7 @@ def haversine_distance(loc1: tuple, loc2: tuple) -> float:
 # Batch assign riders to optimized routes
 @api_router.post("/vendor/batch-assign-riders")
 async def batch_assign_riders(
-    routes: List[dict],
+    request: BatchAssignmentRequest,
     current_user: dict = Depends(get_current_user)
 ):
     """
@@ -1003,9 +1010,9 @@ async def batch_assign_riders(
     assigned_count = 0
     errors = []
     
-    for route in routes:
-        rider_id = route.get('rider_id')
-        order_ids = route.get('order_ids', [])
+    for route in request.routes:
+        rider_id = route.rider_id
+        order_ids = route.order_ids
         
         if not rider_id or not order_ids:
             continue
