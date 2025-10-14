@@ -1,5 +1,19 @@
 {
   "appId": "com.localtokri.app",
   "appName": "localtokri",
-  "webDir": "build"
+  "webDir": "build",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "https"
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    },
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#f97316",
+      "showSpinner": false
+    }
+  }
 }
