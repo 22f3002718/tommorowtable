@@ -12,11 +12,15 @@ let loadPromise = null;
  * This initializes the google.maps.importLibrary function
  */
 function bootstrapGoogleMaps() {
+  console.log('[GoogleMapsLoader] bootstrapGoogleMaps called');
+  
   if (loadPromise) {
+    console.log('[GoogleMapsLoader] Returning existing promise');
     return loadPromise;
   }
 
   if (isLoaded && window.google && window.google.maps) {
+    console.log('[GoogleMapsLoader] Already loaded, returning resolved promise');
     return Promise.resolve();
   }
 
@@ -28,10 +32,12 @@ function bootstrapGoogleMaps() {
 
     // Check if API key is available
     if (!GOOGLE_MAPS_API_KEY) {
+      console.error('[GoogleMapsLoader] API key not found');
       reject(new Error('Google Maps API key is not configured'));
       return;
     }
 
+    console.log('[GoogleMapsLoader] API key found, loading script...');
     isLoading = true;
 
     // Create a unique callback name
@@ -39,6 +45,7 @@ function bootstrapGoogleMaps() {
     
     // Define the callback
     window[callbackName] = () => {
+      console.log('[GoogleMapsLoader] Callback executed, Maps loaded!');
       isLoaded = true;
       isLoading = false;
       delete window[callbackName];
@@ -52,11 +59,13 @@ function bootstrapGoogleMaps() {
     script.defer = true;
 
     script.onerror = () => {
+      console.error('[GoogleMapsLoader] Script loading failed');
       isLoading = false;
       delete window[callbackName];
       reject(new Error('Failed to load Google Maps'));
     };
 
+    console.log('[GoogleMapsLoader] Appending script to head');
     document.head.appendChild(script);
   });
 
