@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { toast } from 'sonner';
 import { ArrowLeft, ShoppingCart, Plus, Minus, Clock, Star, MapPin } from 'lucide-react';
 import GoogleLocationPicker from '@/components/GoogleLocationPicker';
+import BottomNav from '@/components/BottomNav';
 
 const RestaurantPage = () => {
   const { id } = useParams();
