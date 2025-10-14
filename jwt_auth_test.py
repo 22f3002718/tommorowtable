@@ -201,11 +201,21 @@ class JWTAuthTester:
         # Test with invalid token
         invalid_token = "invalid.jwt.token"
         headers = {"Authorization": f"Bearer {invalid_token}"}
+        
+        # Add a small delay to avoid connection issues
+        import time
+        time.sleep(0.5)
+        
         response = self.make_request('GET', '/auth/me', headers=headers)
         
         if not response:
-            self.log("❌ No response received")
-            return False
+            self.log("❌ No response received for invalid token test")
+            # Try once more with a longer delay
+            time.sleep(2)
+            response = self.make_request('GET', '/auth/me', headers=headers)
+            if not response:
+                self.log("❌ Still no response after retry")
+                return False
             
         if response.status_code != 401:
             self.log(f"❌ Expected 401 for invalid token, got: {response.status_code}")
@@ -215,11 +225,17 @@ class JWTAuthTester:
         self.log("✅ Invalid token correctly rejected (401)")
         
         # Test with no token
+        time.sleep(0.5)
         response = self.make_request('GET', '/auth/me')
         
         if not response:
             self.log("❌ No response received for no-token test")
-            return False
+            # Try once more
+            time.sleep(2)
+            response = self.make_request('GET', '/auth/me')
+            if not response:
+                self.log("❌ Still no response for no-token test after retry")
+                return False
             
         if response.status_code != 401:
             self.log(f"❌ Expected 401 for no token, got: {response.status_code}")
