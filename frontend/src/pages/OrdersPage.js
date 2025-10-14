@@ -31,6 +31,8 @@ const OrdersPage = () => {
       return;
     }
     fetchOrders();
+    fetchWalletBalance();
+    fetchTransactions();
   }, [auth]);
 
   const fetchOrders = async () => {
