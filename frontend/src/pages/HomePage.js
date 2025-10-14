@@ -191,53 +191,63 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Restaurants Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h3 className="text-3xl font-bold text-gray-900 mb-8">Available Restaurants</h3>
+      {/* Restaurants Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        <div className="flex items-center justify-between mb-4 md:mb-6">
+          <h3 className="text-xl md:text-2xl font-bold text-gray-900">
+            {searchQuery ? `Search Results` : `Restaurants Near You`}
+          </h3>
+          {filteredRestaurants.length > 0 && (
+            <span className="text-sm text-gray-500">{filteredRestaurants.length} available</span>
+          )}
+        </div>
         
         {filteredRestaurants.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-xl text-gray-500">No restaurants found</p>
-            <p className="text-gray-400 mt-2">Try a different search term or check back later</p>
+          <div className="text-center py-12 bg-white rounded-2xl">
+            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Search className="w-10 h-10 text-gray-400" />
+            </div>
+            <p className="text-lg font-medium text-gray-900">No restaurants found</p>
+            <p className="text-gray-500 mt-1">Try searching with different keywords</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredRestaurants.map((restaurant) => (
               <Link 
                 key={restaurant.id} 
                 to={`/restaurant/${restaurant.id}`}
-                className="restaurant-card"
+                className="block group"
                 data-testid={`restaurant-card-${restaurant.id}`}
               >
-                <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl border border-orange-100">
-                  <div className="h-48 bg-gradient-to-br from-orange-200 to-red-200 relative overflow-hidden">
+                <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+                  <div className="relative h-40 md:h-48 bg-gradient-to-br from-orange-100 to-red-100 overflow-hidden">
                     {restaurant.image_url ? (
                       <img 
                         src={restaurant.image_url} 
                         alt={restaurant.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <ShoppingCart className="w-16 h-16 text-orange-400" />
+                        <Utensils className="w-12 h-12 md:w-16 md:h-16 text-orange-300" />
                       </div>
                     )}
-                    <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full flex items-center space-x-1 shadow-lg">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      <span className="text-sm font-semibold">{restaurant.rating.toFixed(1)}</span>
+                    <div className="absolute top-3 right-3 bg-white px-2.5 py-1 rounded-lg flex items-center space-x-1 shadow-md">
+                      <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+                      <span className="text-xs font-bold text-gray-900">{restaurant.rating.toFixed(1)}</span>
                     </div>
                   </div>
                   
-                  <div className="p-6">
-                    <h4 className="text-xl font-bold text-gray-900 mb-2">{restaurant.name}</h4>
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">{restaurant.description}</p>
+                  <div className="p-4">
+                    <h4 className="text-lg font-bold text-gray-900 mb-1 truncate">{restaurant.name}</h4>
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-1">{restaurant.description}</p>
                     
                     <div className="flex items-center justify-between">
-                      <span className="inline-block px-3 py-1 bg-orange-50 text-orange-600 rounded-lg text-sm font-medium">
+                      <span className="inline-block px-2.5 py-1 bg-orange-50 text-orange-600 rounded-lg text-xs font-semibold">
                         {restaurant.cuisine}
                       </span>
-                      <div className="flex items-center text-gray-500 text-sm">
-                        <Clock className="w-4 h-4 mr-1" />
+                      <div className="flex items-center text-gray-500 text-xs font-medium">
+                        <Clock className="w-3.5 h-3.5 mr-1" />
                         <span>7-11 AM</span>
                       </div>
                     </div>
@@ -248,6 +258,9 @@ const HomePage = () => {
           </div>
         )}
       </div>
+
+      {/* Bottom Navigation for Mobile - Only show for customers */}
+      {auth?.user && auth.user.role === 'customer' && <BottomNav />}
 
       {/* Auth Dialog */}
       <Dialog open={showAuth} onOpenChange={setShowAuth}>
