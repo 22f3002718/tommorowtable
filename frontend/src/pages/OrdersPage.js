@@ -417,6 +417,9 @@ const OrdersPage = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Bottom Navigation for Mobile */}
+      {auth?.user && auth.user.role === 'customer' && <BottomNav />}
     </div>
   );
 };
