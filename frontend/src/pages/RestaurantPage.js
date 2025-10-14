@@ -47,6 +47,15 @@ const RestaurantPage = () => {
     }
   };
 
+  const fetchWalletBalance = async () => {
+    try {
+      const response = await axios.get(`${API}/wallet/balance`);
+      setWalletBalance(response.data.balance);
+    } catch (error) {
+      console.error('Failed to fetch wallet balance:', error);
+    }
+  };
+
   const addToCart = (item) => {
     const existingItem = cart.find(ci => ci.menu_item_id === item.id);
     if (existingItem) {
