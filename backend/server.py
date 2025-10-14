@@ -101,6 +101,8 @@ class User(BaseModel):
     address: Optional[str] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    push_token: Optional[str] = None
+    push_platform: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class Restaurant(BaseModel):
