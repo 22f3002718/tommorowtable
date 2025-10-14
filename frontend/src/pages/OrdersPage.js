@@ -364,6 +364,58 @@ const OrdersPage = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Add Money Dialog */}
+      <Dialog open={showAddMoney} onOpenChange={setShowAddMoney}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Money to Wallet</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 pt-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Amount (₹)</label>
+              <Input
+                type="number"
+                value={addAmount}
+                onChange={(e) => setAddAmount(e.target.value)}
+                placeholder="Enter amount"
+                className="w-full"
+                min="1"
+                max="50000"
+              />
+              <p className="text-xs text-gray-500 mt-1">Minimum: ₹1, Maximum: ₹50,000</p>
+            </div>
+
+            {/* Quick Amount Options */}
+            <div className="grid grid-cols-4 gap-2">
+              {[100, 500, 1000, 2000].map((amt) => (
+                <Button
+                  key={amt}
+                  variant="outline"
+                  onClick={() => setAddAmount(amt.toString())}
+                  className="text-sm"
+                >
+                  ₹{amt}
+                </Button>
+              ))}
+            </div>
+
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+              <p className="text-sm text-yellow-800">
+                <strong>Note:</strong> This is currently in MOCK mode. In production, you'll be redirected to Paytm for payment.
+              </p>
+            </div>
+
+            <Button 
+              onClick={handleAddMoney}
+              className="w-full bg-teal-500 hover:bg-teal-600"
+              disabled={addingMoney}
+            >
+              {addingMoney ? 'Processing...' : 'Add Money'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
