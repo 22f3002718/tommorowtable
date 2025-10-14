@@ -175,6 +175,7 @@ class Order(BaseModel):
     placed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     rider_id: Optional[str] = None
+    delivery_sequence: Optional[int] = None
     rating: Optional[int] = None
     review: Optional[str] = None
 
