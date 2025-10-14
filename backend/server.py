@@ -345,6 +345,157 @@ async def register_push_token(token_data: PushTokenUpdate, current_user: dict = 
     )
     return {"message": "Push token registered successfully"}
 
+# Wallet Routes
+@api_router.get("/wallet/balance")
+async def get_wallet_balance(current_user: dict = Depends(get_current_user)):
+    """Get current wallet balance for the user"""
+    user = await db.users.find_one({"id": current_user['id']}, {"_id": 0, "wallet_balance": 1})
+    return {
+        "balance": user.get('wallet_balance', 0.0),
+        "currency": "INR"
+    }
+
+@api_router.get("/wallet/transactions")
+async def get_wallet_transactions(current_user: dict = Depends(get_current_user)):
+    """Get transaction history for the user"""
+    transactions = await db.wallet_transactions.find(
+        {"user_id": current_user['id']}, 
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(100)
+    
+    # Convert datetime objects to ISO strings
+    for txn in transactions:
+        if isinstance(txn.get('created_at'), datetime):
+            txn['created_at'] = txn['created_at'].isoformat()
+        if isinstance(txn.get('completed_at'), datetime):
+            txn['completed_at'] = txn['completed_at'].isoformat()
+    
+    return transactions
+
+@api_router.post("/wallet/add-money")
+async def add_money_to_wallet(request: AddMoneyRequest, current_user: dict = Depends(get_current_user)):
+    """
+    Initiate wallet top-up via Paytm
+    For now, this is a mock implementation that directly credits the wallet
+    Real Paytm integration requires merchant credentials
+    """
+    if request.amount <= 0:
+        raise HTTPException(status_code=400, detail="Amount must be greater than zero")
+    
+    if request.amount > 50000:
+        raise HTTPException(status_code=400, detail="Maximum top-up amount is ₹50,000")
+    
+    # Get current wallet balance
+    user = await db.users.find_one({"id": current_user['id']}, {"_id": 0})
+    current_balance = user.get('wallet_balance', 0.0)
+    
+    # Create order ID for Paytm
+    order_id = f"ORDER_{current_user['id'][:8]}_{int(datetime.now(timezone.utc).timestamp())}"
+    
+    # Create pending transaction
+    transaction = WalletTransaction(
+        user_id=current_user['id'],
+        transaction_type="deposit",
+        amount=request.amount,
+        payment_method="paytm",
+        paytm_order_id=order_id,
+        status="pending",
+        description=f"Wallet top-up of ₹{request.amount}",
+        balance_before=current_balance,
+        balance_after=current_balance + request.amount
+    )
+    
+    txn_dict = transaction.model_dump()
+    txn_dict['created_at'] = txn_dict['created_at'].isoformat()
+    if txn_dict.get('completed_at'):
+        txn_dict['completed_at'] = txn_dict['completed_at'].isoformat()
+    
+    await db.wallet_transactions.insert_one(txn_dict)
+    
+    # MOCK: For demonstration, auto-complete the transaction
+    # In production, this would return Paytm payment token and customer would be redirected to Paytm
+    # Payment completion would happen in the callback endpoint
+    
+    # Update wallet balance
+    await db.users.update_one(
+        {"id": current_user['id']},
+        {"$set": {"wallet_balance": current_balance + request.amount}}
+    )
+    
+    # Mark transaction as completed
+    await db.wallet_transactions.update_one(
+        {"id": transaction.id},
+        {"$set": {
+            "status": "completed",
+            "completed_at": datetime.now(timezone.utc).isoformat(),
+            "paytm_txn_id": f"PAYTM_MOCK_{transaction.id[:8]}"
+        }}
+    )
+    
+    return {
+        "message": "Money added successfully (MOCK MODE)",
+        "order_id": order_id,
+        "transaction_id": transaction.id,
+        "amount": request.amount,
+        "new_balance": current_balance + request.amount,
+        "note": "This is a mock implementation. Real Paytm integration requires merchant credentials."
+    }
+
+@api_router.post("/wallet/payment-callback")
+async def paytm_payment_callback(callback_data: PaytmCallbackData):
+    """
+    Handle Paytm payment callback
+    This endpoint would be called by Paytm after payment completion
+    """
+    # Find the pending transaction
+    transaction = await db.wallet_transactions.find_one(
+        {"paytm_order_id": callback_data.orderId, "status": "pending"},
+        {"_id": 0}
+    )
+    
+    if not transaction:
+        raise HTTPException(status_code=404, detail="Transaction not found or already processed")
+    
+    # In real implementation, verify checksum here
+    # if not verify_paytm_checksum(callback_data):
+    #     raise HTTPException(status_code=400, detail="Invalid checksum")
+    
+    if callback_data.status == "TXN_SUCCESS":
+        # Get user's current balance
+        user = await db.users.find_one({"id": transaction['user_id']}, {"_id": 0})
+        current_balance = user.get('wallet_balance', 0.0)
+        new_balance = current_balance + transaction['amount']
+        
+        # Update wallet balance
+        await db.users.update_one(
+            {"id": transaction['user_id']},
+            {"$set": {"wallet_balance": new_balance}}
+        )
+        
+        # Update transaction status
+        await db.wallet_transactions.update_one(
+            {"id": transaction['id']},
+            {"$set": {
+                "status": "completed",
+                "paytm_txn_id": callback_data.txnId,
+                "completed_at": datetime.now(timezone.utc).isoformat(),
+                "balance_after": new_balance
+            }}
+        )
+        
+        return {"message": "Payment successful", "new_balance": new_balance}
+    else:
+        # Mark transaction as failed
+        await db.wallet_transactions.update_one(
+            {"id": transaction['id']},
+            {"$set": {
+                "status": "failed",
+                "completed_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        
+        return {"message": "Payment failed", "status": callback_data.status}
+
 # Restaurant Routes
 @api_router.get("/restaurants", response_model=List[Restaurant])
 async def get_restaurants():
