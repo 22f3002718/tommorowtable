@@ -170,25 +170,33 @@ const VendorDashboard = () => {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <p className="text-sm text-gray-600 mb-1">Total Orders</p>
-            <p className="text-3xl font-bold text-gray-900">{orders.length}</p>
-          </div>
-          <div className="bg-orange-50 rounded-xl shadow-md p-6">
-            <p className="text-sm text-orange-700 mb-1">Pending</p>
-            <p className="text-3xl font-bold text-orange-600">{pendingOrders.length}</p>
-          </div>
-          <div className="bg-blue-50 rounded-xl shadow-md p-6">
-            <p className="text-sm text-blue-700 mb-1">Active</p>
-            <p className="text-3xl font-bold text-blue-600">{activeOrders.length}</p>
-          </div>
-          <div className="bg-green-50 rounded-xl shadow-md p-6">
-            <p className="text-sm text-green-700 mb-1">Menu Items</p>
-            <p className="text-3xl font-bold text-green-600">{menuItems.length}</p>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <StatsCard 
+            icon={ShoppingBag}
+            label="Total Orders"
+            value={orders.length}
+            color="blue"
+          />
+          <StatsCard 
+            icon={Clock}
+            label="Pending"
+            value={pendingOrders.length}
+            color="orange"
+          />
+          <StatsCard 
+            icon={Package}
+            label="Active"
+            value={activeOrders.length}
+            color="purple"
+          />
+          <StatsCard 
+            icon={CheckCircle}
+            label="Menu Items"
+            value={menuItems.length}
+            color="green"
+          />
         </div>
 
         {/* Tabs */}
