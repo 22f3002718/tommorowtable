@@ -13,7 +13,6 @@ from passlib.context import CryptContext
 import jwt
 from jwt.exceptions import InvalidTokenError
 import googlemaps
-from google.cloud import optimization_v1
 import math
 
 ROOT_DIR = Path(__file__).parent
