@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Loader } from '@googlemaps/js-api-loader';
+import { importLibrary } from '@googlemaps/js-api-loader';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -9,20 +9,26 @@ const GoogleMapView = ({ latitude, longitude, address, showRoute = false, riderL
   const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
+  const googleMapsRef = useRef(null);
 
   useEffect(() => {
-    const loader = new Loader({
-      apiKey: GOOGLE_MAPS_API_KEY,
-      version: 'weekly',
-      libraries: ['places', 'geometry']
-    });
+    const loadGoogleMaps = async () => {
+      try {
+        // Import required libraries
+        const { Map } = await importLibrary('maps', { apiKey: GOOGLE_MAPS_API_KEY });
+        const { Marker } = await importLibrary('marker', { apiKey: GOOGLE_MAPS_API_KEY });
+        const { DirectionsService, DirectionsRenderer } = await importLibrary('routes', { apiKey: GOOGLE_MAPS_API_KEY });
+        
+        // Store references for later use
+        googleMapsRef.current = { Map, Marker, DirectionsService, DirectionsRenderer };
+        setMapLoaded(true);
+      } catch (err) {
+        console.error('Error loading Google Maps:', err);
+        toast.error('Failed to load Google Maps');
+      }
+    };
 
-    loader.load().then(() => {
-      setMapLoaded(true);
-    }).catch(err => {
-      console.error('Error loading Google Maps:', err);
-      toast.error('Failed to load Google Maps');
-    });
+    loadGoogleMaps();
   }, []);
 
   useEffect(() => {
