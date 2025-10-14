@@ -115,28 +115,31 @@ const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = tr
   }, [mapLoaded]);
 
   const updateMarker = (pos) => {
-    if (!mapInstanceRef.current) return;
+    if (!mapInstanceRef.current || !googleMapsRef.current) return;
+
+    const { Marker } = googleMapsRef.current;
 
     // Remove old marker
     if (markerRef.current) {
       markerRef.current.setMap(null);
     }
 
-    // Create new marker
-    const marker = new window.google.maps.Marker({
+    // Create new marker using Advanced Markers
+    const marker = new Marker({
       position: { lat: pos.lat, lng: pos.lng },
       map: mapInstanceRef.current,
       title: 'Selected Location',
-      animation: window.google.maps.Animation.DROP,
     });
 
     markerRef.current = marker;
   };
 
   const reverseGeocode = async (pos) => {
-    if (!window.google || !window.google.maps) return;
+    if (!googleMapsRef.current) return;
 
-    const geocoder = new window.google.maps.Geocoder();
+    const { Geocoder } = googleMapsRef.current;
+    const geocoder = new Geocoder();
+    
     geocoder.geocode(
       { location: { lat: pos.lat, lng: pos.lng } },
       (results, status) => {
