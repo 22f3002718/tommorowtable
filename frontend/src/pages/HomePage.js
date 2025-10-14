@@ -76,28 +76,31 @@ const HomePage = () => {
   );
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-orange-100 shadow-sm">
+      <header className="sticky top-0 z-50 bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center">
-                <ShoppingCart className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+                <Utensils className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-                localtokri
-              </h1>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">localtokri</h1>
+                <p className="text-xs text-gray-500 hidden sm:block">Fresh breakfast delivered</p>
+              </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-3">
               {auth?.user ? (
                 <>
-                  <Link to="/orders">
-                    <Button variant="ghost" size="sm" className="text-gray-700 hover:text-orange-500" data-testid="my-orders-btn">
-                      My Orders
-                    </Button>
-                  </Link>
+                  {auth.user.role === 'customer' && (
+                    <Link to="/orders">
+                      <Button variant="ghost" size="sm" className="text-gray-700 hover:text-orange-500" data-testid="my-orders-btn">
+                        My Orders
+                      </Button>
+                    </Link>
+                  )}
                   {auth.user.role === 'vendor' && (
                     <Link to="/vendor">
                       <Button variant="outline" size="sm" data-testid="vendor-dashboard-btn">Vendor Dashboard</Button>
@@ -113,9 +116,9 @@ const HomePage = () => {
                       <Button variant="outline" size="sm" data-testid="admin-dashboard-btn">Admin Dashboard</Button>
                     </Link>
                   )}
-                  <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                      <User className="w-4 h-4 text-orange-600" />
+                  <div className="flex items-center space-x-2 px-3 py-2 bg-orange-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-700">{auth.user.name}</span>
                   </div>
@@ -124,7 +127,7 @@ const HomePage = () => {
                   </Button>
                 </>
               ) : (
-                <Button onClick={() => setShowAuth(true)} className="bg-orange-500 hover:bg-orange-600" data-testid="login-btn">
+                <Button onClick={() => setShowAuth(true)} className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white" data-testid="login-btn">
                   Sign In
                 </Button>
               )}
