@@ -8,14 +8,16 @@ import OrdersPage from "@/pages/OrdersPage";
 import VendorDashboard from "@/pages/VendorDashboard";
 import RiderDashboard from "@/pages/RiderDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster, toast } from "@/components/ui/sonner";
+import authStorage from "@/services/authService";
+import pushNotificationService from "@/services/pushNotificationService";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
 
-// Axios interceptor to add token to requests
-axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+// Axios interceptor to add token to requests (works with both web and mobile storage)
+axios.interceptors.request.use(async (config) => {
+  const token = await authStorage.getToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
