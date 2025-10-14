@@ -28,7 +28,10 @@ const RestaurantPage = () => {
 
   useEffect(() => {
     fetchRestaurantData();
-  }, [id]);
+    if (auth?.user) {
+      fetchWalletBalance();
+    }
+  }, [id, auth]);
 
   const fetchRestaurantData = async () => {
     try {
