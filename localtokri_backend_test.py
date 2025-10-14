@@ -14,7 +14,7 @@ from datetime import datetime
 import uuid
 
 # Get backend URL from environment
-BACKEND_URL = "https://auth-mobilize.preview.emergentagent.com/api"
+BACKEND_URL = "https://maps-api-fix.preview.emergentagent.com/api"
 
 class LocalTokriAPITester:
     def __init__(self):
