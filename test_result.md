@@ -294,15 +294,18 @@ frontend:
 
   - task: "Replace OpenStreetMap with Google Maps"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/components/GoogleLocationPicker.js, /app/frontend/src/components/GoogleMapView.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Replaced OpenStreetMap/Leaflet with Google Maps JavaScript API for better location accuracy. Created GoogleLocationPicker with Google Places Autocomplete for address search, interactive map, and geolocation. Created GoogleMapView for riders to display customer locations. Updated RestaurantPage and RiderDashboard to use new Google Maps components."
+      - working: true
+        agent: "main"
+        comment: "Fixed Google Maps API Loader error - '@googlemaps/js-api-loader: The Loader class is no longer available'. Migrated from deprecated Loader class to new bootstrap loader approach. Created googleMapsLoader.js utility that uses the recommended pattern: bootstrap script with google.maps.importLibrary(). Updated all three components (GoogleLocationPicker, GoogleMapView, RouteOptimizationDialog) to use the new loader utility. Frontend compiles successfully and maps load correctly."
 
   - task: "Add Route Optimization Backend Endpoint"
     implemented: true
