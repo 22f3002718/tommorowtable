@@ -60,7 +60,9 @@ const RiderDashboard = () => {
   };
 
   const readyOrders = orders.filter(o => o.status === 'ready');
-  const activeDeliveries = orders.filter(o => o.status === 'out-for-delivery');
+  const activeDeliveries = orders
+    .filter(o => o.status === 'out-for-delivery')
+    .sort((a, b) => (a.delivery_sequence || 999) - (b.delivery_sequence || 999));
   const completedDeliveries = orders.filter(o => o.status === 'delivered');
 
   return (
