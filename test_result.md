@@ -428,9 +428,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Replace OpenStreetMap with Google Maps"
-    - "Add Route Optimization Backend Endpoint"
-    - "Add Route Optimization UI in VendorDashboard"
+    - "Wallet System - Backend Implementation"
+    - "Wallet Validation - Check Balance Before Order"
+    - "Delivery Sequence for Riders"
+    - "Fix Navigate Button Security Issue"
+    - "Display Delivery Sequence in RiderDashboard"
+    - "Wallet UI - Customer Dashboard"
+    - "Wallet Balance Check in Checkout"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
