@@ -102,11 +102,10 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "1. Paytm Payment Gateway for wallet top-up
-2. Button - User will verify again (might already be working)
-3. Rider should see optimized delivery sequence (best way to deliver)
-4. Navigate button - Opens but shows access denied due to security reasons (likely browser security issue)
-5. Wallet validation - Customer MUST have sufficient balance BEFORE placing order"
+user_problem_statement: "1. Fix route optimization function that's not working
+2. Reconfigure the app with a clean and much better UI like Swiggy/Zomato
+3. Frontend should be properly structured and easy to navigate
+4. Remember Capacitor is added to the project for mobile support"
 
 backend:
   - task: "JWT Authentication with 30-Day Token Expiry"
