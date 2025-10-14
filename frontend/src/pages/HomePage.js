@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { ShoppingCart, Search, Clock, Star, MapPin, User, LogOut } from 'lucide-react';
+import { ShoppingCart, Search, Clock, Star, MapPin, User, LogOut, Utensils, TrendingUp, Award, Zap } from 'lucide-react';
+import BottomNav from '@/components/BottomNav';
 
 const HomePage = () => {
   const auth = useAuth();
