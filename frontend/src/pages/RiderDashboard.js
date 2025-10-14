@@ -87,21 +87,27 @@ const RiderDashboard = () => {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-green-50 rounded-xl shadow-md p-6">
-            <p className="text-sm text-green-700 mb-1">Ready for Pickup</p>
-            <p className="text-3xl font-bold text-green-600">{readyOrders.length}</p>
-          </div>
-          <div className="bg-teal-50 rounded-xl shadow-md p-6">
-            <p className="text-sm text-teal-700 mb-1">Out for Delivery</p>
-            <p className="text-3xl font-bold text-teal-600">{activeDeliveries.length}</p>
-          </div>
-          <div className="bg-blue-50 rounded-xl shadow-md p-6">
-            <p className="text-sm text-blue-700 mb-1">Delivered Today</p>
-            <p className="text-3xl font-bold text-blue-600">{completedDeliveries.length}</p>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <StatsCard 
+            icon={Package}
+            label="Ready for Pickup"
+            value={readyOrders.length}
+            color="green"
+          />
+          <StatsCard 
+            icon={Bike}
+            label="Out for Delivery"
+            value={activeDeliveries.length}
+            color="orange"
+          />
+          <StatsCard 
+            icon={CheckCircle}
+            label="Delivered Today"
+            value={completedDeliveries.length}
+            color="blue"
+          />
         </div>
 
         {/* Ready for Pickup */}
