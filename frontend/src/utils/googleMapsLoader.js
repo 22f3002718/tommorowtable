@@ -26,22 +26,34 @@ function bootstrapGoogleMaps() {
       return;
     }
 
+    // Check if API key is available
+    if (!GOOGLE_MAPS_API_KEY) {
+      reject(new Error('Google Maps API key is not configured'));
+      return;
+    }
+
     isLoading = true;
 
-    // Create the bootstrap script
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&loading=async`;
-    script.async = true;
-    script.defer = true;
-
-    script.onload = () => {
+    // Create a unique callback name
+    const callbackName = 'initGoogleMaps_' + Date.now();
+    
+    // Define the callback
+    window[callbackName] = () => {
       isLoaded = true;
       isLoading = false;
+      delete window[callbackName];
       resolve();
     };
 
+    // Create the bootstrap script
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=${callbackName}&v=weekly`;
+    script.async = true;
+    script.defer = true;
+
     script.onerror = () => {
       isLoading = false;
+      delete window[callbackName];
       reject(new Error('Failed to load Google Maps'));
     };
 
