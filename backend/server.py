@@ -291,6 +291,18 @@ async def update_location(location_data: LocationUpdate, current_user: dict = De
     )
     return {"message": "Location updated successfully"}
 
+@api_router.post("/auth/register-push-token")
+async def register_push_token(token_data: PushTokenUpdate, current_user: dict = Depends(get_current_user)):
+    """Register push notification token for the user"""
+    await db.users.update_one(
+        {"id": current_user['id']},
+        {"$set": {
+            "push_token": token_data.push_token,
+            "push_platform": token_data.platform
+        }}
+    )
+    return {"message": "Push token registered successfully"}
+
 # Restaurant Routes
 @api_router.get("/restaurants", response_model=List[Restaurant])
 async def get_restaurants():
