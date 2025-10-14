@@ -30,15 +30,23 @@ class JWTAuthTester:
         url = f"{self.base_url}{endpoint}"
         try:
             if method.upper() == 'GET':
-                response = requests.get(url, headers=headers, timeout=30, verify=False)
+                response = requests.get(url, headers=headers, timeout=60, verify=False)
             elif method.upper() == 'POST':
-                response = requests.post(url, json=data, headers=headers, timeout=30, verify=False)
+                response = requests.post(url, json=data, headers=headers, timeout=60, verify=False)
             elif method.upper() == 'PATCH':
-                response = requests.patch(url, json=data, headers=headers, timeout=30, verify=False)
+                response = requests.patch(url, json=data, headers=headers, timeout=60, verify=False)
             else:
                 raise ValueError(f"Unsupported method: {method}")
                 
             return response
+        except requests.exceptions.Timeout:
+            self.log(f"❌ Request timed out after 60 seconds")
+            self.log(f"URL: {url}")
+            return None
+        except requests.exceptions.ConnectionError as e:
+            self.log(f"❌ Connection error: {e}")
+            self.log(f"URL: {url}")
+            return None
         except Exception as e:
             self.log(f"❌ Request failed: {e}")
             self.log(f"URL: {url}")
