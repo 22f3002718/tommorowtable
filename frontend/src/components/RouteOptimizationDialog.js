@@ -101,9 +101,7 @@ const RouteOptimizationDialog = ({
   };
 
   const drawRoutesOnMap = (routes) => {
-    if (!mapLoaded || !mapRef.current || !routes || routes.length === 0 || !googleMapsRef.current) return;
-
-    const { Map, Marker, Polyline } = googleMapsRef.current;
+    if (!mapLoaded || !mapRef.current || !routes || routes.length === 0) return;
 
     // Clear existing map
     if (mapInstanceRef.current) {
@@ -126,11 +124,10 @@ const RouteOptimizationDialog = ({
     if (allCoords.length === 0) return;
 
     // Create map centered on first coordinate
-    const map = new Map(mapRef.current, {
+    const map = new window.google.maps.Map(mapRef.current, {
       center: allCoords[0],
       zoom: 12,
       mapTypeControl: true,
-      mapId: 'DEMO_MAP_ID'
     });
 
     mapInstanceRef.current = map;
@@ -144,38 +141,60 @@ const RouteOptimizationDialog = ({
       }));
 
       // Draw polyline
-      const routeLine = new Polyline({
+      const routeLine = new window.google.maps.Polyline({
         path: path,
         geodesic: true,
         strokeColor: color,
         strokeOpacity: 0.8,
         strokeWeight: 3,
-        map: map
       });
+      routeLine.setMap(map);
 
       // Add markers
       route.orders.forEach((order, orderIdx) => {
-        const marker = new Marker({
+        const marker = new window.google.maps.Marker({
           position: {
             lat: order.delivery_latitude,
             lng: order.delivery_longitude
           },
           map: map,
-          title: `Route ${routeIdx + 1} - Stop ${orderIdx + 1}`,
+          label: {
+            text: `${routeIdx + 1}-${orderIdx + 1}`,
+            color: 'white',
+            fontSize: '12px',
+            fontWeight: 'bold'
+          },
+          icon: {
+            path: window.google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: color,
+            fillOpacity: 1,
+            strokeColor: 'white',
+            strokeWeight: 2,
+          }
         });
 
-        // Note: InfoWindow requires separate import in new API
-        // Simplified for now - marker click will show title
+        // Add info window
+        const infoWindow = new window.google.maps.InfoWindow({
+          content: `
+            <div style="padding: 8px;">
+              <strong>Route ${routeIdx + 1} - Stop ${orderIdx + 1}</strong><br/>
+              Order: #${order.id.slice(0, 8)}<br/>
+              Customer: ${order.customer_name}<br/>
+              ${order.delivery_address}
+            </div>
+          `
+        });
+
+        marker.addListener('click', () => {
+          infoWindow.open(map, marker);
+        });
       });
     });
 
     // Fit bounds to show all markers
-    const bounds = {
-      north: Math.max(...allCoords.map(c => c.lat)) + 0.01,
-      south: Math.min(...allCoords.map(c => c.lat)) - 0.01,
-      east: Math.max(...allCoords.map(c => c.lng)) + 0.01,
-      west: Math.min(...allCoords.map(c => c.lng)) - 0.01,
-    };
+    const bounds = new window.google.maps.LatLngBounds();
+    allCoords.forEach(coord => bounds.extend(coord));
     map.fitBounds(bounds);
   };
 
