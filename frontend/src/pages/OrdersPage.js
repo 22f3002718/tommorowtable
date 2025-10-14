@@ -144,8 +144,66 @@ const OrdersPage = () => {
         </div>
       </header>
 
-      {/* Orders List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Wallet Section */}
+        <div className="mb-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Wallet Balance Card */}
+          <div className="lg:col-span-2 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-lg p-6 text-white">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="bg-white/20 p-3 rounded-full">
+                  <Wallet className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-sm text-teal-100">Wallet Balance</p>
+                  <p className="text-3xl font-bold">₹{walletBalance.toFixed(2)}</p>
+                </div>
+              </div>
+              <Button 
+                onClick={() => setShowAddMoney(true)}
+                className="bg-white text-teal-600 hover:bg-teal-50"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Money
+              </Button>
+            </div>
+            <p className="text-sm text-teal-100">
+              Use your wallet balance to pay for orders quickly and securely
+            </p>
+          </div>
+
+          {/* Recent Transactions */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Transactions</h3>
+            <div className="space-y-3 max-h-[200px] overflow-y-auto">
+              {transactions.slice(0, 5).map((txn) => (
+                <div key={txn.id} className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    {txn.transaction_type === 'deposit' ? (
+                      <TrendingUp className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <TrendingDown className="w-4 h-4 text-red-500" />
+                    )}
+                    <div>
+                      <p className="font-medium text-gray-900">{txn.description}</p>
+                      <p className="text-xs text-gray-500">
+                        {new Date(txn.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`font-bold ${txn.transaction_type === 'deposit' ? 'text-green-600' : 'text-red-600'}`}>
+                    {txn.transaction_type === 'deposit' ? '+' : '-'}₹{txn.amount.toFixed(2)}
+                  </span>
+                </div>
+              ))}
+              {transactions.length === 0 && (
+                <p className="text-gray-400 text-center py-4">No transactions yet</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Orders List */}
         {orders.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-2xl shadow-sm">
             <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
