@@ -102,10 +102,11 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "1. Implement JWT authentication with 30-day token expiry
-2. Add Capacitor integration for iOS and Android mobile apps
-3. Add push notification support for mobile apps
-4. Update README with comprehensive local setup instructions"
+user_problem_statement: "1. Paytm Payment Gateway for wallet top-up
+2. Button - User will verify again (might already be working)
+3. Rider should see optimized delivery sequence (best way to deliver)
+4. Navigate button - Opens but shows access denied due to security reasons (likely browser security issue)
+5. Wallet validation - Customer MUST have sufficient balance BEFORE placing order"
 
 backend:
   - task: "JWT Authentication with 30-Day Token Expiry"
