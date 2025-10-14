@@ -310,15 +310,18 @@ frontend:
 
   - task: "Add Route Optimization Backend Endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added POST /api/vendor/optimize-routes endpoint using distance-based clustering algorithm. Accepts num_riders and max_orders_per_rider parameters. Returns optimized routes with order sequences, distances, and estimated durations. Added POST /api/vendor/batch-assign-riders endpoint for bulk rider assignments. Installed googlemaps==4.10.0 and google-cloud-optimization==1.11.2 packages."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Route optimization endpoints working correctly. POST /api/vendor/optimize-routes successfully generates optimized routes with haversine distance calculations (verified 14.25km and 3.25km distances between Mumbai locations). Returns proper route structure with rider_index, order_ids, orders, total_distance_km, and estimated_duration_minutes. POST /api/vendor/batch-assign-riders successfully assigns riders to routes and updates orders with rider_id, delivery_sequence (1,2,3...), and status='out-for-delivery'. Tested with 5 orders across Mumbai locations (Bandra, Andheri, Powai, Goregaon, Malad, Juhu, Versova, Lokhandwala). Algorithm correctly clusters orders by proximity and distributes across multiple riders. Backend logs show only minor bcrypt warnings, no critical errors during route optimization."
 
   - task: "Add Route Optimization UI in VendorDashboard"
     implemented: true
