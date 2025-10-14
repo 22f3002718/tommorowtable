@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps API Test</title>
+</head>
+<body>
+    <h1>Testing Google Maps API</h1>
+    <div id="status">Loading...</div>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    
+    <script>
+        const API_KEY = 'AIzaSyCi8yO-ECuoE8Pzc0KH7PyBKc1577S6TdU';
+        
+        function initMap() {
+            document.getElementById('status').textContent = 'Google Maps loaded successfully!';
+            console.log('initMap callback called');
+            
+            // Try to create a map
+            try {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: 19.076, lng: 72.8777 },
+                    zoom: 12
+                });
+                console.log('Map created successfully');
+            } catch (e) {
+                console.error('Error creating map:', e);
+                document.getElementById('status').textContent = 'Error creating map: ' + e.message;
+            }
+        }
+        
+        // Load the Google Maps script
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=initMap&v=weekly`;
+        script.async = true;
+        script.defer = true;
+        script.onerror = function() {
+            document.getElementById('status').textContent = 'Failed to load Google Maps script';
+            console.error('Script loading failed');
+        };
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>
