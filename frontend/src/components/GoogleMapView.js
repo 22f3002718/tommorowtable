@@ -24,52 +24,74 @@ const GoogleMapView = ({ latitude, longitude, address, showRoute = false, riderL
   }, []);
 
   useEffect(() => {
-    if (!mapLoaded || !mapRef.current || !latitude || !longitude || !googleMapsRef.current) return;
-
-    const { Map, Marker, DirectionsService, DirectionsRenderer } = googleMapsRef.current;
+    if (!mapLoaded || !mapRef.current || !latitude || !longitude) return;
 
     const customerLocation = { lat: latitude, lng: longitude };
 
-    const map = new Map(mapRef.current, {
+    const map = new window.google.maps.Map(mapRef.current, {
       center: customerLocation,
       zoom: 15,
       mapTypeControl: true,
       streetViewControl: true,
       fullscreenControl: true,
-      mapId: 'DEMO_MAP_ID'
     });
 
     mapInstanceRef.current = map;
 
     // Add customer marker
-    const customerMarker = new Marker({
+    const customerMarker = new window.google.maps.Marker({
       position: customerLocation,
       map: map,
       title: 'Customer Location',
+      label: {
+        text: 'C',
+        color: 'white',
+        fontWeight: 'bold'
+      },
+      icon: {
+        url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+      }
     });
 
-    // Add info window for customer (Note: InfoWindow needs to be imported from core library)
-    const infoContent = document.createElement('div');
-    infoContent.style.padding = '8px';
-    infoContent.innerHTML = `
-      <h3 style="font-weight: bold; margin-bottom: 4px;">Delivery Location</h3>
-      <p style="margin: 0; font-size: 13px;">${address || 'Customer Address'}</p>
-    `;
+    // Add info window for customer
+    const customerInfoWindow = new window.google.maps.InfoWindow({
+      content: `
+        <div style="padding: 8px;">
+          <h3 style="font-weight: bold; margin-bottom: 4px;">Delivery Location</h3>
+          <p style="margin: 0; font-size: 13px;">${address || 'Customer Address'}</p>
+        </div>
+      `
+    });
+
+    customerMarker.addListener('click', () => {
+      customerInfoWindow.open(map, customerMarker);
+    });
+
+    // Show customer info by default
+    customerInfoWindow.open(map, customerMarker);
 
     // If rider location is provided and showRoute is true, show route
     if (showRoute && riderLocation) {
       const riderPos = { lat: riderLocation.lat, lng: riderLocation.lng };
       
       // Add rider marker
-      const riderMarker = new Marker({
+      const riderMarker = new window.google.maps.Marker({
         position: riderPos,
         map: map,
         title: 'Rider Location',
+        label: {
+          text: 'R',
+          color: 'white',
+          fontWeight: 'bold'
+        },
+        icon: {
+          url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+        }
       });
 
       // Draw route between rider and customer
-      const directionsService = new DirectionsService();
-      const directionsRenderer = new DirectionsRenderer({
+      const directionsService = new window.google.maps.DirectionsService();
+      const directionsRenderer = new window.google.maps.DirectionsRenderer({
         map: map,
         suppressMarkers: true, // We already have custom markers
       });
@@ -78,7 +100,7 @@ const GoogleMapView = ({ latitude, longitude, address, showRoute = false, riderL
         {
           origin: riderPos,
           destination: customerLocation,
-          travelMode: 'DRIVING',
+          travelMode: window.google.maps.TravelMode.DRIVING,
         },
         (result, status) => {
           if (status === 'OK') {
@@ -88,12 +110,9 @@ const GoogleMapView = ({ latitude, longitude, address, showRoute = false, riderL
       );
 
       // Adjust bounds to show both markers
-      const bounds = {
-        north: Math.max(customerLocation.lat, riderPos.lat) + 0.01,
-        south: Math.min(customerLocation.lat, riderPos.lat) - 0.01,
-        east: Math.max(customerLocation.lng, riderPos.lng) + 0.01,
-        west: Math.min(customerLocation.lng, riderPos.lng) - 0.01,
-      };
+      const bounds = new window.google.maps.LatLngBounds();
+      bounds.extend(customerLocation);
+      bounds.extend(riderPos);
       map.fitBounds(bounds);
     }
   }, [mapLoaded, latitude, longitude, address, showRoute, riderLocation]);
