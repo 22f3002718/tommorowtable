@@ -328,8 +328,232 @@ const AdminDashboard = () => {
               </div>
             </div>
           </TabsContent>
+
+          {/* Customers Tab */}
+          <TabsContent value="customers">
+            <div className="bg-white rounded-xl shadow-md">
+              <div className="p-6 border-b">
+                <h2 className="text-2xl font-bold text-gray-900">All Customers</h2>
+              </div>
+              
+              <div className="divide-y">
+                {customers.length === 0 ? (
+                  <div className="p-12 text-center">
+                    <UserCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-xl text-gray-500">No customers yet</p>
+                  </div>
+                ) : (
+                  customers.map((customer) => (
+                    <div 
+                      key={customer.id} 
+                      className="p-6 hover:bg-gray-50"
+                      data-testid={`customer-${customer.id}`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">{customer.name}</h3>
+                          <p className="text-sm text-gray-600 mb-2">{customer.email}</p>
+                          <div className="flex items-center space-x-4 text-sm">
+                            {customer.phone && (
+                              <span className="text-gray-600">📞 {customer.phone}</span>
+                            )}
+                            {customer.address && (
+                              <span className="text-gray-600">📍 {customer.address}</span>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div className="text-right ml-6">
+                          <div className="flex items-center space-x-4">
+                            <div>
+                              <p className="text-sm text-gray-600">Wallet Balance</p>
+                              <p className="text-xl font-bold text-green-600">
+                                ₹{(customer.wallet_balance || 0).toFixed(2)}
+                              </p>
+                            </div>
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                setSelectedCustomer(customer);
+                                setShowAddMoneyDialog(true);
+                              }}
+                              className="bg-gradient-to-r from-orange-500 to-red-500"
+                            >
+                              <Wallet className="w-4 h-4 mr-2" />
+                              Add Money
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Vendors Tab */}
+          <TabsContent value="vendors">
+            <div className="bg-white rounded-xl shadow-md">
+              <div className="p-6 border-b">
+                <h2 className="text-2xl font-bold text-gray-900">All Vendors</h2>
+              </div>
+              
+              <div className="divide-y">
+                {vendors.length === 0 ? (
+                  <div className="p-12 text-center">
+                    <Store className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-xl text-gray-500">No vendors yet</p>
+                  </div>
+                ) : (
+                  vendors.map((vendor) => (
+                    <div 
+                      key={vendor.id} 
+                      className="p-6 hover:bg-gray-50"
+                      data-testid={`vendor-${vendor.id}`}
+                    >
+                      <div className="flex items-start space-x-4">
+                        <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-200 to-red-200 flex-shrink-0 flex items-center justify-center">
+                          <Store className="w-8 h-8 text-orange-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">{vendor.name}</h3>
+                          <p className="text-sm text-gray-600 mb-2">{vendor.email}</p>
+                          {vendor.phone && (
+                            <p className="text-sm text-gray-600 mb-2">📞 {vendor.phone}</p>
+                          )}
+                          {vendor.restaurant && (
+                            <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                              <p className="font-semibold text-gray-900">{vendor.restaurant.name}</p>
+                              <p className="text-sm text-gray-600">{vendor.restaurant.cuisine}</p>
+                              <div className="flex items-center space-x-3 mt-2">
+                                <span className="text-sm text-gray-600">Rating: {vendor.restaurant.rating.toFixed(1)} ⭐</span>
+                                <span className={`text-sm px-2 py-1 rounded ${vendor.restaurant.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                  {vendor.restaurant.is_active ? 'Active' : 'Inactive'}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Riders Tab */}
+          <TabsContent value="riders">
+            <div className="bg-white rounded-xl shadow-md">
+              <div className="p-6 border-b">
+                <h2 className="text-2xl font-bold text-gray-900">All Riders</h2>
+              </div>
+              
+              <div className="divide-y">
+                {riders.length === 0 ? (
+                  <div className="p-12 text-center">
+                    <Bike className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-xl text-gray-500">No riders yet</p>
+                  </div>
+                ) : (
+                  riders.map((rider) => (
+                    <div 
+                      key={rider.id} 
+                      className="p-6 hover:bg-gray-50"
+                      data-testid={`rider-${rider.id}`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">{rider.name}</h3>
+                          <p className="text-sm text-gray-600 mb-2">{rider.email}</p>
+                          {rider.phone && (
+                            <p className="text-sm text-gray-600">📞 {rider.phone}</p>
+                          )}
+                        </div>
+                        
+                        <div className="text-right ml-6">
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-4">
+                              <div className="text-center px-4 py-2 bg-green-50 rounded-lg">
+                                <p className="text-2xl font-bold text-green-600">
+                                  {rider.stats?.total_deliveries || 0}
+                                </p>
+                                <p className="text-xs text-gray-600">Total Deliveries</p>
+                              </div>
+                              <div className="text-center px-4 py-2 bg-orange-50 rounded-lg">
+                                <p className="text-2xl font-bold text-orange-600">
+                                  {rider.stats?.active_deliveries || 0}
+                                </p>
+                                <p className="text-xs text-gray-600">Active Now</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
+
+      {/* Add Money Dialog */}
+      <Dialog open={showAddMoneyDialog} onOpenChange={setShowAddMoneyDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Money to Wallet</DialogTitle>
+          </DialogHeader>
+          
+          {selectedCustomer && (
+            <div className="space-y-4">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-sm text-gray-600">Customer</p>
+                <p className="text-lg font-bold text-gray-900">{selectedCustomer.name}</p>
+                <p className="text-sm text-gray-600">{selectedCustomer.email}</p>
+                <p className="text-sm text-gray-600 mt-2">
+                  Current Balance: <span className="font-bold text-green-600">₹{(selectedCustomer.wallet_balance || 0).toFixed(2)}</span>
+                </p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Amount to Add (₹)</label>
+                <Input
+                  type="number"
+                  value={amountToAdd}
+                  onChange={(e) => setAmountToAdd(e.target.value)}
+                  placeholder="Enter amount"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+              
+              <div className="flex space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowAddMoneyDialog(false);
+                    setSelectedCustomer(null);
+                    setAmountToAdd('');
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleAddMoney}
+                  disabled={!amountToAdd || parseFloat(amountToAdd) <= 0}
+                  className="flex-1 bg-gradient-to-r from-orange-500 to-red-500"
+                >
+                  Add ₹{amountToAdd || '0'}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
