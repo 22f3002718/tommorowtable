@@ -10,6 +10,8 @@ import RiderDashboard from "@/pages/RiderDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 import { Toaster } from "@/components/ui/sonner";
 import authStorage from "@/services/authService";
+import { CartProvider } from "@/contexts/CartContext";
+import FloatingCartButton from "@/components/FloatingCartButton";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
