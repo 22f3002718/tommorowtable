@@ -736,6 +736,108 @@ async def create_order(order_data: OrderCreate, current_user: dict = Depends(get
     
     return order
 
+@api_router.post("/orders/multi-vendor")
+async def create_multi_vendor_orders(order_data: MultiVendorOrderCreate, current_user: dict = Depends(get_current_user)):
+    """Create multiple orders from a single cart checkout with multi-vendor support"""
+    if not is_ordering_allowed():
+        raise HTTPException(status_code=400, detail="Orders closed for today. Please order tomorrow for next-morning delivery.")
+    
+    # Calculate total amount across all orders
+    subtotal = 0
+    for order in order_data.orders:
+        order_subtotal = sum(item.price * item.quantity for item in order.items)
+        subtotal += order_subtotal
+    
+    total_amount = subtotal + order_data.delivery_fee
+    
+    # Check wallet balance
+    user = await db.users.find_one({"id": current_user['id']}, {"_id": 0})
+    wallet_balance = user.get('wallet_balance', 0.0)
+    
+    if wallet_balance < total_amount:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Insufficient wallet balance. Required: ₹{total_amount:.2f} (₹{subtotal:.2f} + ₹{order_data.delivery_fee:.2f} delivery), Available: ₹{wallet_balance:.2f}"
+        )
+    
+    # Create orders for each vendor
+    created_orders = []
+    delivery_slot = get_next_delivery_slot()
+    
+    # Distribute delivery fee across vendors (proportionally or equally)
+    num_vendors = len(order_data.orders)
+    delivery_fee_per_vendor = order_data.delivery_fee / num_vendors if num_vendors > 0 else 0
+    
+    for vendor_order_data in order_data.orders:
+        # Get restaurant details
+        restaurant = await db.restaurants.find_one({"id": vendor_order_data.restaurant_id})
+        if not restaurant:
+            continue  # Skip if restaurant not found
+        
+        # Calculate order subtotal
+        order_subtotal = sum(item.price * item.quantity for item in vendor_order_data.items)
+        order_total = order_subtotal + delivery_fee_per_vendor
+        
+        order = Order(
+            customer_id=current_user['id'],
+            customer_name=current_user['name'],
+            restaurant_id=vendor_order_data.restaurant_id,
+            restaurant_name=restaurant['name'],
+            items=vendor_order_data.items,
+            total_amount=order_total,
+            delivery_address=vendor_order_data.delivery_address,
+            delivery_latitude=vendor_order_data.delivery_latitude,
+            delivery_longitude=vendor_order_data.delivery_longitude,
+            special_instructions=vendor_order_data.special_instructions,
+            delivery_slot=delivery_slot,
+            cart_id=order_data.cart_id,
+            delivery_fee=delivery_fee_per_vendor
+        )
+        
+        order_dict = order.model_dump()
+        order_dict['placed_at'] = order_dict['placed_at'].isoformat()
+        order_dict['updated_at'] = order_dict['updated_at'].isoformat()
+        
+        await db.orders.insert_one(order_dict)
+        created_orders.append(order)
+    
+    # Deduct total amount from wallet
+    new_balance = wallet_balance - total_amount
+    await db.users.update_one(
+        {"id": current_user['id']},
+        {"$set": {"wallet_balance": new_balance}}
+    )
+    
+    # Create debit transaction
+    debit_transaction = WalletTransaction(
+        user_id=current_user['id'],
+        transaction_type="debit",
+        amount=total_amount,
+        payment_method="order_debit",
+        order_id=order_data.cart_id,  # Use cart_id for reference
+        status="completed",
+        description=f"Multi-vendor cart payment ({num_vendors} restaurants) + ₹{order_data.delivery_fee} delivery",
+        balance_before=wallet_balance,
+        balance_after=new_balance,
+        completed_at=datetime.now(timezone.utc)
+    )
+    
+    debit_dict = debit_transaction.model_dump()
+    debit_dict['created_at'] = debit_dict['created_at'].isoformat()
+    debit_dict['completed_at'] = debit_dict['completed_at'].isoformat()
+    
+    await db.wallet_transactions.insert_one(debit_dict)
+    
+    return {
+        "message": f"Successfully created {len(created_orders)} orders",
+        "cart_id": order_data.cart_id,
+        "orders": created_orders,
+        "total_amount": total_amount,
+        "subtotal": subtotal,
+        "delivery_fee": order_data.delivery_fee,
+        "new_wallet_balance": new_balance
+    }
+
 @api_router.get("/orders", response_model=List[Order])
 async def get_orders(current_user: dict = Depends(get_current_user)):
     if current_user['role'] == 'customer':
