@@ -298,9 +298,9 @@ async def seed_database():
     print("Database seeded successfully!")
     print("\n=== Test Accounts ===")
     print("Admin: admin@localtokri.com / admin123")
-    print("Vendor: vendor1@tomorrowstable.com / vendor123")
-    print("Rider: rider1@tomorrowstable.com / rider123")
-    print("Customer: customer@tomorrowstable.com / customer123")
+    print("Vendor: vendor1@localtokri.com / vendor123")
+    print("Rider: rider1@localtokri.com / rider123")
+    print("Customer: customer@localtokri.com / customer123")
     
     client.close()
 
