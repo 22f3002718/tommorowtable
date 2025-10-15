@@ -133,17 +133,21 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/restaurant/:id" element={<RestaurantPage />} />
-          <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/vendor" element={<VendorDashboard />} />
-          <Route path="/rider" element={<RiderDashboard />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
-      </BrowserRouter>
-      <Toaster position="top-center" />
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/restaurant/:id" element={<RestaurantPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/vendor" element={<VendorDashboard />} />
+            <Route path="/rider" element={<RiderDashboard />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Routes>
+          {/* Show floating cart button on customer pages only */}
+          {user && user.role === 'customer' && <FloatingCartButton />}
+        </BrowserRouter>
+        <Toaster position="top-center" />
+      </CartProvider>
     </div>
   );
 }
