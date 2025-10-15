@@ -292,7 +292,7 @@ const RestaurantPage = () => {
                             <Button 
                               size="sm" 
                               variant="destructive" 
-                              onClick={() => removeFromCart(item.id)}
+                              onClick={() => removeItemCompletely(item.id)}
                               data-testid={`remove-item-${item.id}`}
                             >
                               Remove
