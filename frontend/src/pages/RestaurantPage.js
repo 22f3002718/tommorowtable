@@ -110,7 +110,7 @@ const RestaurantPage = () => {
     }
 
     // Check wallet balance
-    const totalAmount = getTotalAmount();
+    const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     if (walletBalance < totalAmount) {
       toast.error(`Insufficient wallet balance! Required: ₹${totalAmount.toFixed(2)}, Available: ₹${walletBalance.toFixed(2)}. Please add money to your wallet.`);
       navigate('/orders'); // Redirect to orders page where they can add money
