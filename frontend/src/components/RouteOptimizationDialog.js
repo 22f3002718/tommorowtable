@@ -7,6 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Loader2, MapPin, Clock, TrendingUp, User } from 'lucide-react';
 import { toast } from 'sonner';
 import { API } from '@/App';
+import axios from 'axios';
+import authStorage from '@/services/authService';
 
 const colors = [
   '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
@@ -56,26 +58,17 @@ const RouteOptimizationDialog = ({
     setOptimizedRoutes(null);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = await authStorage.getToken();
       
-      const response = await fetch(`${API}/vendor/optimize-routes`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          order_ids: orders.map(o => o.id),
-          num_riders: parseInt(numRiders),
-          max_orders_per_rider: maxOrdersPerRider ? parseInt(maxOrdersPerRider) : null
-        })
+      const response = await axios.post(`${API}/vendor/optimize-routes`, {
+        order_ids: orders.map(o => o.id),
+        num_riders: parseInt(numRiders),
+        max_orders_per_rider: maxOrdersPerRider ? parseInt(maxOrdersPerRider) : null
+      }, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to optimize routes');
-      }
-
-      const data = await response.json();
+      const data = response.data;
       setOptimizedRoutes(data);
       
       // Initialize rider assignments
@@ -209,7 +202,7 @@ const RouteOptimizationDialog = ({
     setConfirming(true);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = await authStorage.getToken();
       
       // Prepare routes data for batch assignment
       const routesData = optimizedRoutes.routes.map((route, idx) => ({
@@ -217,20 +210,11 @@ const RouteOptimizationDialog = ({
         order_ids: route.order_ids
       }));
       
-      const response = await fetch(`${API}/vendor/batch-assign-riders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ routes: routesData })
+      const response = await axios.post(`${API}/vendor/batch-assign-riders`, { routes: routesData }, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to assign riders');
-      }
-
-      const result = await response.json();
+      const result = response.data;
       toast.success(result.message);
       onConfirm();
       onClose();

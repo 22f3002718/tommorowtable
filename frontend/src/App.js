@@ -8,9 +8,8 @@ import OrdersPage from "@/pages/OrdersPage";
 import VendorDashboard from "@/pages/VendorDashboard";
 import RiderDashboard from "@/pages/RiderDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
-import { Toaster, toast } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/sonner";
 import authStorage from "@/services/authService";
-import pushNotificationService from "@/services/pushNotificationService";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -88,8 +87,6 @@ function App() {
 
   useEffect(() => {
     checkAuth();
-    // Initialize push notifications
-    initializePushNotifications();
   }, []);
 
   const checkAuth = async () => {
@@ -106,28 +103,13 @@ function App() {
     setLoading(false);
   };
 
-  const initializePushNotifications = async () => {
-    if (pushNotificationService.isAvailable()) {
-      await pushNotificationService.initialize((notification, actionId) => {
-        // Handle notification received
-        console.log('Notification received:', notification);
-        toast.info(notification.title || 'New Notification', {
-          description: notification.body
-        });
-      });
-    }
-  };
-
+  
   const login = async (token, userData) => {
     await authStorage.setToken(token);
     await authStorage.setUser(userData);
     setUser(userData);
     
-    // Register push notifications after login
-    if (pushNotificationService.isAvailable()) {
-      await pushNotificationService.initialize();
-    }
-  };
+      };
 
   const logout = async () => {
     await authStorage.clearAuth();

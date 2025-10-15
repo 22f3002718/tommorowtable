@@ -68,7 +68,7 @@ def decode_token(token: str) -> dict:
     except InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-async def get_current_user(authorization: str = Header(None)):
+async def get_current_user(authorization: str = Header(None, alias="Authorization")):
     if not authorization or not authorization.startswith('Bearer '):
         raise HTTPException(status_code=401, detail="Not authenticated")
     token = authorization.split(' ')[1]
