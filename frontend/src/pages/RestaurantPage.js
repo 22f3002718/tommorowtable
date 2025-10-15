@@ -355,9 +355,9 @@ const RestaurantPage = () => {
                   </Button>
                 )}
               </div>
-              {walletBalance < getTotalAmount() && (
+              {walletBalance < cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) && (
                 <p className="text-xs text-red-600 mt-2">
-                  Insufficient balance! Need ₹{(getTotalAmount() - walletBalance).toFixed(2)} more.
+                  Insufficient balance! Need ₹{(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) - walletBalance).toFixed(2)} more.
                 </p>
               )}
             </div>
