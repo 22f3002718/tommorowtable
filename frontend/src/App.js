@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "@/App.css";
+import "@/mobile.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 import HomePage from "@/pages/HomePage";
