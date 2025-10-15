@@ -423,7 +423,7 @@ const RestaurantPage = () => {
               disabled={loading}
               data-testid="place-order-btn"
             >
-              {loading ? 'Placing Order...' : locationSelected ? `Place Order - ₹${getTotalAmount().toFixed(2)}` : 'Continue to Place Order'}
+              {loading ? 'Placing Order...' : locationSelected ? `Place Order - ₹${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}` : 'Continue to Place Order'}
             </Button>
           </div>
         </DialogContent>
