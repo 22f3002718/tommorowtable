@@ -1,0 +1,286 @@
+/* Mobile Responsive Optimizations for Localtokri App */
+
+/* Base Mobile Styles */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* Prevent text size adjustment on mobile */
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Mobile-friendly touch targets (minimum 44x44px) */
+button, 
+a, 
+input[type="submit"], 
+input[type="button"],
+[role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Responsive containers */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Hide desktop-only elements on mobile */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* Full-width cards on mobile */
+  .card-mobile-full {
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+  
+  /* Stack columns on mobile */
+  .grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Adjust text sizes for mobile */
+  h1 {
+    font-size: 1.75rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  h3 {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Mobile-friendly spacing */
+  .section-mobile {
+    padding: 1rem 0;
+  }
+  
+  /* Optimize images for mobile */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Mobile navigation adjustments */
+  nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Form inputs on mobile */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+  
+  /* Modal adjustments for mobile */
+  [role="dialog"],
+  .dialog-content {
+    max-width: 95vw !important;
+    max-height: 90vh !important;
+    margin: 1rem !important;
+  }
+  
+  /* Tab list scrollable on mobile */
+  [role="tablist"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  [role="tablist"]::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Card grids responsive */
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .grid-cols-3,
+  .grid-cols-4,
+  .grid-cols-5 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  /* Flex wrapping on mobile */
+  .flex-row-mobile {
+    flex-direction: column;
+  }
+  
+  /* Bottom navigation safe area for iOS */
+  .mobile-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Status bar safe area for iOS */
+  .mobile-top-header {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Small phones (320px - 374px) */
+@media (max-width: 374px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  button,
+  .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Compact spacing for small screens */
+  .space-y-4 > * + * {
+    margin-top: 0.75rem !important;
+  }
+  
+  .space-x-4 > * + * {
+    margin-left: 0.75rem !important;
+  }
+}
+
+/* Medium phones (375px - 413px) */
+@media (min-width: 375px) and (max-width: 413px) {
+  /* Standard mobile phone optimizations */
+  .container {
+    max-width: 100%;
+  }
+}
+
+/* Large phones (414px - 767px) */
+@media (min-width: 414px) and (max-width: 767px) {
+  /* Larger phone optimizations */
+  .grid-cols-4,
+  .grid-cols-5 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .grid-cols-4,
+  .grid-cols-5 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* Landscape mode optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Reduce vertical padding in landscape */
+  .section-mobile {
+    padding: 0.5rem 0;
+  }
+  
+  header {
+    min-height: 3rem;
+  }
+  
+  /* Compact buttons in landscape */
+  button,
+  .btn {
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* iOS Safe Areas */
+@supports (padding: env(safe-area-inset-top)) {
+  .ios-safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .ios-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .ios-safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .ios-safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Capacitor-specific adjustments */
+.capacitor-app {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Prevent pull-to-refresh on mobile */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* Loading states optimized for mobile */
+@media (max-width: 768px) {
+  .loading-spinner {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  /* Optimized toast notifications for mobile */
+  .toast {
+    max-width: 90vw !important;
+    bottom: 1rem !important;
+  }
+}
+
+/* Accessibility improvements for mobile */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  /* Will use Tailwind's dark mode classes */
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  button,
+  a {
+    border: 2px solid currentColor;
+  }
+}
