@@ -408,19 +408,19 @@ This copies the web build to native iOS and Android projects and updates native 
 The seeded database includes these test accounts:
 
 ```
-Admin:
+👑 Admin:
 Email: admin@quickbite.com
 Password: admin123
 
-Vendor:
+🏪 Vendor:
 Email: vendor1@quickbite.com
 Password: vendor123
 
-Rider:
+🚴 Rider:
 Email: rider1@quickbite.com
 Password: rider123
 
-Customer:
+👤 Customer:
 Email: customer@quickbite.com
 Password: customer123
 ```
