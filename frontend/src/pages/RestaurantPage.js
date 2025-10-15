@@ -15,18 +15,13 @@ const RestaurantPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const auth = useAuth();
+  const { cart: globalCart, addToCart: addToGlobalCart, removeFromCart } = useCart();
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
-  const [cart, setCart] = useState([]);
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [deliveryAddress, setDeliveryAddress] = useState('');
-  const [deliveryLatitude, setDeliveryLatitude] = useState(null);
-  const [deliveryLongitude, setDeliveryLongitude] = useState(null);
-  const [showLocationPicker, setShowLocationPicker] = useState(false);
-  const [locationSelected, setLocationSelected] = useState(false);
-  const [specialInstructions, setSpecialInstructions] = useState('');
-  const [loading, setLoading] = useState(false);
   const [walletBalance, setWalletBalance] = useState(0);
+  
+  // Get cart items for this restaurant only
+  const cart = globalCart.filter(item => item.restaurant_id === id);
 
   useEffect(() => {
     fetchRestaurantData();
