@@ -37,11 +37,12 @@ async def seed_database():
     users = [
         {
             "id": admin_id,
-            "email": "admin@tomorrowstable.com",
+            "email": "admin@localtokri.com",
             "password": pwd_context.hash("admin123"),
             "name": "Admin User",
             "role": "admin",
             "phone": "+1234567890",
+            "wallet_balance": 0.0,
             "created_at": datetime.now(timezone.utc).isoformat()
         },
         {
