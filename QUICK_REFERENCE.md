@@ -34,10 +34,10 @@ npx cap open android
 
 | Role | Email | Password |
 |------|-------|----------|
-| 👑 Admin | admin@quickbite.com | admin123 |
-| 🏪 Vendor | vendor1@quickbite.com | vendor123 |
-| 🚴 Rider | rider1@quickbite.com | rider123 |
-| 👤 Customer | customer@quickbite.com | customer123 |
+| 👑 Admin | admin@localtokri.com | admin123 |
+| 🏪 Vendor | vendor1@localtokri.com | vendor123 |
+| 🚴 Rider | rider1@localtokri.com | rider123 |
+| 👤 Customer | customer@localtokri.com | customer123 |
 
 ## 🌐 URLs
 
