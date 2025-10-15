@@ -97,6 +97,7 @@ async def seed_database():
             "name": "Alice Customer",
             "role": "customer",
             "phone": "+1234567896",
+            "wallet_balance": 500.0,
             "created_at": datetime.now(timezone.utc).isoformat()
         }
     ]
