@@ -262,7 +262,7 @@ const RestaurantPage = () => {
                               <Button 
                                 size="sm" 
                                 variant="outline" 
-                                onClick={() => updateQuantity(item.id, -1)}
+                                onClick={() => removeFromCart(item.id, id)}
                                 className="w-8 h-8 p-0"
                                 data-testid={`decrease-qty-${item.id}`}
                               >
