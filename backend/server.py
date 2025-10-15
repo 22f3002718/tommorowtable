@@ -1059,6 +1059,148 @@ async def batch_assign_riders(
         "errors": errors if errors else None
     }
 
+# Admin Routes
+@api_router.get("/admin/customers")
+async def get_all_customers(current_user: dict = Depends(get_current_user)):
+    """Get all customers (admin only)"""
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    customers = await db.users.find({"role": "customer"}, {"_id": 0, "password": 0}).to_list(None)
+    return customers
+
+@api_router.get("/admin/vendors")
+async def get_all_vendors(current_user: dict = Depends(get_current_user)):
+    """Get all vendors with their restaurants (admin only)"""
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    vendors = await db.users.find({"role": "vendor"}, {"_id": 0, "password": 0}).to_list(None)
+    
+    # Get restaurants for each vendor
+    for vendor in vendors:
+        restaurant = await db.restaurants.find_one({"vendor_id": vendor['id']}, {"_id": 0})
+        vendor['restaurant'] = restaurant
+    
+    return vendors
+
+@api_router.get("/admin/riders")
+async def get_all_riders(current_user: dict = Depends(get_current_user)):
+    """Get all riders (admin only)"""
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    riders = await db.users.find({"role": "rider"}, {"_id": 0, "password": 0}).to_list(None)
+    
+    # Get delivery stats for each rider
+    for rider in riders:
+        total_deliveries = await db.orders.count_documents({"rider_id": rider['id'], "status": "delivered"})
+        active_deliveries = await db.orders.count_documents({"rider_id": rider['id'], "status": "out-for-delivery"})
+        rider['stats'] = {
+            "total_deliveries": total_deliveries,
+            "active_deliveries": active_deliveries
+        }
+    
+    return riders
+
+@api_router.get("/admin/stats")
+async def get_admin_stats(current_user: dict = Depends(get_current_user)):
+    """Get comprehensive system statistics (admin only)"""
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    # Count users by role
+    total_customers = await db.users.count_documents({"role": "customer"})
+    total_vendors = await db.users.count_documents({"role": "vendor"})
+    total_riders = await db.users.count_documents({"role": "rider"})
+    
+    # Order statistics
+    total_orders = await db.orders.count_documents({})
+    delivered_orders = await db.orders.count_documents({"status": "delivered"})
+    active_orders = await db.orders.count_documents({"status": {"$in": ["placed", "confirmed", "preparing", "ready", "out-for-delivery"]}})
+    
+    # Revenue calculation
+    pipeline = [
+        {"$match": {"status": "delivered"}},
+        {"$group": {"_id": None, "total_revenue": {"$sum": "$total_amount"}}}
+    ]
+    revenue_result = await db.orders.aggregate(pipeline).to_list(None)
+    total_revenue = revenue_result[0]['total_revenue'] if revenue_result else 0
+    
+    # Restaurant count
+    total_restaurants = await db.restaurants.count_documents({})
+    active_restaurants = await db.restaurants.count_documents({"is_active": True})
+    
+    return {
+        "users": {
+            "total_customers": total_customers,
+            "total_vendors": total_vendors,
+            "total_riders": total_riders,
+            "total_users": total_customers + total_vendors + total_riders
+        },
+        "orders": {
+            "total_orders": total_orders,
+            "delivered_orders": delivered_orders,
+            "active_orders": active_orders,
+            "cancelled_orders": await db.orders.count_documents({"status": "cancelled"})
+        },
+        "revenue": {
+            "total_revenue": total_revenue,
+            "average_order_value": total_revenue / delivered_orders if delivered_orders > 0 else 0
+        },
+        "restaurants": {
+            "total_restaurants": total_restaurants,
+            "active_restaurants": active_restaurants
+        }
+    }
+
+@api_router.post("/admin/add-wallet-money")
+async def admin_add_wallet_money(request: AddWalletMoneyRequest, current_user: dict = Depends(get_current_user)):
+    """Add money to customer wallet (admin only)"""
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    if request.amount <= 0:
+        raise HTTPException(status_code=400, detail="Amount must be positive")
+    
+    # Get user
+    user = await db.users.find_one({"id": request.user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if user['role'] != 'customer':
+        raise HTTPException(status_code=400, detail="Can only add money to customer wallets")
+    
+    # Update wallet balance
+    current_balance = user.get('wallet_balance', 0.0)
+    new_balance = current_balance + request.amount
+    
+    await db.users.update_one(
+        {"id": request.user_id},
+        {"$set": {"wallet_balance": new_balance}}
+    )
+    
+    # Create transaction record
+    transaction = WalletTransaction(
+        user_id=request.user_id,
+        transaction_type="deposit",
+        amount=request.amount,
+        payment_method="admin_credit",
+        status="completed",
+        description=request.description or f"Admin credit by {current_user['name']}",
+        balance_after=new_balance,
+        created_at=datetime.now(timezone.utc)
+    )
+    
+    await db.wallet_transactions.insert_one(transaction.model_dump())
+    
+    return {
+        "message": "Wallet credited successfully",
+        "user_id": request.user_id,
+        "amount_added": request.amount,
+        "new_balance": new_balance
+    }
+
 # Health check
 @api_router.get("/")
 async def root():
