@@ -1,128 +1,45 @@
-import { PushNotifications } from '@capacitor/push-notifications';
-import { Capacitor } from '@capacitor/core';
-import axios from 'axios';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+/**
+ * Push Notification Service - DISABLED
+ * 
+ * Firebase/FCM push notifications have been removed to ensure smooth
+ * Android Studio compilation without Firebase dependencies.
+ * 
+ * This is a no-op stub that prevents errors when push notification
+ * initialization is called.
+ */
 
 export const pushNotificationService = {
-  // Check if push notifications are available
+  // Push notifications are disabled
   isAvailable() {
-    if (!Capacitor.isNativePlatform()) return false;
-    const platform = Capacitor.getPlatform();
-    // Disable Android push by default unless explicitly enabled
-    if (platform === 'android' && process.env.REACT_APP_ANDROID_PUSH !== 'true') {
-      console.warn('Push notifications disabled on Android (set REACT_APP_ANDROID_PUSH=true to enable).');
-      return false;
-    }
-    return true;
+    console.log('Push notifications are disabled in this build');
+    return false;
   },
 
-  // Initialize push notifications
+  // No-op initialize
   async initialize(onNotificationReceived) {
-    try {
-      if (!this.isAvailable()) {
-        console.log('Push notifications not available or disabled');
-        return;
-      }
-
-      // Request permission
-      let permStatus = await PushNotifications.checkPermissions();
-
-      if (permStatus.receive === 'prompt') {
-        permStatus = await PushNotifications.requestPermissions();
-      }
-
-      if (permStatus.receive !== 'granted') {
-        console.warn('Push notification permission denied');
-        return;
-      }
-
-      // Register with APNs / FCM
-      await PushNotifications.register();
-
-      // Listen for registration success
-      PushNotifications.addListener('registration', async (token) => {
-        console.log('Push registration success, token: ' + token.value);
-        // Send token to backend
-        await this.registerTokenWithBackend(token.value);
-      });
-
-      // Listen for registration error
-      PushNotifications.addListener('registrationError', (error) => {
-        console.error('Error on registration: ' + JSON.stringify(error));
-      });
-
-      // Listen for push notifications received
-      PushNotifications.addListener('pushNotificationReceived', (notification) => {
-        console.log('Push notification received: ', notification);
-        if (onNotificationReceived) {
-          onNotificationReceived(notification);
-        }
-      });
-
-      // Listen for notification action performed (user tapped on notification)
-      PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
-        console.log('Push notification action performed', notification.actionId, notification.notification);
-        if (onNotificationReceived) {
-          onNotificationReceived(notification.notification, notification.actionId);
-        }
-      });
-    } catch (err) {
-      console.error('Push initialization failed:', err);
-      // Do not throw to avoid crashing the app on missing Firebase config
-    }
+    console.log('Push notification service is disabled');
+    return Promise.resolve();
   },
 
-  // Register token with backend
+  // No-op register token
   async registerTokenWithBackend(pushToken) {
-    try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) {
-        console.warn('No auth token found, skipping push token registration');
-        return;
-      }
-
-      const platform = Capacitor.getPlatform(); // 'ios' or 'android'
-      
-      await axios.post(
-        `${BACKEND_URL}/api/auth/register-push-token`,
-        {
-          push_token: pushToken,
-          platform: platform
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-      
-      console.log('Push token registered with backend successfully');
-    } catch (error) {
-      console.error('Failed to register push token with backend:', error);
-    }
+    console.log('Push notification token registration is disabled');
+    return Promise.resolve();
   },
 
-  // Get delivered notifications
+  // No-op get delivered notifications
   async getDeliveredNotifications() {
-    if (!this.isAvailable()) return [];
-    
-    const notificationList = await PushNotifications.getDeliveredNotifications();
-    return notificationList.notifications;
+    return [];
   },
 
-  // Remove delivered notifications
+  // No-op remove delivered notifications
   async removeDeliveredNotifications(notifications) {
-    if (!this.isAvailable()) return;
-    
-    await PushNotifications.removeDeliveredNotifications(notifications);
+    return Promise.resolve();
   },
 
-  // Remove all delivered notifications
+  // No-op remove all delivered notifications
   async removeAllDeliveredNotifications() {
-    if (!this.isAvailable()) return;
-    
-    await PushNotifications.removeAllDeliveredNotifications();
+    return Promise.resolve();
   }
 };
 
