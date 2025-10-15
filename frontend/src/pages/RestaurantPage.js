@@ -59,22 +59,9 @@ const RestaurantPage = () => {
     toast.success(`${item.name} added to cart`);
   };
 
-  const updateQuantity = (menuItemId, delta) => {
-    setCart(cart.map(item => {
-      if (item.menu_item_id === menuItemId) {
-        const newQuantity = item.quantity + delta;
-        return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
-      }
-      return item;
-    }).filter(Boolean));
-  };
-
-  const removeFromCart = (menuItemId) => {
-    setCart(cart.filter(item => item.menu_item_id !== menuItemId));
-  };
-
-  const getTotalAmount = () => {
-    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const getItemQuantity = (itemId) => {
+    const cartItem = cart.find(item => item.menu_item_id === itemId);
+    return cartItem ? cartItem.quantity : 0;
   };
 
   const handleLocationSelect = async (locationData) => {
