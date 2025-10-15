@@ -132,37 +132,72 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Overview Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp className="w-8 h-8" />
               <span className="text-2xl font-bold">₹{totalRevenue.toFixed(0)}</span>
             </div>
             <p className="text-sm opacity-90">Total Revenue</p>
+            <p className="text-xs opacity-75 mt-1">Avg: ₹{stats?.revenue?.average_order_value?.toFixed(0) || 0}/order</p>
           </div>
           
           <div className="bg-white rounded-xl shadow-md p-6">
             <div className="flex items-center justify-between mb-2">
               <Package className="w-8 h-8 text-blue-500" />
-              <span className="text-2xl font-bold text-gray-900">{orders.length}</span>
+              <span className="text-2xl font-bold text-gray-900">{stats?.orders?.total_orders || 0}</span>
             </div>
             <p className="text-sm text-gray-600">Total Orders</p>
+            <p className="text-xs text-gray-500 mt-1">{stats?.orders?.delivered_orders || 0} delivered</p>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="flex items-center justify-between mb-2">
+              <UserCircle className="w-8 h-8 text-purple-500" />
+              <span className="text-2xl font-bold text-gray-900">{stats?.users?.total_customers || 0}</span>
+            </div>
+            <p className="text-sm text-gray-600">Total Customers</p>
           </div>
           
           <div className="bg-white rounded-xl shadow-md p-6">
             <div className="flex items-center justify-between mb-2">
               <Store className="w-8 h-8 text-green-500" />
-              <span className="text-2xl font-bold text-gray-900">{restaurants.length}</span>
+              <span className="text-2xl font-bold text-gray-900">{stats?.restaurants?.active_restaurants || 0}</span>
             </div>
-            <p className="text-sm text-gray-600">Restaurants</p>
+            <p className="text-sm text-gray-600">Active Restaurants</p>
+            <p className="text-xs text-gray-500 mt-1">{stats?.restaurants?.total_restaurants || 0} total</p>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Users className="w-8 h-8 text-indigo-500" />
+              <span className="text-2xl font-bold text-gray-900">{stats?.users?.total_vendors || 0}</span>
+            </div>
+            <p className="text-sm text-gray-600">Vendors</p>
           </div>
           
           <div className="bg-white rounded-xl shadow-md p-6">
             <div className="flex items-center justify-between mb-2">
               <Bike className="w-8 h-8 text-teal-500" />
-              <span className="text-2xl font-bold text-gray-900">{statusGroups['out-for-delivery'] || 0}</span>
+              <span className="text-2xl font-bold text-gray-900">{stats?.users?.total_riders || 0}</span>
             </div>
-            <p className="text-sm text-gray-600">Active Deliveries</p>
+            <p className="text-sm text-gray-600">Riders</p>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Package className="w-8 h-8 text-orange-500" />
+              <span className="text-2xl font-bold text-gray-900">{stats?.orders?.active_orders || 0}</span>
+            </div>
+            <p className="text-sm text-gray-600">Active Orders</p>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Package className="w-8 h-8 text-red-500" />
+              <span className="text-2xl font-bold text-gray-900">{stats?.orders?.cancelled_orders || 0}</span>
+            </div>
+            <p className="text-sm text-gray-600">Cancelled Orders</p>
           </div>
         </div>
 
