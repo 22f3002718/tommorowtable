@@ -156,6 +156,7 @@ class OrderCreate(BaseModel):
     delivery_latitude: Optional[float] = None
     delivery_longitude: Optional[float] = None
     special_instructions: Optional[str] = None
+    cart_id: Optional[str] = None  # Links orders from same cart checkout
 
 class Order(BaseModel):
     model_config = ConfigDict(extra="ignore")
