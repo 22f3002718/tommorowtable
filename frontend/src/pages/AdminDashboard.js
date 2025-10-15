@@ -203,13 +203,15 @@ const AdminDashboard = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-6">
-            <TabsTrigger value="orders" data-testid="orders-tab">Orders</TabsTrigger>
-            <TabsTrigger value="restaurants" data-testid="restaurants-tab">Restaurants</TabsTrigger>
-            <TabsTrigger value="customers" data-testid="customers-tab">Customers</TabsTrigger>
-            <TabsTrigger value="vendors" data-testid="vendors-tab">Vendors</TabsTrigger>
-            <TabsTrigger value="riders" data-testid="riders-tab">Riders</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+            <TabsList className="grid w-full grid-cols-5 mb-4 sm:mb-6 min-w-[500px] sm:min-w-0">
+              <TabsTrigger value="orders" data-testid="orders-tab" className="text-xs sm:text-sm">Orders</TabsTrigger>
+              <TabsTrigger value="restaurants" data-testid="restaurants-tab" className="text-xs sm:text-sm">Restaurants</TabsTrigger>
+              <TabsTrigger value="customers" data-testid="customers-tab" className="text-xs sm:text-sm">Customers</TabsTrigger>
+              <TabsTrigger value="vendors" data-testid="vendors-tab" className="text-xs sm:text-sm">Vendors</TabsTrigger>
+              <TabsTrigger value="riders" data-testid="riders-tab" className="text-xs sm:text-sm">Riders</TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Orders Tab */}
           <TabsContent value="orders">
