@@ -148,7 +148,8 @@ const RestaurantPage = () => {
 
       await axios.post(`${API}/orders`, orderData);
       toast.success('Order placed successfully! Will be delivered tomorrow morning.');
-      setCart([]);
+      // Clear cart items for this restaurant
+      cart.forEach(item => removeItemCompletely(item.menu_item_id));
       setShowCheckout(false);
       setLocationSelected(false);
       setDeliveryAddress('');
