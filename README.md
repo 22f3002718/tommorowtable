@@ -409,19 +409,19 @@ The seeded database includes these test accounts:
 
 ```
 👑 Admin:
-Email: admin@quickbite.com
+Email: admin@localtokri.com
 Password: admin123
 
 🏪 Vendor:
-Email: vendor1@quickbite.com
+Email: vendor1@localtokri.com
 Password: vendor123
 
 🚴 Rider:
-Email: rider1@quickbite.com
+Email: rider1@localtokri.com
 Password: rider123
 
 👤 Customer:
-Email: customer@quickbite.com
+Email: customer@localtokri.com
 Password: customer123
 ```
 
