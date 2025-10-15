@@ -47,7 +47,7 @@ async def seed_database():
         },
         {
             "id": vendor1_id,
-            "email": "vendor1@tomorrowstable.com",
+            "email": "vendor1@localtokri.com",
             "password": pwd_context.hash("vendor123"),
             "name": "Golden Spoon",
             "role": "vendor",
@@ -56,7 +56,7 @@ async def seed_database():
         },
         {
             "id": vendor2_id,
-            "email": "vendor2@tomorrowstable.com",
+            "email": "vendor2@localtokri.com",
             "password": pwd_context.hash("vendor123"),
             "name": "Sunrise Cafe",
             "role": "vendor",
@@ -65,7 +65,7 @@ async def seed_database():
         },
         {
             "id": vendor3_id,
-            "email": "vendor3@tomorrowstable.com",
+            "email": "vendor3@localtokri.com",
             "password": pwd_context.hash("vendor123"),
             "name": "Dragon Wok",
             "role": "vendor",
@@ -74,7 +74,7 @@ async def seed_database():
         },
         {
             "id": rider1_id,
-            "email": "rider1@tomorrowstable.com",
+            "email": "rider1@localtokri.com",
             "password": pwd_context.hash("rider123"),
             "name": "John Rider",
             "role": "rider",
@@ -83,7 +83,7 @@ async def seed_database():
         },
         {
             "id": rider2_id,
-            "email": "rider2@tomorrowstable.com",
+            "email": "rider2@localtokri.com",
             "password": pwd_context.hash("rider123"),
             "name": "Sarah Rider",
             "role": "rider",
@@ -92,7 +92,7 @@ async def seed_database():
         },
         {
             "id": customer1_id,
-            "email": "customer@tomorrowstable.com",
+            "email": "customer@localtokri.com",
             "password": pwd_context.hash("customer123"),
             "name": "Alice Customer",
             "role": "customer",
