@@ -110,21 +110,21 @@ const AdminDashboard = () => {
   }, {});
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" onClick={() => navigate('/')} data-testid="back-home-btn">
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Home
+      <header className="bg-white shadow-sm ios-safe-top">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Button variant="ghost" size="sm" onClick={() => navigate('/')} data-testid="back-home-btn" className="p-2">
+                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2" />
+                <span className="hidden sm:inline">Home</span>
               </Button>
-              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+              <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Admin</h1>
             </div>
-            <div className="flex items-center space-x-2">
-              <Users className="w-5 h-5 text-gray-600" />
-              <span className="font-medium text-gray-700">{auth?.user?.name}</span>
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+              <span className="font-medium text-gray-700 text-sm sm:text-base truncate max-w-[100px] sm:max-w-none">{auth?.user?.name}</span>
             </div>
           </div>
         </div>
