@@ -14,7 +14,14 @@ const AdminDashboard = () => {
   const auth = useAuth();
   const [orders, setOrders] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [vendors, setVendors] = useState([]);
+  const [riders, setRiders] = useState([]);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState({});
+  const [showAddMoneyDialog, setShowAddMoneyDialog] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [amountToAdd, setAmountToAdd] = useState('');
 
   useEffect(() => {
     if (!auth?.user || auth.user.role !== 'admin') {
