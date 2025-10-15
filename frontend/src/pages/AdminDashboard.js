@@ -103,10 +103,7 @@ const AdminDashboard = () => {
     return colors[status] || 'bg-gray-100 text-gray-700';
   };
 
-  const totalRevenue = orders
-    .filter(o => o.status === 'delivered')
-    .reduce((sum, o) => sum + o.total_amount, 0);
-
+  const totalRevenue = stats?.revenue?.total_revenue || 0;
   const statusGroups = orders.reduce((acc, order) => {
     acc[order.status] = (acc[order.status] || 0) + 1;
     return acc;
