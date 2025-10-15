@@ -340,7 +340,7 @@ const RestaurantPage = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-700">Wallet Balance</p>
-                  <p className={`text-lg font-bold ${walletBalance >= getTotalAmount() ? 'text-green-600' : 'text-red-600'}`}>
+                  <p className={`text-lg font-bold ${walletBalance >= cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) ? 'text-green-600' : 'text-red-600'}`}>
                     ₹{walletBalance.toFixed(2)}
                   </p>
                 </div>
