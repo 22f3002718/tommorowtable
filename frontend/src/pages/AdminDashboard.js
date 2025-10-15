@@ -34,12 +34,20 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [ordersRes, restaurantsRes] = await Promise.all([
+      const [ordersRes, restaurantsRes, customersRes, vendorsRes, ridersRes, statsRes] = await Promise.all([
         axios.get(`${API}/orders`),
-        axios.get(`${API}/restaurants`)
+        axios.get(`${API}/restaurants`),
+        axios.get(`${API}/admin/customers`),
+        axios.get(`${API}/admin/vendors`),
+        axios.get(`${API}/admin/riders`),
+        axios.get(`${API}/admin/stats`)
       ]);
       setOrders(ordersRes.data);
       setRestaurants(restaurantsRes.data);
+      setCustomers(customersRes.data);
+      setVendors(vendorsRes.data);
+      setRiders(ridersRes.data);
+      setStats(statsRes.data);
     } catch (error) {
       console.error('Failed to fetch data:', error);
       toast.error('Failed to load dashboard data');
