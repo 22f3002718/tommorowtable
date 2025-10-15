@@ -64,6 +64,16 @@ const RestaurantPage = () => {
     return cartItem ? cartItem.quantity : 0;
   };
 
+  const removeItemCompletely = (menuItemId) => {
+    // Remove item completely by calling removeFromCart multiple times
+    const cartItem = cart.find(item => item.menu_item_id === menuItemId);
+    if (cartItem) {
+      for (let i = 0; i < cartItem.quantity; i++) {
+        removeFromCart(menuItemId, id);
+      }
+    }
+  };
+
   const handleLocationSelect = async (locationData) => {
     setDeliveryAddress(locationData.address);
     setDeliveryLatitude(locationData.latitude);
