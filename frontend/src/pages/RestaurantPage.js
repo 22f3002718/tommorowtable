@@ -54,21 +54,8 @@ const RestaurantPage = () => {
   };
 
   const addToCart = (item) => {
-    const existingItem = cart.find(ci => ci.menu_item_id === item.id);
-    if (existingItem) {
-      setCart(cart.map(ci => 
-        ci.menu_item_id === item.id 
-          ? { ...ci, quantity: ci.quantity + 1 }
-          : ci
-      ));
-    } else {
-      setCart([...cart, {
-        menu_item_id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: 1
-      }]);
-    }
+    if (!restaurant) return;
+    addToGlobalCart(item, restaurant.id, restaurant.name);
     toast.success(`${item.name} added to cart`);
   };
 
