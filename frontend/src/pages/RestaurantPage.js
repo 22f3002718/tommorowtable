@@ -336,7 +336,7 @@ const RestaurantPage = () => {
             </div>
 
             {/* Wallet Balance */}
-            <div className={`rounded-lg p-4 ${walletBalance >= getTotalAmount() ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+            <div className={`rounded-lg p-4 ${walletBalance >= cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-700">Wallet Balance</p>
