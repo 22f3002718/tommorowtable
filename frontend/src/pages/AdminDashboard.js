@@ -336,57 +336,55 @@ const AdminDashboard = () => {
           {/* Customers Tab */}
           <TabsContent value="customers">
             <div className="bg-white rounded-xl shadow-md">
-              <div className="p-6 border-b">
-                <h2 className="text-2xl font-bold text-gray-900">All Customers</h2>
+              <div className="p-4 sm:p-6 border-b">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">All Customers</h2>
               </div>
               
               <div className="divide-y">
                 {customers.length === 0 ? (
-                  <div className="p-12 text-center">
-                    <UserCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-xl text-gray-500">No customers yet</p>
+                  <div className="p-8 sm:p-12 text-center">
+                    <UserCircle className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-lg sm:text-xl text-gray-500">No customers yet</p>
                   </div>
                 ) : (
                   customers.map((customer) => (
                     <div 
                       key={customer.id} 
-                      className="p-6 hover:bg-gray-50"
+                      className="p-4 sm:p-6 hover:bg-gray-50"
                       data-testid={`customer-${customer.id}`}
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                         <div className="flex-1">
-                          <h3 className="text-lg font-bold text-gray-900 mb-1">{customer.name}</h3>
-                          <p className="text-sm text-gray-600 mb-2">{customer.email}</p>
-                          <div className="flex items-center space-x-4 text-sm">
+                          <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">{customer.name}</h3>
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">{customer.email}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-xs sm:text-sm space-y-1 sm:space-y-0">
                             {customer.phone && (
                               <span className="text-gray-600">📞 {customer.phone}</span>
                             )}
                             {customer.address && (
-                              <span className="text-gray-600">📍 {customer.address}</span>
+                              <span className="text-gray-600 truncate">📍 {customer.address}</span>
                             )}
                           </div>
                         </div>
                         
-                        <div className="text-right ml-6">
-                          <div className="flex items-center space-x-4">
-                            <div>
-                              <p className="text-sm text-gray-600">Wallet Balance</p>
-                              <p className="text-xl font-bold text-green-600">
-                                ₹{(customer.wallet_balance || 0).toFixed(2)}
-                              </p>
-                            </div>
-                            <Button
-                              size="sm"
-                              onClick={() => {
-                                setSelectedCustomer(customer);
-                                setShowAddMoneyDialog(true);
-                              }}
-                              className="bg-gradient-to-r from-orange-500 to-red-500"
-                            >
-                              <Wallet className="w-4 h-4 mr-2" />
-                              Add Money
-                            </Button>
+                        <div className="flex items-center justify-between sm:justify-end sm:ml-6 space-x-3 sm:space-x-4">
+                          <div className="text-left sm:text-right">
+                            <p className="text-xs sm:text-sm text-gray-600">Wallet Balance</p>
+                            <p className="text-lg sm:text-xl font-bold text-green-600">
+                              ₹{(customer.wallet_balance || 0).toFixed(2)}
+                            </p>
                           </div>
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              setSelectedCustomer(customer);
+                              setShowAddMoneyDialog(true);
+                            }}
+                            className="bg-gradient-to-r from-orange-500 to-red-500 text-xs sm:text-sm px-3 py-2"
+                          >
+                            <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                            Add Money
+                          </Button>
                         </div>
                       </div>
                     </div>
