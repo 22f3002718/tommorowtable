@@ -203,9 +203,12 @@ const AdminDashboard = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="orders" data-testid="orders-tab">Orders Management</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-5 mb-6">
+            <TabsTrigger value="orders" data-testid="orders-tab">Orders</TabsTrigger>
             <TabsTrigger value="restaurants" data-testid="restaurants-tab">Restaurants</TabsTrigger>
+            <TabsTrigger value="customers" data-testid="customers-tab">Customers</TabsTrigger>
+            <TabsTrigger value="vendors" data-testid="vendors-tab">Vendors</TabsTrigger>
+            <TabsTrigger value="riders" data-testid="riders-tab">Riders</TabsTrigger>
           </TabsList>
 
           {/* Orders Tab */}
