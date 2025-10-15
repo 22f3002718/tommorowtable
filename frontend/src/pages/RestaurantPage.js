@@ -344,7 +344,7 @@ const RestaurantPage = () => {
                     ₹{walletBalance.toFixed(2)}
                   </p>
                 </div>
-                {walletBalance < getTotalAmount() && (
+                {walletBalance < cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) && (
                   <Button
                     variant="outline"
                     size="sm"
