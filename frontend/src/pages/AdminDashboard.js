@@ -67,6 +67,29 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleAddMoney = async () => {
+    if (!selectedCustomer || !amountToAdd || parseFloat(amountToAdd) <= 0) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API}/admin/add-wallet-money`, {
+        user_id: selectedCustomer.id,
+        amount: parseFloat(amountToAdd),
+        description: `Admin credit by ${auth?.user?.name}`
+      });
+      
+      toast.success(`₹${amountToAdd} added to ${selectedCustomer.name}'s wallet`);
+      setShowAddMoneyDialog(false);
+      setSelectedCustomer(null);
+      setAmountToAdd('');
+      fetchData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to add money');
+    }
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       placed: 'bg-blue-100 text-blue-700',
