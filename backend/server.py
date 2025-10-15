@@ -179,6 +179,8 @@ class Order(BaseModel):
     delivery_sequence: Optional[int] = None
     rating: Optional[int] = None
     review: Optional[str] = None
+    cart_id: Optional[str] = None  # Links multiple orders from same cart checkout
+    delivery_fee: float = 0.0  # Delivery fee for the order
 
 class OrderStatusUpdate(BaseModel):
     status: str
