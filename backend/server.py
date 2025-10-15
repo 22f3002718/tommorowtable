@@ -225,6 +225,17 @@ class BatchRiderAssignment(BaseModel):
 class BatchAssignmentRequest(BaseModel):
     routes: List[BatchRiderAssignment]
 
+# Admin Models
+class AddWalletMoneyRequest(BaseModel):
+    user_id: str
+    amount: float
+    description: Optional[str] = "Admin credit"
+
+class MultiVendorOrderCreate(BaseModel):
+    orders: List[OrderCreate]  # Multiple orders for different vendors
+    delivery_fee: float = 11.0  # Fixed delivery fee per cart
+    cart_id: str  # Unique cart ID to link all orders
+
 # Wallet Models
 class WalletTransaction(BaseModel):
     model_config = ConfigDict(extra="ignore")
