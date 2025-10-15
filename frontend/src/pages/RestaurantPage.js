@@ -19,6 +19,14 @@ const RestaurantPage = () => {
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
   const [walletBalance, setWalletBalance] = useState(0);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [showLocationPicker, setShowLocationPicker] = useState(false);
+  const [locationSelected, setLocationSelected] = useState(false);
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryLatitude, setDeliveryLatitude] = useState(null);
+  const [deliveryLongitude, setDeliveryLongitude] = useState(null);
+  const [specialInstructions, setSpecialInstructions] = useState('');
+  const [loading, setLoading] = useState(false);
   
   // Get cart items for this restaurant only
   const cart = globalCart.filter(item => item.restaurant_id === id);
