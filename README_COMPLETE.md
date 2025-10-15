@@ -235,28 +235,28 @@ The seeded database includes these test accounts:
 
 ### 👑 Admin
 ```
-Email: admin@quickbite.com
+Email: admin@localtokri.com
 Password: admin123
 ```
 **Access:** Complete oversight of platform, manage users, orders, and wallets
 
 ### 🏪 Vendor
 ```
-Email: vendor1@quickbite.com
+Email: vendor1@localtokri.com
 Password: vendor123
 ```
 **Access:** Manage restaurant, menu items, orders, and route optimization
 
 ### 🚴 Rider
 ```
-Email: rider1@quickbite.com
+Email: rider1@localtokri.com
 Password: rider123
 ```
 **Access:** View assigned deliveries, navigate to customers, update delivery status
 
 ### 👤 Customer
 ```
-Email: customer@quickbite.com
+Email: customer@localtokri.com
 Password: customer123
 ```
 **Access:** Browse restaurants, place orders, track deliveries, manage wallet
