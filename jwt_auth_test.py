@@ -12,7 +12,7 @@ from datetime import datetime, timezone, timedelta
 import time
 
 # Get backend URL from environment
-BACKEND_URL = "https://ui-revamp-17.preview.emergentagent.com/api"
+BACKEND_URL = "https://delivery-tracker-66.preview.emergentagent.com/api"
 
 class JWTAuthTester:
     def __init__(self):
