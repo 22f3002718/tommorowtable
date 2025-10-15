@@ -15,7 +15,7 @@ const RestaurantPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const auth = useAuth();
-  const { cart: globalCart, addToCart: addToGlobalCart, removeFromCart } = useCart();
+  const { cart: globalCart, addToCart: addToGlobalCart, removeFromCart, getCartTotal } = useCart();
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
   const [walletBalance, setWalletBalance] = useState(0);
