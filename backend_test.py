@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://cap-android-deploy.preview.emergentagent.com/api"
+BACKEND_URL = "https://rn-frontend.preview.emergentagent.com/api"
 
 class QuickBiteAPITester:
     def __init__(self):

@@ -11,7 +11,7 @@ from datetime import datetime
 import time
 
 # Get backend URL from environment
-BACKEND_URL = "https://cap-android-deploy.preview.emergentagent.com/api"
+BACKEND_URL = "https://rn-frontend.preview.emergentagent.com/api"
 
 class WalletDeliveryTester:
     def __init__(self):
