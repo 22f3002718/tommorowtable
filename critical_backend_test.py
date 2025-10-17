@@ -105,7 +105,7 @@ class CriticalAPITester:
         
         # Create vendor user
         self.vendor_token, vendor_user = self.create_or_login_user(
-            "vendor@localtokri.com", "vendor123", "Priya Sharma", "vendor", "+919876543211"
+            "testvendor@localtokri.com", "vendor123", "Priya Sharma", "vendor", "+919876543211"
         )
         if not self.vendor_token:
             return False
