@@ -22,6 +22,14 @@ const AdminDashboard = () => {
   const [showAddMoneyDialog, setShowAddMoneyDialog] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [amountToAdd, setAmountToAdd] = useState('');
+  const [showEditUserDialog, setShowEditUserDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: ''
+  });
 
   useEffect(() => {
     if (!auth?.user || auth.user.role !== 'admin') {
