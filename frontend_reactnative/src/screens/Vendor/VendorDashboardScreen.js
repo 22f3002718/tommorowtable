@@ -7,10 +7,12 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
+  TextInput,
+  Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getVendorOrders, updateOrderStatus } from '../../services/api';
+import { getVendorOrders, updateOrderStatus, getVendorRestaurant, updateRestaurantImage } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function VendorDashboardScreen() {
