@@ -11,7 +11,7 @@ from datetime import datetime
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BACKEND_URL = "https://mapify-delivery.preview.emergentagent.com/api"
+BACKEND_URL = "https://order-route-priority-1.preview.emergentagent.com/api"
 
 def log(message):
     timestamp = datetime.now().strftime("%H:%M:%S")
