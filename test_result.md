@@ -125,15 +125,18 @@ backend:
 
   - task: "Admin User Credential Management Endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created PATCH /api/admin/update-user/{user_id} endpoint. Added AdminUserUpdate Pydantic model with optional fields: name, email, phone, password. Endpoint features: Admin-only access control, validates email/phone uniqueness across users, hashes new passwords using pwd_context, only updates provided fields, returns updated user data without password field."
+      - working: true
+        agent: "testing"
+        comment: "✅ ADMIN USER MANAGEMENT FULLY TESTED: All functionality working correctly. ✅ Name updates work properly. ✅ Email uniqueness validation enforced (returns 400 'Email already in use'). ✅ Phone uniqueness validation enforced (returns 400 'Phone already in use'). ✅ Password updates work and new passwords are properly hashed and functional for login. ✅ Multiple field updates work simultaneously. ✅ Non-admin users correctly denied access (403 Forbidden). ✅ Returns updated user data without password field. ✅ All existing admin endpoints still functional: GET /admin/customers, /admin/vendors, /admin/riders, /admin/stats, POST /admin/add-wallet-money."
 
   - task: "JWT Authentication with 30-Day Token Expiry"
     implemented: true
