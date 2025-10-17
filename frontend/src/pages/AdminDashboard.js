@@ -641,6 +641,86 @@ const AdminDashboard = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Edit User Dialog */}
+      <Dialog open={showEditUserDialog} onOpenChange={setShowEditUserDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit User Details</DialogTitle>
+          </DialogHeader>
+          
+          {selectedUser && (
+            <div className="space-y-4">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-sm text-gray-600">User Type</p>
+                <p className="text-lg font-bold text-gray-900 capitalize">{selectedUser.role}</p>
+                <p className="text-xs text-gray-500 mt-1">ID: {selectedUser.id}</p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Name</label>
+                <Input
+                  type="text"
+                  value={editFormData.name}
+                  onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                  placeholder="Enter name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Email</label>
+                <Input
+                  type="email"
+                  value={editFormData.email}
+                  onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                  placeholder="Enter email"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Phone</label>
+                <Input
+                  type="tel"
+                  value={editFormData.phone}
+                  onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
+                  placeholder="Enter phone"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">New Password (leave blank to keep current)</label>
+                <Input
+                  type="password"
+                  value={editFormData.password}
+                  onChange={(e) => setEditFormData({ ...editFormData, password: e.target.value })}
+                  placeholder="Enter new password"
+                />
+                <p className="text-xs text-gray-500 mt-1">Only enter if you want to change the password</p>
+              </div>
+              
+              <div className="flex space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowEditUserDialog(false);
+                    setSelectedUser(null);
+                    setEditFormData({ name: '', email: '', phone: '', password: '' });
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleUpdateUser}
+                  className="flex-1 bg-gradient-to-r from-orange-500 to-red-500"
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
