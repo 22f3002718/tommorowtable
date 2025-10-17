@@ -553,23 +553,29 @@ const AdminDashboard = () => {
                           )}
                         </div>
                         
-                        <div className="text-right ml-6">
-                          <div className="space-y-2">
-                            <div className="flex items-center space-x-4">
-                              <div className="text-center px-4 py-2 bg-green-50 rounded-lg">
-                                <p className="text-2xl font-bold text-green-600">
-                                  {rider.stats?.total_deliveries || 0}
-                                </p>
-                                <p className="text-xs text-gray-600">Total Deliveries</p>
-                              </div>
-                              <div className="text-center px-4 py-2 bg-orange-50 rounded-lg">
-                                <p className="text-2xl font-bold text-orange-600">
-                                  {rider.stats?.active_deliveries || 0}
-                                </p>
-                                <p className="text-xs text-gray-600">Active Now</p>
-                              </div>
+                        <div className="flex items-center space-x-4 ml-6">
+                          <div className="flex space-x-4">
+                            <div className="text-center px-4 py-2 bg-green-50 rounded-lg">
+                              <p className="text-2xl font-bold text-green-600">
+                                {rider.stats?.total_deliveries || 0}
+                              </p>
+                              <p className="text-xs text-gray-600">Total Deliveries</p>
+                            </div>
+                            <div className="text-center px-4 py-2 bg-orange-50 rounded-lg">
+                              <p className="text-2xl font-bold text-orange-600">
+                                {rider.stats?.active_deliveries || 0}
+                              </p>
+                              <p className="text-xs text-gray-600">Active Now</p>
                             </div>
                           </div>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleEditUser(rider)}
+                          >
+                            <Edit className="w-4 h-4 mr-2" />
+                            Edit
+                          </Button>
                         </div>
                       </div>
                     </div>
