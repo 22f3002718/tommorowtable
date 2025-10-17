@@ -4,10 +4,8 @@
     "slug": "localtokri-mobile",
     "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#F97316"
     },
@@ -27,7 +25,6 @@
       "package": "com.localtokri.app",
       "versionCode": 2,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#F97316"
       },
       "permissions": [
@@ -40,14 +37,11 @@
         }
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
+    "web": {},
     "plugins": [
       [
         "expo-notifications",
         {
-          "icon": "./assets/notification-icon.png",
           "color": "#F97316"
         }
       ]
