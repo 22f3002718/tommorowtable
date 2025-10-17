@@ -14,7 +14,7 @@ from datetime import datetime
 import uuid
 
 # Get backend URL from environment
-BACKEND_URL = "https://sdk-upgrade-54.preview.emergentagent.com/api"
+BACKEND_URL = "https://mapify-delivery.preview.emergentagent.com/api"
 
 class LocalTokriAPITester:
     def __init__(self):

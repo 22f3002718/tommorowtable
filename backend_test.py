@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://sdk-upgrade-54.preview.emergentagent.com/api"
+BACKEND_URL = "https://mapify-delivery.preview.emergentagent.com/api"
 
 class QuickBiteAPITester:
     def __init__(self):
