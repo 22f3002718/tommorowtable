@@ -27,7 +27,18 @@ export default function VendorDashboardScreen() {
 
   useEffect(() => {
     fetchOrders();
+    fetchRestaurant();
   }, []);
+
+  const fetchRestaurant = async () => {
+    try {
+      const data = await getVendorRestaurant();
+      setRestaurant(data);
+      setImageUrl(data.image_url || '');
+    } catch (error) {
+      console.error('Error fetching restaurant:', error);
+    }
+  };
 
   const fetchOrders = async () => {
     try {
