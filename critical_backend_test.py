@@ -97,7 +97,7 @@ class CriticalAPITester:
         
         # Create customer user
         self.customer_token, customer_user = self.create_or_login_user(
-            "customer@localtokri.com", "customer123", "Rajesh Kumar", "customer", "+919876543210"
+            "testcustomer@localtokri.com", "customer123", "Rajesh Kumar", "customer", "+919876543210"
         )
         if not self.customer_token:
             return False
