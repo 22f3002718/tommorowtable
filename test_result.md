@@ -475,8 +475,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix Route Ordering - /orders/my-orders Before /orders/{order_id}"
-    - "Admin User Credential Management Endpoint"
     - "Admin Edit User Credentials UI"
   stuck_tasks: []
   test_all: false
