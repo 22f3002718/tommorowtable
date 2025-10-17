@@ -60,12 +60,16 @@ export const addMoneyToWallet = async (amount) => {
 };
 
 // Location
-export const updateLocation = async (address, latitude, longitude) => {
-  const response = await axios.patch(`${API_URL}/auth/update-location`, {
+export const updateLocation = async (address, latitude, longitude, houseNumber, buildingName) => {
+  const data = {
     address,
     latitude,
     longitude,
-  });
+  };
+  if (houseNumber) data.house_number = houseNumber;
+  if (buildingName) data.building_name = buildingName;
+  
+  const response = await axios.patch(`${API_URL}/auth/update-location`, data);
   return response.data;
 };
 
