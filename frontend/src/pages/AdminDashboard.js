@@ -429,17 +429,28 @@ const AdminDashboard = () => {
                               ₹{(customer.wallet_balance || 0).toFixed(2)}
                             </p>
                           </div>
-                          <Button
-                            size="sm"
-                            onClick={() => {
-                              setSelectedCustomer(customer);
-                              setShowAddMoneyDialog(true);
-                            }}
-                            className="bg-gradient-to-r from-orange-500 to-red-500 text-xs sm:text-sm px-3 py-2"
-                          >
-                            <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                            Add Money
-                          </Button>
+                          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditUser(customer)}
+                              className="text-xs sm:text-sm px-3 py-2"
+                            >
+                              <Edit className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                              Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                setSelectedCustomer(customer);
+                                setShowAddMoneyDialog(true);
+                              }}
+                              className="bg-gradient-to-r from-orange-500 to-red-500 text-xs sm:text-sm px-3 py-2"
+                            >
+                              <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                              Add Money
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
