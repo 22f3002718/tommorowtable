@@ -113,7 +113,7 @@ class CriticalAPITester:
         
         # Create rider user
         self.rider_token, rider_user = self.create_or_login_user(
-            "rider@localtokri.com", "rider123", "Amit Singh", "rider", "+919876543212"
+            "testrider@localtokri.com", "rider123", "Amit Singh", "rider", "+919876543212"
         )
         if not self.rider_token:
             return False
