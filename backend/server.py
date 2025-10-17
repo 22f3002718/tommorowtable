@@ -198,6 +198,8 @@ class LocationUpdate(BaseModel):
     address: str
     latitude: float
     longitude: float
+    house_number: Optional[str] = None
+    building_name: Optional[str] = None
 
 class PushTokenUpdate(BaseModel):
     push_token: str
