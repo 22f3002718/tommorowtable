@@ -13,7 +13,7 @@ from datetime import datetime
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BACKEND_URL = "https://rn-frontend.preview.emergentagent.com/api"
+BACKEND_URL = "https://sdk-upgrade-54.preview.emergentagent.com/api"
 
 class RouteOptimizationTester:
     def __init__(self):
