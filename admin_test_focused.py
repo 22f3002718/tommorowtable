@@ -67,7 +67,7 @@ def test_admin_functionality():
     
     # Test non-admin access
     print("🧪 Testing non-admin access denial...")
-    customer_login = {"email": "testcustomer@localtokri.com", "password": "customer123"}
+    customer_login = {"email": "testcustomer@localtokri.com", "password": "newpassword123"}
     response = requests.post(f"{BACKEND_URL}/auth/login", json=customer_login, timeout=5)
     
     if response.status_code != 200:
