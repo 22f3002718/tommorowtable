@@ -20,6 +20,10 @@ export default function VendorDashboardScreen() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [restaurant, setRestaurant] = useState(null);
+  const [settingsModalVisible, setSettingsModalVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [savingImage, setSavingImage] = useState(false);
 
   useEffect(() => {
     fetchOrders();
