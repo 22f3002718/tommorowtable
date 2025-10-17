@@ -108,6 +108,30 @@ user_problem_statement: "1. Fix route optimization function that's not working
 4. Remember Capacitor is added to the project for mobile support"
 
 backend:
+  - task: "Fix Route Ordering - /orders/my-orders Before /orders/{order_id}"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "CRITICAL FIX: Moved /orders/my-orders route definition to appear BEFORE /orders/{order_id} (line 899-911 now before line 913). This prevents FastAPI from matching 'my-orders' as an order_id path parameter, which was causing 404 errors in React Native app. Added comment explaining route order importance."
+
+  - task: "Admin User Credential Management Endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created PATCH /api/admin/update-user/{user_id} endpoint. Added AdminUserUpdate Pydantic model with optional fields: name, email, phone, password. Endpoint features: Admin-only access control, validates email/phone uniqueness across users, hashes new passwords using pwd_context, only updates provided fields, returns updated user data without password field."
+
   - task: "JWT Authentication with 30-Day Token Expiry"
     implemented: true
     working: true
