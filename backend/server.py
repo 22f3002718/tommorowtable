@@ -237,6 +237,12 @@ class AddWalletMoneyRequest(BaseModel):
     amount: float
     description: Optional[str] = "Admin credit"
 
+class AdminUserUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    password: Optional[str] = None
+
 class MultiVendorOrderCreate(BaseModel):
     orders: List[OrderCreate]  # Multiple orders for different vendors
     delivery_fee: float = 11.0  # Fixed delivery fee per cart
