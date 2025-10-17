@@ -932,6 +932,101 @@ async def rate_order(order_id: str, rating_data: OrderRating, current_user: dict
     await db.orders.update_one({"id": order_id}, {"$set": update_data})
     return {"message": "Rating submitted successfully"}
 
+# Role-specific order endpoints for React Native app
+@api_router.get("/orders/my-orders", response_model=List[Order])
+async def get_my_orders(current_user: dict = Depends(get_current_user)):
+    """Get orders for customer"""
+    if current_user['role'] != 'customer':
+        raise HTTPException(status_code=403, detail="Only customers can access this endpoint")
+    
+    orders = await db.orders.find({"customer_id": current_user['id']}, {"_id": 0}).sort("placed_at", -1).to_list(1000)
+    for order in orders:
+        if isinstance(order.get('placed_at'), str):
+            order['placed_at'] = datetime.fromisoformat(order['placed_at'])
+        if isinstance(order.get('updated_at'), str):
+            order['updated_at'] = datetime.fromisoformat(order['updated_at'])
+    return orders
+
+@api_router.get("/vendor/orders", response_model=List[Order])
+async def get_vendor_orders(current_user: dict = Depends(get_current_user)):
+    """Get orders for vendor's restaurants"""
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Only vendors can access this endpoint")
+    
+    # Get vendor's restaurant(s)
+    restaurants = await db.restaurants.find({"vendor_id": current_user['id']}).to_list(100)
+    restaurant_ids = [r['id'] for r in restaurants]
+    
+    orders = await db.orders.find({"restaurant_id": {"$in": restaurant_ids}}, {"_id": 0}).sort("placed_at", -1).to_list(1000)
+    for order in orders:
+        if isinstance(order.get('placed_at'), str):
+            order['placed_at'] = datetime.fromisoformat(order['placed_at'])
+        if isinstance(order.get('updated_at'), str):
+            order['updated_at'] = datetime.fromisoformat(order['updated_at'])
+    return orders
+
+@api_router.patch("/vendor/orders/{order_id}/status")
+async def update_vendor_order_status(order_id: str, status_update: OrderStatusUpdate, current_user: dict = Depends(get_current_user)):
+    """Update order status by vendor"""
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Only vendors can update order status")
+    
+    order = await db.orders.find_one({"id": order_id})
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    # Verify vendor owns the restaurant
+    restaurant = await db.restaurants.find_one({"id": order['restaurant_id']})
+    if not restaurant or restaurant['vendor_id'] != current_user['id']:
+        raise HTTPException(status_code=403, detail="Not authorized to update this order")
+    
+    update_data = {
+        "status": status_update.status,
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.orders.update_one({"id": order_id}, {"$set": update_data})
+    return {"message": "Order status updated", "status": status_update.status}
+
+@api_router.get("/rider/orders", response_model=List[Order])
+async def get_rider_orders(current_user: dict = Depends(get_current_user)):
+    """Get orders for rider"""
+    if current_user['role'] != 'rider':
+        raise HTTPException(status_code=403, detail="Only riders can access this endpoint")
+    
+    orders = await db.orders.find({"rider_id": current_user['id']}, {"_id": 0}).sort("placed_at", -1).to_list(1000)
+    for order in orders:
+        if isinstance(order.get('placed_at'), str):
+            order['placed_at'] = datetime.fromisoformat(order['placed_at'])
+        if isinstance(order.get('updated_at'), str):
+            order['updated_at'] = datetime.fromisoformat(order['updated_at'])
+    return orders
+
+@api_router.patch("/rider/orders/{order_id}/status")
+async def update_rider_order_status(order_id: str, status_update: OrderStatusUpdate, current_user: dict = Depends(get_current_user)):
+    """Update order status by rider"""
+    if current_user['role'] != 'rider':
+        raise HTTPException(status_code=403, detail="Only riders can update order status")
+    
+    order = await db.orders.find_one({"id": order_id})
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    update_data = {
+        "status": status_update.status,
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    # If rider is picking up order (status = out-for-delivery), assign rider_id
+    if status_update.status == "out-for-delivery" and not order.get('rider_id'):
+        update_data["rider_id"] = current_user['id']
+    
+    await db.orders.update_one({"id": order_id}, {"$set": update_data})
+    return {"message": "Order status updated", "status": status_update.status}
+    
+    await db.orders.update_one({"id": order_id}, {"$set": update_data})
+    return {"message": "Rating submitted successfully"}
+
 # Rider Routes
 @api_router.get("/riders/available")
 async def get_available_riders(current_user: dict = Depends(get_current_user)):
