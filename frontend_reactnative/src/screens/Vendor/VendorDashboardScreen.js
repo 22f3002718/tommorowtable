@@ -56,7 +56,28 @@ export default function VendorDashboardScreen() {
   const onRefresh = async () => {
     setRefreshing(true);
     await fetchOrders();
+    await fetchRestaurant();
     setRefreshing(false);
+  };
+
+  const handleSaveImage = async () => {
+    if (!imageUrl.trim()) {
+      Alert.alert('Error', 'Please enter image URL');
+      return;
+    }
+
+    try {
+      setSavingImage(true);
+      await updateRestaurantImage(imageUrl);
+      Alert.alert('Success', 'Restaurant image updated successfully');
+      setSettingsModalVisible(false);
+      await fetchRestaurant();
+    } catch (error) {
+      console.error('Error updating image:', error);
+      Alert.alert('Error', 'Failed to update restaurant image');
+    } finally {
+      setSavingImage(false);
+    }
   };
 
   const handleUpdateStatus = async (orderId, currentStatus) => {
