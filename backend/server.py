@@ -1443,6 +1443,63 @@ async def admin_add_wallet_money(request: AddWalletMoneyRequest, current_user: d
         "new_balance": new_balance
     }
 
+@api_router.patch("/admin/update-user/{user_id}")
+async def admin_update_user(
+    user_id: str, 
+    update_data: AdminUserUpdate, 
+    current_user: dict = Depends(get_current_user)
+):
+    """Update user details (admin only)"""
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    # Get user
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Prepare update fields
+    update_fields = {}
+    
+    if update_data.name is not None:
+        update_fields["name"] = update_data.name
+    
+    if update_data.email is not None:
+        # Check if email is already taken by another user
+        existing_user = await db.users.find_one({"email": update_data.email, "id": {"$ne": user_id}})
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Email already in use")
+        update_fields["email"] = update_data.email
+    
+    if update_data.phone is not None:
+        # Check if phone is already taken by another user
+        existing_user = await db.users.find_one({"phone": update_data.phone, "id": {"$ne": user_id}})
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Phone already in use")
+        update_fields["phone"] = update_data.phone
+    
+    if update_data.password is not None:
+        # Hash the new password
+        hashed_password = pwd_context.hash(update_data.password)
+        update_fields["password"] = hashed_password
+    
+    if not update_fields:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    
+    # Update user
+    await db.users.update_one(
+        {"id": user_id},
+        {"$set": update_fields}
+    )
+    
+    # Get updated user
+    updated_user = await db.users.find_one({"id": user_id}, {"_id": 0, "password": 0})
+    
+    return {
+        "message": "User updated successfully",
+        "user": updated_user
+    }
+
 # Health check
 @api_router.get("/")
 async def root():
