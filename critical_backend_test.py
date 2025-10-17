@@ -89,7 +89,7 @@ class CriticalAPITester:
         
         # Create admin user
         self.admin_token, admin_user = self.create_or_login_user(
-            "admin@localtokri.com", "admin123", "Test Admin", "admin"
+            "testadmin@localtokri.com", "admin123", "Test Admin", "admin"
         )
         if not self.admin_token:
             return False
