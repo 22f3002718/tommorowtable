@@ -21,10 +21,12 @@ export default function CheckoutScreen({ route, navigation }) {
   const [address, setAddress] = useState(user?.address || '');
   const [latitude, setLatitude] = useState(user?.latitude || null);
   const [longitude, setLongitude] = useState(user?.longitude || null);
+  const [houseNumber, setHouseNumber] = useState(user?.house_number || '');
+  const [buildingName, setBuildingName] = useState(user?.building_name || '');
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [loading, setLoading] = useState(false);
-  const [gettingLocation, setGettingLocation] = useState(false);
   const [walletBalance, setWalletBalance] = useState(0);
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
 
   useEffect(() => {
     fetchWalletBalance();
