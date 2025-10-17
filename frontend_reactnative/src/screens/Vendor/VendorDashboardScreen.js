@@ -166,9 +166,14 @@ export default function VendorDashboardScreen() {
       <LinearGradient colors={['#F97316', '#DC2626']} style={styles.header}>
         <View style={styles.headerTop}>
           <Text style={styles.headerTitle}>Vendor Dashboard</Text>
-          <TouchableOpacity onPress={logout}>
-            <Icon name="logout" size={24} color="#fff" />
-          </TouchableOpacity>
+          <View style={styles.headerActions}>
+            <TouchableOpacity onPress={() => setSettingsModalVisible(true)} style={styles.headerButton}>
+              <Icon name="cog" size={24} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={logout}>
+              <Icon name="logout" size={24} color="#fff" />
+            </TouchableOpacity>
+          </View>
         </View>
         <Text style={styles.userName}>Welcome, {user?.name}</Text>
       </LinearGradient>
