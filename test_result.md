@@ -469,18 +469,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Wallet System - Backend Implementation"
-    - "Wallet Validation - Check Balance Before Order"
-    - "Delivery Sequence for Riders"
-    - "Fix Navigate Button Security Issue"
-    - "Display Delivery Sequence in RiderDashboard"
-    - "Wallet UI - Customer Dashboard"
-    - "Wallet Balance Check in Checkout"
+    - "Fix Route Ordering - /orders/my-orders Before /orders/{order_id}"
+    - "Admin User Credential Management Endpoint"
+    - "Admin Edit User Credentials UI"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "main"
+    message: "🎯 CRITICAL FIXES & ADMIN ENHANCEMENTS COMPLETE: Fixed critical route ordering bug and implemented comprehensive admin user management. BACKEND: 1) CRITICAL FIX - Moved /orders/my-orders route BEFORE /orders/{order_id} to prevent 404 errors when React Native app calls /orders/my-orders (was being matched as order_id='my-orders'), 2) Created AdminUserUpdate Pydantic model with optional fields: name, email, phone, password, 3) Implemented PATCH /api/admin/update-user/{user_id} endpoint with admin-only access, email/phone uniqueness validation, password hashing, and selective field updates. FRONTEND: 1) Added Edit buttons to all user tabs (Customers, Vendors, Riders) in AdminDashboard, 2) Created comprehensive Edit User Dialog with form fields for name, email, phone, and password (optional), 3) Implemented handleEditUser and handleUpdateUser functions with smart change detection - only sends modified fields to backend, 4) Added proper validation and user feedback with toast notifications, 5) Dialog shows user type and ID for context. ADMIN NOW HAS FULL USER MANAGEMENT: View all users by role, edit credentials, manage wallets, monitor deliveries, and track system-wide statistics. Backend restarted successfully. Ready for testing."
   - agent: "main"
     message: "🎯 WALLET SYSTEM & DELIVERY ENHANCEMENTS COMPLETE: Implemented comprehensive wallet and delivery improvements as requested. BACKEND: 1) Added wallet_balance field to User model (starts at ₹0), 2) Created WalletTransaction model tracking all deposits/debits with balance snapshots, 3) Implemented 4 wallet endpoints: GET /balance, GET /transactions, POST /add-money (MOCK mode - directly credits for demo), POST /payment-callback, 4) Modified order creation to CHECK wallet balance first, then DEDUCT amount and create transaction record, 5) Added delivery_sequence field to Order model, 6) Updated batch-assign-riders to store sequence numbers (1,2,3...) for optimal delivery order. FRONTEND: 1) Fixed Navigate button security issue - replaced window.open() with proper <a> tag to prevent browser blocking, 2) Added delivery sequence badges in RiderDashboard with sorting, 3) Created comprehensive Wallet UI in OrdersPage with balance card, Add Money dialog, and transaction history, 4) Added wallet balance validation in RestaurantPage checkout with color-coded indicators and Add Money redirect. NOTE: Paytm integration is in MOCK mode - directly credits wallet without real payment gateway. For production, need actual Paytm merchant credentials. Installed paytmchecksum==1.7.0. Ready for testing."
   - agent: "testing"
