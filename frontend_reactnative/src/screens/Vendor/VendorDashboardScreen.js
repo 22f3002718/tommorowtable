@@ -279,6 +279,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
+  headerActions: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  headerButton: {
+    padding: 4,
+  },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
