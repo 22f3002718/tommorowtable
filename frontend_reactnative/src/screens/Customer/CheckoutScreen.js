@@ -50,8 +50,8 @@ export default function CheckoutScreen({ route, navigation }) {
   };
 
   const handlePlaceOrder = async () => {
-    if (!address || !latitude || !longitude) {
-      Alert.alert('Location Required', 'Please set your delivery location');
+    if (!address || !latitude || !longitude || !houseNumber || !buildingName) {
+      Alert.alert('Location Required', 'Please set your complete delivery location including house/flat number and building name');
       return;
     }
 
@@ -73,9 +73,9 @@ export default function CheckoutScreen({ route, navigation }) {
     try {
       setLoading(true);
 
-      // Update user location
-      await updateLocation(address, latitude, longitude);
-      await updateUser({ address, latitude, longitude });
+      // Update user location with building details
+      await updateLocation(address, latitude, longitude, houseNumber, buildingName);
+      await updateUser({ address, latitude, longitude, house_number: houseNumber, building_name: buildingName });
 
       // Prepare order data
       const orderData = {
