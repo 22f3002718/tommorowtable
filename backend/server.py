@@ -673,6 +673,28 @@ async def get_vendor_menu(current_user: dict = Depends(get_current_user)):
     
     return menu_items
 
+class RestaurantImageUpdate(BaseModel):
+    image_url: str
+
+@api_router.patch("/vendor/restaurant/image")
+async def update_restaurant_image(image_data: RestaurantImageUpdate, current_user: dict = Depends(get_current_user)):
+    """Update restaurant image URL"""
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Only vendors can update restaurant image")
+    
+    # Get vendor's restaurant
+    restaurant = await db.restaurants.find_one({"vendor_id": current_user['id']})
+    if not restaurant:
+        raise HTTPException(status_code=404, detail="Restaurant not found")
+    
+    # Update image URL
+    await db.restaurants.update_one(
+        {"id": restaurant['id']},
+        {"$set": {"image_url": image_data.image_url}}
+    )
+    
+    return {"message": "Restaurant image updated successfully", "image_url": image_data.image_url}
+
 # Order Routes
 @api_router.post("/orders", response_model=Order)
 async def create_order(order_data: OrderCreate, current_user: dict = Depends(get_current_user)):
