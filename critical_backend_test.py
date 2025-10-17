@@ -44,6 +44,7 @@ class CriticalAPITester:
         except Exception as e:
             self.log(f"❌ Request failed: {e}")
             self.log(f"URL: {url}")
+            self.log(f"Method: {method}, Data: {data}")
             return None
     
     def create_or_login_user(self, email, password, name, role, phone=None):
