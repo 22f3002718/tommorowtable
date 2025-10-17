@@ -95,6 +95,18 @@ export const updateOrderStatus = async (orderId, status) => {
   return response.data;
 };
 
+export const getVendorRestaurant = async () => {
+  const response = await axios.get(`${API_URL}/vendor/restaurant`);
+  return response.data;
+};
+
+export const updateRestaurantImage = async (imageUrl) => {
+  const response = await axios.patch(`${API_URL}/vendor/restaurant/image`, {
+    image_url: imageUrl,
+  });
+  return response.data;
+};
+
 // Rider APIs
 export const getRiderOrders = async () => {
   const response = await axios.get(`${API_URL}/rider/orders`);
