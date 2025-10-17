@@ -349,13 +349,19 @@ async def get_me(current_user: dict = Depends(get_current_user)):
 @api_router.patch("/auth/update-location")
 async def update_location(location_data: LocationUpdate, current_user: dict = Depends(get_current_user)):
     """Update user's location"""
+    update_data = {
+        "address": location_data.address,
+        "latitude": location_data.latitude,
+        "longitude": location_data.longitude
+    }
+    if location_data.house_number:
+        update_data["house_number"] = location_data.house_number
+    if location_data.building_name:
+        update_data["building_name"] = location_data.building_name
+    
     await db.users.update_one(
         {"id": current_user['id']},
-        {"$set": {
-            "address": location_data.address,
-            "latitude": location_data.latitude,
-            "longitude": location_data.longitude
-        }}
+        {"$set": update_data}
     )
     return {"message": "Location updated successfully"}
 
