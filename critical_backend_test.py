@@ -11,7 +11,7 @@ from datetime import datetime
 import uuid
 
 # Get backend URL from environment
-BACKEND_URL = "https://order-route-priority-1.preview.emergentagent.com/api"
+BACKEND_URL = "http://localhost:8001/api"
 
 class CriticalAPITester:
     def __init__(self):
