@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as Location from 'expo-location';
 import { createOrder, getWalletBalance, updateLocation } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
+import LocationPickerModal from '../../components/LocationPickerModal';
 
 export default function CheckoutScreen({ route, navigation }) {
   const { cart, restaurant, totalAmount } = route.params;
