@@ -98,6 +98,53 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleEditUser = (user) => {
+    setSelectedUser(user);
+    setEditFormData({
+      name: user.name || '',
+      email: user.email || '',
+      phone: user.phone || '',
+      password: ''
+    });
+    setShowEditUserDialog(true);
+  };
+
+  const handleUpdateUser = async () => {
+    if (!selectedUser) return;
+
+    try {
+      // Only send fields that have been changed
+      const updateData = {};
+      if (editFormData.name && editFormData.name !== selectedUser.name) {
+        updateData.name = editFormData.name;
+      }
+      if (editFormData.email && editFormData.email !== selectedUser.email) {
+        updateData.email = editFormData.email;
+      }
+      if (editFormData.phone && editFormData.phone !== selectedUser.phone) {
+        updateData.phone = editFormData.phone;
+      }
+      if (editFormData.password) {
+        updateData.password = editFormData.password;
+      }
+
+      if (Object.keys(updateData).length === 0) {
+        toast.error('No changes to save');
+        return;
+      }
+
+      await axios.patch(`${API}/admin/update-user/${selectedUser.id}`, updateData);
+      
+      toast.success(`User ${selectedUser.name} updated successfully`);
+      setShowEditUserDialog(false);
+      setSelectedUser(null);
+      setEditFormData({ name: '', email: '', phone: '', password: '' });
+      fetchData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to update user');
+    }
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       placed: 'bg-blue-100 text-blue-700',
