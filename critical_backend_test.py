@@ -32,11 +32,11 @@ class CriticalAPITester:
         url = f"{self.base_url}{endpoint}"
         try:
             if method.upper() == 'GET':
-                response = requests.get(url, headers=headers, timeout=30, verify=False)
+                response = requests.get(url, headers=headers, timeout=10)
             elif method.upper() == 'POST':
-                response = requests.post(url, json=data, headers=headers, timeout=30, verify=False)
+                response = requests.post(url, json=data, headers=headers, timeout=10)
             elif method.upper() == 'PATCH':
-                response = requests.patch(url, json=data, headers=headers, timeout=30, verify=False)
+                response = requests.patch(url, json=data, headers=headers, timeout=10)
             else:
                 raise ValueError(f"Unsupported method: {method}")
                 
