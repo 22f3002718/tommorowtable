@@ -171,28 +171,33 @@ export default function CheckoutScreen({ route, navigation }) {
           
           <TouchableOpacity
             style={styles.locationButton}
-            onPress={getCurrentLocation}
-            disabled={gettingLocation}
+            onPress={() => setLocationModalVisible(true)}
           >
-            <Icon name="crosshairs-gps" size={20} color="#F97316" />
+            <Icon name="map-marker-plus" size={20} color="#F97316" />
             <Text style={styles.locationButtonText}>
-              {gettingLocation ? 'Getting Location...' : 'Use Current Location'}
+              {address ? 'Change Delivery Location' : 'Enter Delivery Location'}
             </Text>
           </TouchableOpacity>
 
-          <TextInput
-            style={styles.addressInput}
-            placeholder="Enter delivery address"
-            value={address}
-            onChangeText={setAddress}
-            multiline
-            numberOfLines={3}
-          />
-
-          {latitude && longitude && (
-            <Text style={styles.coordsText}>
-              Coordinates: {latitude.toFixed(6)}, {longitude.toFixed(6)}
-            </Text>
+          {address && (
+            <View style={styles.selectedLocationBox}>
+              <View style={styles.locationInfo}>
+                <Icon name="map-marker" size={20} color="#F97316" />
+                <View style={styles.locationDetails}>
+                  <Text style={styles.locationAddress}>{address}</Text>
+                  {houseNumber && buildingName && (
+                    <Text style={styles.locationSubtext}>
+                      {houseNumber}, {buildingName}
+                    </Text>
+                  )}
+                </View>
+              </View>
+              {latitude && longitude && (
+                <Text style={styles.coordsText}>
+                  {latitude.toFixed(6)}, {longitude.toFixed(6)}
+                </Text>
+              )}
+            </View>
           )}
         </View>
 
