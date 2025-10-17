@@ -41,42 +41,12 @@ export default function CheckoutScreen({ route, navigation }) {
     }
   };
 
-  const getCurrentLocation = async () => {
-    try {
-      setGettingLocation(true);
-      
-      // Request permission
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission Denied', 'Location permission is required');
-        return;
-      }
-
-      // Get current location
-      const location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
-      });
-
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
-
-      // Reverse geocode to get address
-      const addresses = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-
-      if (addresses.length > 0) {
-        const addr = addresses[0];
-        const fullAddress = `${addr.street || ''}, ${addr.city || ''}, ${addr.region || ''}`.trim();
-        setAddress(fullAddress);
-      }
-    } catch (error) {
-      console.error('Error getting location:', error);
-      Alert.alert('Error', 'Failed to get current location');
-    } finally {
-      setGettingLocation(false);
-    }
+  const handleLocationSelect = (locationData) => {
+    setLatitude(locationData.latitude);
+    setLongitude(locationData.longitude);
+    setAddress(locationData.address);
+    setHouseNumber(locationData.house_number);
+    setBuildingName(locationData.building_name);
   };
 
   const handlePlaceOrder = async () => {
