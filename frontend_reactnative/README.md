@@ -1,537 +1,244 @@
 # Localtokri React Native Mobile App
 
-A comprehensive React Native mobile application for the Localtokri food delivery platform. This app provides a full-featured mobile experience for customers, vendors, and riders with real-time order management, wallet integration, and location-based delivery tracking.
+> **⚠️ IMPORTANT: This app has been upgraded to Expo SDK 54!**
+> 
+> **For complete SDK 54 setup instructions, please see:**
+> 📖 **[README_SDK54.md](./README_SDK54.md)** - Comprehensive guide for SDK 54 setup and development
+> 
+> **For deployment instructions, see:**
+> 🚀 **[GCP_DEPLOYMENT_GUIDE.md](../GCP_DEPLOYMENT_GUIDE.md)** - Complete production deployment guide
 
-## 📱 Overview
+---
 
-Localtokri is a food delivery application that connects customers with local restaurants for fresh breakfast delivery. The mobile app offers native iOS and Android experiences with features like:
+## 📱 Quick Start (SDK 54)
 
-- **Customer App**: Browse restaurants, order food, manage wallet, track orders
-- **Vendor Dashboard**: Manage orders, update order status in real-time
-- **Rider Dashboard**: View assigned deliveries, navigate to customer locations, update delivery status
+### System Requirements (Updated for SDK 54)
 
-## 🚀 Features
+- **Node.js:** 20.19.4+ (⚠️ Required for SDK 54)
+- **Xcode:** 16.1+ for iOS development (⚠️ Required for SDK 54)
+- **Expo CLI:** Latest version
 
-### Customer Features
-- ✅ User authentication (Login/Register)
-- ✅ Browse restaurants and menus
-- ✅ Add items to cart and place orders
-- ✅ Integrated wallet system with mock payments
-- ✅ Location picker with GPS and manual address entry
-- ✅ Order tracking and history
-- ✅ Rating and review system
-- ✅ Profile management
-
-### Vendor Features
-- ✅ View all restaurant orders
-- ✅ Update order status (Placed → Confirmed → Preparing → Ready)
-- ✅ Real-time order statistics
-- ✅ Order management dashboard
-
-### Rider Features
-- ✅ View assigned deliveries
-- ✅ Delivery sequence optimization
-- ✅ GPS navigation to customer location
-- ✅ Update delivery status
-- ✅ Track completed deliveries
-
-## 📋 Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- **Node.js** (v16 or higher) - [Download](https://nodejs.org/)
-- **npm** or **yarn** package manager
-- **Expo CLI** - Install globally: `npm install -g expo-cli`
-- **Git** - [Download](https://git-scm.com/)
-
-### For iOS Development:
-- **macOS** (required for iOS development)
-- **Xcode** (latest version) - [Download from App Store](https://apps.apple.com/app/xcode/id497799835)
-- **CocoaPods** - Install: `sudo gem install cocoapods`
-
-### For Android Development:
-- **Android Studio** - [Download](https://developer.android.com/studio)
-- **Android SDK** (API Level 30 or higher)
-- **Java Development Kit (JDK)** 11 or higher
-
-### For Testing on Physical Devices:
-- **Expo Go App** - Download from [iOS App Store](https://apps.apple.com/app/expo-go/id982107779) or [Google Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
-
-## 🛠️ Installation & Setup
-
-### Step 1: Clone the Repository
+### Installation
 
 ```bash
-# Navigate to the React Native app directory
+# Navigate to app directory
 cd frontend_reactnative
-```
 
-### Step 2: Install Dependencies
-
-```bash
-# Using npm
-npm install
-
-# OR using yarn (recommended)
+# Install dependencies
 yarn install
+
+# Verify setup
+npx expo-doctor
+
+# Start development server
+yarn start
 ```
 
-### Step 3: Configure API URL
+### What's New in SDK 54?
 
-Open `src/config/api.js` and update the API URL:
+- ✅ **React Native 0.81** - Latest stable version
+- ✅ **React 19.1.0** - Latest React with improved performance
+- ✅ **Reanimated v4** - Smooth 60 FPS animations
+- ✅ **40% faster iOS builds** - Precompiled XCFrameworks
+- ✅ **Android 16 support** - Latest Android compatibility
+- ✅ **Performance optimizations** - Better rendering and state management
 
-```javascript
-// For local development on physical device or emulator
-// Replace with your computer's local IP address
-export const API_URL = 'http://192.168.1.100:8001/api';
+---
 
-// For production
-export const API_URL = 'https://your-production-api.com/api';
-```
+## 📚 Documentation
 
-**Finding your local IP address:**
+### Complete Guides
 
-**On macOS/Linux:**
-```bash
-ifconfig | grep "inet " | grep -v 127.0.0.1
-```
+1. **[README_SDK54.md](./README_SDK54.md)** - Full SDK 54 setup guide
+   - System requirements
+   - Installation steps
+   - Configuration
+   - Running the app
+   - Troubleshooting
+   - SDK 54 migration notes
 
-**On Windows:**
-```bash
-ipconfig
-```
+2. **[GCP_DEPLOYMENT_GUIDE.md](../GCP_DEPLOYMENT_GUIDE.md)** - Production deployment
+   - Backend deployment (Cloud Run)
+   - Database setup (MongoDB Atlas)
+   - Frontend deployment (Firebase Hosting)
+   - Mobile app deployment (Play Store/App Store)
+   - Domain & SSL configuration
+   - CI/CD setup
+   - Monitoring & maintenance
 
-Look for your computer's IPv4 address (usually starts with 192.168.x.x or 10.0.x.x)
+---
 
-### Step 4: Configure Google Maps (Optional but Recommended)
+## 🚀 Quick Reference
 
-The app uses Google Maps for location features. Update the Google Maps API key:
-
-1. **Get a Google Maps API Key:**
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project or select existing one
-   - Enable "Maps SDK for Android" and "Maps SDK for iOS"
-   - Create credentials (API Key)
-   - Restrict the key to your app (optional but recommended)
-
-2. **Update the API key in two places:**
-
-   a. In `app.json`:
-   ```json
-   {
-     "expo": {
-       "android": {
-         "config": {
-           "googleMaps": {
-             "apiKey": "YOUR_GOOGLE_MAPS_API_KEY_HERE"
-           }
-         }
-       }
-     }
-   }
-   ```
-
-   b. In `src/config/api.js`:
-   ```javascript
-   export const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY_HERE';
-   ```
-
-## 🏃 Running the App
-
-### Option 1: Using Expo Go (Easiest for Testing)
-
-1. **Start the development server:**
-   ```bash
-   npm start
-   # OR
-   yarn start
-   # OR
-   expo start
-   ```
-
-2. **Scan the QR code:**
-   - Install **Expo Go** on your phone
-   - iOS: Scan with Camera app
-   - Android: Scan with Expo Go app
-   - Make sure your phone and computer are on the same WiFi network
-
-### Option 2: Running on iOS Simulator (macOS only)
+### Run on Different Platforms
 
 ```bash
-# Start iOS simulator
-npm run ios
-# OR
+# Expo Go (easiest for testing)
+yarn start
+
+# iOS Simulator (macOS only)
 yarn ios
+
+# Android Emulator
+yarn android
+
+# Web
+yarn web
 ```
 
-### Option 3: Running on Android Emulator
+### Clear Cache
 
-1. **Start Android Studio and open AVD Manager**
-2. **Create and start an Android Virtual Device (AVD)**
-3. **Run the app:**
-   ```bash
-   npm run android
-   # OR
-   yarn android
-   ```
+```bash
+# Clear Metro bundler cache
+yarn clean
 
-### Option 4: Running on Physical Device (Development Build)
+# Or
+expo start --clear
+```
 
-For better performance and native features:
+### Build for Production
 
 ```bash
 # Install EAS CLI
 npm install -g eas-cli
 
-# Login to Expo account
-eas login
+# Build Android APK
+eas build --platform android --profile preview
 
-# Configure the project
-eas build:configure
-
-# Build for Android
-eas build --platform android --profile development
-
-# Build for iOS (macOS with Xcode required)
-eas build --platform ios --profile development
+# Build iOS
+eas build --platform ios --profile preview
 ```
 
-## 📱 Testing the App
-
-### Test Accounts
-
-You can create accounts directly in the app or use these test credentials:
-
-**Customer Account:**
-```
-Email: customer@test.com
-Password: test123
-```
-
-**Vendor Account:**
-```
-Email: vendor@test.com
-Password: test123
-```
-
-**Rider Account:**
-```
-Email: rider@test.com
-Password: test123
-```
-
-### Testing Workflow
-
-1. **Customer Flow:**
-   - Register/Login as customer
-   - Browse restaurants
-   - Add items to cart
-   - Add money to wallet
-   - Set delivery location (use GPS or manual entry)
-   - Place order
-   - Track order status
-
-2. **Vendor Flow:**
-   - Login as vendor
-   - View incoming orders
-   - Update order status: Placed → Confirmed → Preparing → Ready
-
-3. **Rider Flow:**
-   - Login as rider
-   - View assigned deliveries
-   - Navigate to customer location
-   - Mark orders as delivered
+---
 
 ## 🏗️ Project Structure
 
 ```
 frontend_reactnative/
-├── App.js                      # Main app entry point
-├── app.json                    # Expo configuration
-├── package.json                # Dependencies
-├── babel.config.js             # Babel configuration
 ├── src/
-│   ├── config/
-│   │   └── api.js             # API configuration
-│   ├── contexts/
-│   │   └── AuthContext.js     # Authentication context
-│   ├── navigation/
-│   │   ├── RootNavigator.js   # Main navigation
-│   │   ├── AuthNavigator.js   # Auth screens navigation
-│   │   ├── CustomerNavigator.js
-│   │   ├── VendorNavigator.js
-│   │   └── RiderNavigator.js
-│   ├── screens/
-│   │   ├── Auth/
-│   │   │   ├── LoginScreen.js
-│   │   │   └── RegisterScreen.js
-│   │   ├── Customer/
-│   │   │   ├── HomeScreen.js
-│   │   │   ├── RestaurantScreen.js
-│   │   │   ├── CheckoutScreen.js
-│   │   │   ├── OrdersScreen.js
-│   │   │   ├── WalletScreen.js
-│   │   │   └── ProfileScreen.js
-│   │   ├── Vendor/
-│   │   │   └── VendorDashboardScreen.js
-│   │   └── Rider/
-│   │       └── RiderDashboardScreen.js
-│   └── services/
-│       └── api.js             # API service functions
-└── assets/                    # Images and fonts
+│   ├── config/          # API configuration
+│   ├── contexts/        # React contexts (Auth)
+│   ├── navigation/      # Navigation setup
+│   ├── screens/         # App screens
+│   │   ├── Auth/        # Login/Register
+│   │   ├── Customer/    # Customer screens
+│   │   ├── Vendor/      # Vendor dashboard
+│   │   └── Rider/       # Rider dashboard
+│   └── services/        # API services
+├── App.js              # Entry point
+├── app.json            # Expo config (SDK 54)
+├── package.json        # Dependencies (SDK 54)
+├── babel.config.js     # Babel + Reanimated
+└── README_SDK54.md     # Full documentation
 ```
-
-## 🔧 Configuration Files
-
-### package.json
-Contains all project dependencies including React Native, Expo, navigation libraries, and UI components.
-
-### app.json
-Expo configuration including app name, icons, splash screen, and platform-specific settings.
-
-### babel.config.js
-Babel transpiler configuration for React Native.
-
-## 📦 Key Dependencies
-
-```json
-{
-  "expo": "~51.0.0",
-  "react": "18.2.0",
-  "react-native": "0.74.5",
-  "@react-navigation/native": "^6.1.17",
-  "@react-navigation/bottom-tabs": "^6.5.20",
-  "axios": "^1.6.8",
-  "@react-native-async-storage/async-storage": "1.23.1",
-  "react-native-maps": "1.14.0",
-  "expo-location": "~17.0.1",
-  "expo-notifications": "~0.28.1",
-  "react-native-paper": "^5.12.3",
-  "expo-linear-gradient": "~13.0.2"
-}
-```
-
-## 🔐 Environment Variables
-
-The app uses the following configuration:
-
-- **API_URL**: Backend API endpoint
-- **GOOGLE_MAPS_API_KEY**: Google Maps API key for location features
-
-Update these in `src/config/api.js`
-
-## 📍 Location Features
-
-The app uses Expo Location API for:
-- Getting user's current GPS location
-- Reverse geocoding (coordinates to address)
-- Google Maps for navigation
-
-**Permissions Required:**
-- iOS: Location When In Use
-- Android: Fine Location, Coarse Location
-
-## 💰 Wallet System
-
-The app includes a mock wallet system:
-- Add money without real payment gateway
-- Automatic balance deduction on orders
-- Transaction history tracking
-- Insufficient balance validation
-
-**Note:** For production, integrate a real payment gateway like Razorpay, Stripe, or Paytm.
-
-## 🚀 Building for Production
-
-### Android APK/AAB
-
-```bash
-# Build APK for testing
-eas build --platform android --profile preview
-
-# Build AAB for Google Play Store
-eas build --platform android --profile production
-```
-
-### iOS IPA
-
-```bash
-# Build for TestFlight/Ad-hoc
-eas build --platform ios --profile preview
-
-# Build for App Store
-eas build --platform ios --profile production
-```
-
-### Submitting to Stores
-
-```bash
-# Submit to Google Play Store
-eas submit --platform android
-
-# Submit to App Store
-eas submit --platform ios
-```
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**1. "Unable to connect to backend"**
-- Ensure backend server is running
-- Check if API_URL in `src/config/api.js` is correct
-- Verify your phone and computer are on the same network
-- Try using your computer's IP address instead of `localhost`
-
-**2. "Network request failed"**
-- Check internet connection
-- Verify backend URL is accessible
-- Check if firewall is blocking connections
-
-**3. "Google Maps not loading"**
-- Verify Google Maps API key is correct
-- Enable Maps SDK for Android/iOS in Google Cloud Console
-- Check API key restrictions
-
-**4. "Location permission denied"**
-- Go to phone Settings → Apps → Localtokri → Permissions
-- Enable Location permission
-
-**5. "Metro bundler connection timeout"**
-- Clear Metro cache: `expo start -c`
-- Restart Expo development server
-- Check if port 19000/19001 is available
-
-### Getting Help
-
-If you encounter issues:
-1. Check the error message in the terminal
-2. Look for errors in the app's console (shake device → "Show Performance Monitor")
-3. Clear cache: `expo start --clear`
-4. Reinstall dependencies: `rm -rf node_modules && yarn install`
-
-## 📚 Additional Resources
-
-- [React Native Documentation](https://reactnative.dev/)
-- [Expo Documentation](https://docs.expo.dev/)
-- [React Navigation Docs](https://reactnavigation.org/)
-- [React Native Maps](https://github.com/react-native-maps/react-native-maps)
-
-## 🤝 Backend Integration
-
-This mobile app connects to the FastAPI backend located in `/app/backend/`. Ensure the backend is running before testing the mobile app.
-
-**Backend Requirements:**
-- Python 3.8+
-- FastAPI
-- MongoDB
-- Running on port 8001 (default)
-
-**API Endpoints Used:**
-- `/api/auth/login` - User authentication
-- `/api/auth/register` - User registration
-- `/api/restaurants` - List restaurants
-- `/api/restaurants/{id}` - Restaurant details
-- `/api/restaurants/{id}/menu` - Menu items
-- `/api/orders` - Create/list orders
-- `/api/wallet/*` - Wallet operations
-- `/api/vendor/*` - Vendor operations
-- `/api/rider/*` - Rider operations
-
-## 📝 Development Notes
-
-### Code Style
-- Use functional components with hooks
-- Follow React Native best practices
-- Use meaningful variable and function names
-- Add comments for complex logic
-
-### State Management
-- Local state with useState for component-level state
-- Context API for global state (Auth)
-- AsyncStorage for persistent data
-
-### API Integration
-- All API calls are centralized in `src/services/api.js`
-- Axios is used for HTTP requests
-- JWT token is stored in AsyncStorage
-- Automatic token attachment to requests
-
-## 🔒 Security Considerations
-
-- JWT tokens stored securely in AsyncStorage
-- API requests over HTTPS in production
-- Input validation on all forms
-- Secure password handling (never stored locally)
-
-## 🎨 UI/UX Design
-
-The app uses a consistent design system:
-- **Primary Color:** Orange (#F97316)
-- **Secondary Color:** Red (#DC2626)
-- **Background:** Light Gray (#F9FAFB)
-- **Text:** Dark Gray (#1F2937)
-
-UI Components:
-- Linear gradients for headers and buttons
-- Card-based layouts
-- Icon-based navigation
-- Responsive design for various screen sizes
-
-## 📱 App Icons and Splash Screen
-
-To customize app icons and splash screen:
-
-1. Replace `assets/icon.png` with your app icon (1024x1024px)
-2. Replace `assets/splash.png` with your splash screen (1242x2436px)
-3. Run `expo prebuild` to generate platform-specific assets
-
-## 🌍 Internationalization (i18n)
-
-Currently, the app is in English. To add multi-language support:
-1. Install `react-native-i18n`
-2. Create translation files
-3. Update UI components to use translated strings
-
-## 🔄 Updates and Maintenance
-
-### Over-the-Air (OTA) Updates
-
-Expo supports OTA updates without app store submissions:
-
-```bash
-# Publish an update
-eas update --branch production --message "Bug fixes"
-```
-
-### Version Management
-
-Update version in `app.json`:
-```json
-{
-  "expo": {
-    "version": "1.0.0",
-    "android": {
-      "versionCode": 1
-    },
-    "ios": {
-      "buildNumber": "1"
-    }
-  }
-}
-```
-
-## 📄 License
-
-This project is part of the Localtokri food delivery platform.
-
-## 👨‍💻 Support
-
-For technical support or questions:
-- Check the troubleshooting section above
-- Review backend API documentation
-- Ensure all dependencies are properly installed
 
 ---
 
-**Happy Coding! 🚀**
+## 🔧 Configuration
+
+### API URL
+
+Update `src/config/api.js`:
+
+```javascript
+export const API_URL = 'http://YOUR_IP:8001/api';
+export const GOOGLE_MAPS_API_KEY = 'YOUR_API_KEY';
+```
+
+### Finding Your Local IP
+
+```bash
+# macOS/Linux
+ifconfig | grep "inet " | grep -v 127.0.0.1
+
+# Windows
+ipconfig
+```
+
+---
+
+## 📦 Tech Stack (SDK 54)
+
+- **Expo SDK:** 54.0
+- **React:** 19.1.0
+- **React Native:** 0.81.0
+- **React Navigation:** 7.x
+- **Reanimated:** 4.x
+- **React Native Maps:** 1.20.1
+- **Expo Location:** 19.x
+- **Expo Notifications:** 0.32.x
+
+---
+
+## 🧪 Test Accounts
+
+```
+Customer: customer@test.com / test123
+Vendor: vendor@test.com / test123
+Rider: rider@test.com / test123
+```
+
+---
+
+## ⚠️ Important Notes
+
+### SDK 54 Requirements
+
+- Node.js **must be** 20.19.4 or higher
+- Xcode **must be** 16.1 or higher (for iOS)
+- Some packages have breaking changes from SDK 51
+
+### Migration from SDK 51
+
+If you're upgrading from SDK 51:
+1. Update Node.js to 20+
+2. Update Xcode to 16.1+ (iOS)
+3. Run `yarn install`
+4. Run `npx expo-doctor`
+5. Clear cache with `expo start --clear`
+
+See [README_SDK54.md](./README_SDK54.md) for detailed migration notes.
+
+---
+
+## 🐛 Common Issues
+
+### "Node.js version not supported"
+**Solution:** Upgrade to Node.js 20.19.4+
+
+### "Xcode version too old"
+**Solution:** Update Xcode to 16.1+ from App Store
+
+### "Unable to connect to backend"
+**Solution:** 
+1. Check API_URL in src/config/api.js
+2. Ensure backend is running
+3. Use IP address, not localhost
+4. Check firewall settings
+
+### "Metro bundler error"
+**Solution:** Clear cache with `expo start --clear`
+
+See [README_SDK54.md](./README_SDK54.md) for complete troubleshooting guide.
+
+---
+
+## 📚 Learn More
+
+- [Expo SDK 54 Changelog](https://expo.dev/changelog/sdk-54)
+- [React Native 0.81 Release](https://reactnative.dev/blog)
+- [React 19 Documentation](https://react.dev)
+- [Reanimated v4 Docs](https://docs.swmansion.com/react-native-reanimated/)
+
+---
+
+## 🤝 Support
+
+For detailed documentation and troubleshooting:
+- 📖 [README_SDK54.md](./README_SDK54.md)
+- 🚀 [GCP_DEPLOYMENT_GUIDE.md](../GCP_DEPLOYMENT_GUIDE.md)
+
+---
+
+**Upgraded to SDK 54 • Built with ❤️ • Ready for Production 🚀**
+
