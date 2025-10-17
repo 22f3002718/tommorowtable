@@ -449,6 +449,18 @@ frontend:
         agent: "main"
         comment: "Added wallet balance display in checkout dialog. Shows balance with color-coded indicator (green if sufficient, red if insufficient). Validates balance before placing order - prevents order if insufficient funds with detailed error message. Provides 'Add Money' button that redirects to Orders page where users can top up their wallet."
 
+  - task: "Admin Edit User Credentials UI"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/AdminDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added comprehensive user edit functionality to AdminDashboard. Features: 1) Edit buttons in Customers, Vendors, and Riders tabs, 2) Edit User Dialog with fields for name, email, phone, and password (optional), 3) handleEditUser and handleUpdateUser functions, 4) Form validation - only sends changed fields to backend, 5) Password field is optional - only updates if provided, 6) Shows user type and ID in dialog, 7) Success/error toasts for user feedback, 8) Refreshes data after successful update. Imported Edit icon from lucide-react."
+
 metadata:
   created_by: "main_agent"
   version: "4.0"
