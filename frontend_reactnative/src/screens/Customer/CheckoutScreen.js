@@ -363,20 +363,36 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#F97316',
   },
-  addressInput: {
+  selectedLocationBox: {
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: '#F9FAFB',
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#E5E7EB',
-    borderRadius: 8,
-    padding: 12,
+  },
+  locationInfo: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  locationDetails: {
+    flex: 1,
+  },
+  locationAddress: {
     fontSize: 14,
     color: '#1F2937',
-    backgroundColor: '#F9FAFB',
-    textAlignVertical: 'top',
+    fontWeight: '500',
+    marginBottom: 4,
   },
-  coordsText: {
+  locationSubtext: {
     fontSize: 12,
     color: '#6B7280',
+  },
+  coordsText: {
+    fontSize: 11,
+    color: '#9CA3AF',
     marginTop: 8,
+    textAlign: 'right',
   },
   instructionsInput: {
     borderWidth: 1,
