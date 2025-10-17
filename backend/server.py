@@ -896,6 +896,20 @@ async def get_orders(current_user: dict = Depends(get_current_user)):
             order['updated_at'] = datetime.fromisoformat(order['updated_at'])
     return orders
 
+@api_router.get("/orders/my-orders", response_model=List[Order])
+async def get_my_orders(current_user: dict = Depends(get_current_user)):
+    """Get orders for customer"""
+    if current_user['role'] != 'customer':
+        raise HTTPException(status_code=403, detail="Only customers can access this endpoint")
+    
+    orders = await db.orders.find({"customer_id": current_user['id']}, {"_id": 0}).sort("placed_at", -1).to_list(1000)
+    for order in orders:
+        if isinstance(order.get('placed_at'), str):
+            order['placed_at'] = datetime.fromisoformat(order['placed_at'])
+        if isinstance(order.get('updated_at'), str):
+            order['updated_at'] = datetime.fromisoformat(order['updated_at'])
+    return orders
+
 @api_router.get("/orders/{order_id}", response_model=Order)
 async def get_order(order_id: str, current_user: dict = Depends(get_current_user)):
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
