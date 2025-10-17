@@ -172,6 +172,8 @@ class Order(BaseModel):
     delivery_address: str
     delivery_latitude: Optional[float] = None
     delivery_longitude: Optional[float] = None
+    house_number: Optional[str] = None
+    building_name: Optional[str] = None
     special_instructions: Optional[str] = None
     status: str = "placed"  # placed, confirmed, preparing, ready, out-for-delivery, delivered, cancelled
     delivery_slot: str  # e.g., "2025-09-25 Morning (7-11 AM)"
