@@ -212,6 +212,53 @@ export default function VendorDashboardScreen() {
           </View>
         }
       />
+
+      {/* Settings Modal */}
+      <Modal
+        visible={settingsModalVisible}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setSettingsModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={() => setSettingsModalVisible(false)}>
+              <Icon name="close" size={24} color="#1F2937" />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Restaurant Settings</Text>
+            <View style={{ width: 24 }} />
+          </View>
+
+          <View style={styles.modalContent}>
+            <Text style={styles.settingLabel}>Restaurant Image URL</Text>
+            <TextInput
+              style={styles.settingInput}
+              placeholder="https://example.com/image.jpg"
+              value={imageUrl}
+              onChangeText={setImageUrl}
+              autoCapitalize="none"
+            />
+            <Text style={styles.settingHint}>
+              Enter a valid image URL for your restaurant
+            </Text>
+
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={handleSaveImage}
+              disabled={savingImage}
+            >
+              <LinearGradient
+                colors={['#F97316', '#DC2626']}
+                style={styles.saveButtonGradient}
+              >
+                <Text style={styles.saveButtonText}>
+                  {savingImage ? 'Saving...' : 'Save Changes'}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
