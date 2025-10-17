@@ -100,6 +100,8 @@ class User(BaseModel):
     address: Optional[str] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    house_number: Optional[str] = None
+    building_name: Optional[str] = None
     push_token: Optional[str] = None
     push_platform: Optional[str] = None
     wallet_balance: float = 0.0
