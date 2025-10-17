@@ -485,23 +485,36 @@ const AdminDashboard = () => {
                           <Store className="w-8 h-8 text-orange-600" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-lg font-bold text-gray-900 mb-1">{vendor.name}</h3>
-                          <p className="text-sm text-gray-600 mb-2">{vendor.email}</p>
-                          {vendor.phone && (
-                            <p className="text-sm text-gray-600 mb-2">📞 {vendor.phone}</p>
-                          )}
-                          {vendor.restaurant && (
-                            <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                              <p className="font-semibold text-gray-900">{vendor.restaurant.name}</p>
-                              <p className="text-sm text-gray-600">{vendor.restaurant.cuisine}</p>
-                              <div className="flex items-center space-x-3 mt-2">
-                                <span className="text-sm text-gray-600">Rating: {vendor.restaurant.rating.toFixed(1)} ⭐</span>
-                                <span className={`text-sm px-2 py-1 rounded ${vendor.restaurant.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                                  {vendor.restaurant.is_active ? 'Active' : 'Inactive'}
-                                </span>
-                              </div>
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold text-gray-900 mb-1">{vendor.name}</h3>
+                              <p className="text-sm text-gray-600 mb-2">{vendor.email}</p>
+                              {vendor.phone && (
+                                <p className="text-sm text-gray-600 mb-2">📞 {vendor.phone}</p>
+                              )}
+                              {vendor.restaurant && (
+                                <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                                  <p className="font-semibold text-gray-900">{vendor.restaurant.name}</p>
+                                  <p className="text-sm text-gray-600">{vendor.restaurant.cuisine}</p>
+                                  <div className="flex items-center space-x-3 mt-2">
+                                    <span className="text-sm text-gray-600">Rating: {vendor.restaurant.rating.toFixed(1)} ⭐</span>
+                                    <span className={`text-sm px-2 py-1 rounded ${vendor.restaurant.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                      {vendor.restaurant.is_active ? 'Active' : 'Inactive'}
+                                    </span>
+                                  </div>
+                                </div>
+                              )}
                             </div>
-                          )}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditUser(vendor)}
+                              className="ml-4"
+                            >
+                              <Edit className="w-4 h-4 mr-2" />
+                              Edit
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
