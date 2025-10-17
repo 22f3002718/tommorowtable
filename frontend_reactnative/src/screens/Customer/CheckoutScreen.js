@@ -232,6 +232,20 @@ export default function CheckoutScreen({ route, navigation }) {
           </LinearGradient>
         </TouchableOpacity>
       </View>
+
+      {/* Location Picker Modal */}
+      <LocationPickerModal
+        visible={locationModalVisible}
+        onClose={() => setLocationModalVisible(false)}
+        onLocationSelect={handleLocationSelect}
+        initialData={{
+          latitude,
+          longitude,
+          address,
+          house_number: houseNumber,
+          building_name: buildingName,
+        }}
+      />
     </ScrollView>
   );
 }
