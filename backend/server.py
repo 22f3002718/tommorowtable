@@ -896,6 +896,7 @@ async def get_orders(current_user: dict = Depends(get_current_user)):
             order['updated_at'] = datetime.fromisoformat(order['updated_at'])
     return orders
 
+# IMPORTANT: This route must come BEFORE /orders/{order_id} to prevent path collision
 @api_router.get("/orders/my-orders", response_model=List[Order])
 async def get_my_orders(current_user: dict = Depends(get_current_user)):
     """Get orders for customer"""
