@@ -13,7 +13,7 @@ from datetime import datetime
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BACKEND_URL = "https://order-route-priority-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://inventory-tracker-178.preview.emergentagent.com/api"
 
 class RouteOptimizationTester:
     def __init__(self):

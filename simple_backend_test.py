@@ -7,7 +7,7 @@ import requests
 import json
 from datetime import datetime
 
-BACKEND_URL = "https://order-route-priority-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://inventory-tracker-178.preview.emergentagent.com/api"
 
 def log(message):
     timestamp = datetime.now().strftime("%H:%M:%S")
