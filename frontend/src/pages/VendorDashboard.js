@@ -281,7 +281,6 @@ const VendorDashboard = () => {
                       <div>
                         <h3 className="text-lg font-bold text-gray-900 mb-1">Order #{order.id.slice(0, 8)}</h3>
                         <p className="text-sm text-gray-600">{order.customer_name}</p>
-                        <p className="text-sm text-gray-500">{order.delivery_address}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
