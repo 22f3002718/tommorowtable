@@ -12,13 +12,14 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getRestaurant, getMenuItems } from '../../services/api';
+import { useCart } from '../../contexts/CartContext';
 
 export default function RestaurantScreen({ route, navigation }) {
   const { restaurantId } = route.params;
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
-  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { addToCart, removeFromCart, getItemQuantity, getRestaurantItems, getRestaurantTotal } = useCart();
 
   useEffect(() => {
     fetchRestaurantData();
