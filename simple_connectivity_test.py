@@ -7,7 +7,7 @@ import requests
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BACKEND_URL = "https://deliveryfix.preview.emergentagent.com/api"
+BACKEND_URL = "https://dashboard-repair-27.preview.emergentagent.com/api"
 
 def test_invalid_token():
     print("Testing invalid token rejection...")

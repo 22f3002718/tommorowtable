@@ -14,7 +14,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Get backend URL from environment
-BACKEND_URL = "https://deliveryfix.preview.emergentagent.com/api"
+BACKEND_URL = "https://dashboard-repair-27.preview.emergentagent.com/api"
 
 class LocalTokriAPITester:
     def __init__(self):
