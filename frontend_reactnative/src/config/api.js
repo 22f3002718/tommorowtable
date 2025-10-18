@@ -4,7 +4,7 @@
 // Example: export const API_URL = 'http://192.168.1.100:8001/api';
 // For production: use your deployed backend URL
 
-export const API_URL = 'https://cdf37d3feeb2.ngrok-free.app/api';
+export const API_URL = 'https://ce9690534407.ngrok-free.app/api';
 
 
 // Google Maps API Key
