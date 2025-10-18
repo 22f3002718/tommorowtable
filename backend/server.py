@@ -1304,12 +1304,6 @@ async def optimize_delivery_routes(
     # Simplified routing algorithm using distance-based clustering
     # For production, you would use Google Cloud Fleet Routing API
     
-    # Calculate distance matrix between all orders
-    locations = [
-        (order['delivery_latitude'], order['delivery_longitude']) 
-        for order in valid_orders
-    ]
-    
     # Use simple clustering: assign orders to riders in a round-robin with nearest neighbor
     num_riders = request.num_riders
     max_orders = request.max_orders_per_rider or (len(valid_orders) // num_riders + 1)
