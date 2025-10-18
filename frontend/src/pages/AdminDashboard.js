@@ -464,6 +464,14 @@ const AdminDashboard = () => {
                               <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                               Add Money
                             </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => handleDeleteUser(customer)}
+                              className="text-xs sm:text-sm px-3 py-2"
+                            >
+                              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                            </Button>
                           </div>
                         </div>
                       </div>
