@@ -749,8 +749,10 @@ async def create_order(order_data: OrderCreate, current_user: dict = Depends(get
     if not restaurant:
         raise HTTPException(status_code=404, detail="Restaurant not found")
     
-    # Calculate total
-    total_amount = sum(item.price * item.quantity for item in order_data.items)
+    # Calculate total with flat delivery fee
+    DELIVERY_FEE = 11.0
+    subtotal = sum(item.price * item.quantity for item in order_data.items)
+    total_amount = subtotal + DELIVERY_FEE
     
     # Check wallet balance
     user = await db.users.find_one({"id": current_user['id']}, {"_id": 0})
@@ -759,7 +761,7 @@ async def create_order(order_data: OrderCreate, current_user: dict = Depends(get
     if wallet_balance < total_amount:
         raise HTTPException(
             status_code=400, 
-            detail=f"Insufficient wallet balance. Required: ₹{total_amount}, Available: ₹{wallet_balance}"
+            detail=f"Insufficient wallet balance. Required: ₹{total_amount:.2f} (₹{subtotal:.2f} + ₹{DELIVERY_FEE} delivery), Available: ₹{wallet_balance:.2f}"
         )
     
     order = Order(
