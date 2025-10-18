@@ -162,19 +162,19 @@ export default function RestaurantScreen({ route, navigation }) {
       {cart.length > 0 && (
         <TouchableOpacity
           style={styles.cartButton}
-          onPress={proceedToCheckout}
+          onPress={() => navigation.navigate('Cart')}
         >
           <LinearGradient
-            colors={['#F97316', '#DC2626']}
+            colors={['#10B981', '#059669']}
             style={styles.cartButtonGradient}
           >
             <View style={styles.cartButtonContent}>
               <View style={styles.cartInfo}>
-                <Text style={styles.cartItems}>{cart.length} items</Text>
-                <Text style={styles.cartTotal}>₹{(getTotalAmount() + DELIVERY_FEE).toFixed(2)}</Text>
+                <Text style={styles.cartItems}>{cart.reduce((sum, item) => sum + item.quantity, 0)} items</Text>
+                <Text style={styles.cartTotal}>₹{totalAmount.toFixed(2)}</Text>
               </View>
               <View style={styles.checkoutButton}>
-                <Text style={styles.checkoutText}>Checkout</Text>
+                <Text style={styles.checkoutText}>View Cart</Text>
                 <Icon name="arrow-right" size={20} color="#fff" />
               </View>
             </View>
