@@ -91,13 +91,20 @@ const VendorDashboard = () => {
     if (!restaurant) return;
 
     try {
-      await axios.post(`${API}/restaurants/${restaurant.id}/menu`, {
+      const itemData = {
         ...newItem,
         price: parseFloat(newItem.price)
-      });
+      };
+      
+      // Add available_count only if it's provided
+      if (newItem.available_count !== '') {
+        itemData.available_count = parseInt(newItem.available_count);
+      }
+      
+      await axios.post(`${API}/restaurants/${restaurant.id}/menu`, itemData);
       toast.success('Menu item added successfully');
       setShowAddItem(false);
-      setNewItem({ name: '', description: '', price: '', category: '', image_url: '' });
+      setNewItem({ name: '', description: '', price: '', category: '', image_url: '', available_count: '' });
       fetchData();
     } catch (error) {
       toast.error('Failed to add menu item');
