@@ -311,10 +311,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FAFB',
     borderRadius: 8,
   },
-  addressText: {
+  addressContent: {
     flex: 1,
+  },
+  addressText: {
     fontSize: 13,
     color: '#6B7280',
+    marginBottom: 4,
+  },
+  addressDetails: {
+    fontSize: 12,
+    color: '#F97316',
+    fontWeight: '600',
   },
   orderItems: {
     marginBottom: 12,
