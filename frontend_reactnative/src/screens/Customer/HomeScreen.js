@@ -177,20 +177,12 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.emptyDesc}>Try searching with different keywords</Text>
           </View>
         ) : (
-          <FlatList
-            data={filteredRestaurants}
-            renderItem={renderRestaurant}
-            keyExtractor={(item) => item.id}
-            numColumns={2}
-            columnWrapperStyle={styles.row}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            contentContainerStyle={styles.listContent}
-          />
+          <View style={styles.restaurantsGrid}>
+            {filteredRestaurants.map((item) => renderRestaurant({ item }))}
+          </View>
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
