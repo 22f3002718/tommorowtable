@@ -210,7 +210,7 @@ export default function RestaurantScreen({ route, navigation }) {
             <View style={styles.cartButtonContent}>
               <View style={styles.cartInfo}>
                 <Text style={styles.cartItems}>{cart.length} items</Text>
-                <Text style={styles.cartTotal}>₹{getTotalAmount().toFixed(2)}</Text>
+                <Text style={styles.cartTotal}>₹{(getTotalAmount() + DELIVERY_FEE).toFixed(2)}</Text>
               </View>
               <View style={styles.checkoutButton}>
                 <Text style={styles.checkoutText}>Checkout</Text>
