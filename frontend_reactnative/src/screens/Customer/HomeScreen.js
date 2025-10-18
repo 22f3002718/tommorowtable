@@ -294,8 +294,8 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   restaurantsSection: {
-    flex: 1,
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -312,12 +312,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#6B7280',
   },
-  row: {
+  restaurantsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 16,
   },
   restaurantCard: {
     width: '48%',
+    marginBottom: 16,
     backgroundColor: '#fff',
     borderRadius: 16,
     overflow: 'hidden',
