@@ -135,6 +135,15 @@ export default function CheckoutScreen({ route, navigation }) {
             </View>
           ))}
           <View style={styles.divider} />
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Subtotal</Text>
+            <Text style={styles.summaryValue}>₹{subtotal.toFixed(2)}</Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Delivery Fee</Text>
+            <Text style={styles.summaryValue}>₹{deliveryFee.toFixed(2)}</Text>
+          </View>
+          <View style={styles.divider} />
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total Amount</Text>
             <Text style={styles.totalAmount}>₹{totalAmount.toFixed(2)}</Text>
