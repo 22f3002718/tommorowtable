@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getMyOrders, getWalletBalance } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 
-export default function OrdersScreen({ navigation }) {
+export default function OrdersScreen({ route, navigation }) {
   const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [walletBalance, setWalletBalance] = useState(0);
@@ -24,6 +24,15 @@ export default function OrdersScreen({ navigation }) {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Auto-refresh when navigated from checkout
+  useEffect(() => {
+    if (route.params?.refresh) {
+      fetchData();
+      // Clear the refresh param
+      navigation.setParams({ refresh: false });
+    }
+  }, [route.params?.refresh]);
 
   const fetchData = async () => {
     try {
