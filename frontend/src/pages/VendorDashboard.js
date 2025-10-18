@@ -153,6 +153,53 @@ const VendorDashboard = () => {
     }
   };
 
+  const handleMarkAllReady = async () => {
+    if (!confirm('Mark all pending orders as ready?')) return;
+    
+    try {
+      const response = await axios.post(`${API}/vendor/mark-all-ready`);
+      toast.success(response.data.message);
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to mark orders as ready');
+      console.error(error);
+    }
+  };
+
+  const handleDownloadCSV = async () => {
+    try {
+      const response = await axios.get(`${API}/vendor/orders/ready/csv`, {
+        responseType: 'blob'
+      });
+      
+      // Create a download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `ready_orders_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('CSV downloaded successfully');
+    } catch (error) {
+      toast.error('Failed to download CSV');
+      console.error(error);
+    }
+  };
+
+  const handleUpdateStock = async (itemId, count) => {
+    try {
+      await axios.patch(`${API}/menu-items/${itemId}/stock`, { available_count: count });
+      toast.success('Stock updated successfully');
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to update stock');
+      console.error(error);
+    }
+  };
+
   const pendingOrders = orders.filter(o => ['placed', 'confirmed'].includes(o.status));
   const activeOrders = orders.filter(o => ['preparing', 'ready'].includes(o.status));
   const completedOrders = orders.filter(o => ['out-for-delivery', 'delivered'].includes(o.status));
