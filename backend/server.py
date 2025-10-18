@@ -248,7 +248,20 @@ class AdminUserUpdate(BaseModel):
     phone: Optional[str] = None
     password: Optional[str] = None
 
+class RestaurantOrderData(BaseModel):
+    restaurant_id: str
+    items: List[OrderItem]
+
 class MultiVendorOrderCreate(BaseModel):
+    restaurants: List[RestaurantOrderData]
+    delivery_address: str
+    delivery_latitude: float
+    delivery_longitude: float
+    house_number: Optional[str] = None
+    building_name: Optional[str] = None
+    special_instructions: Optional[str] = ""
+
+class MultiVendorOrderCreateOld(BaseModel):
     orders: List[OrderCreate]  # Multiple orders for different vendors
     delivery_fee: float = 11.0  # Fixed delivery fee per cart
     cart_id: str  # Unique cart ID to link all orders
