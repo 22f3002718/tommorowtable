@@ -30,7 +30,8 @@ const VendorDashboard = () => {
     description: '',
     price: '',
     category: '',
-    image_url: ''
+    image_url: '',
+    available_count: ''
   });
 
   useEffect(() => {
