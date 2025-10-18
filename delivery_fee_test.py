@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "http://localhost:5000/api"
+BACKEND_URL = "http://localhost:8001/api"
 
 class DeliveryFeeAPITester:
     def __init__(self):
