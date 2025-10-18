@@ -198,12 +198,15 @@ class DeliveryFeeAPITester:
                 return False
         
         # Create order
+        quantity = max(1, int(item_total / 100))  # At least 1 item
+        actual_item_total = quantity * 100.0
+        
         order_data = {
             "restaurant_id": self.restaurant_id,
             "items": [{
                 "menu_item_id": self.menu_item_id,
                 "name": "Test Delivery Item",
-                "quantity": int(item_total / 100),  # Assuming item price is ₹100
+                "quantity": quantity,
                 "price": 100.0
             }],
             "delivery_address": "123 Test Street, Mumbai, India",
