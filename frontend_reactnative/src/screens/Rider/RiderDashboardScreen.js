@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontWeight: '600',
-    color: '#F97316',
+    color: '#10B981',
     marginLeft: 12,
   },
   listContent: {
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sequenceBadge: {
-    backgroundColor: '#F97316',
+    backgroundColor: '#10B981',
     width: 32,
     height: 32,
     borderRadius: 16,
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
   orderAmount: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#F97316',
+    color: '#10B981',
   },
   addressSection: {
     flexDirection: 'row',
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
   },
   addressDetails: {
     fontSize: 12,
-    color: '#F97316',
+    color: '#10B981',
     fontWeight: '600',
   },
   orderItems: {
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
   },
   moreItems: {
     fontSize: 11,
-    color: '#F97316',
+    color: '#10B981',
     fontWeight: '600',
     marginTop: 4,
   },
