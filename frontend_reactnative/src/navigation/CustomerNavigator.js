@@ -28,15 +28,6 @@ function HomeStack() {
         component={RestaurantScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="Checkout" 
-        component={CheckoutScreen}
-        options={{ 
-          title: 'Checkout',
-          headerStyle: { backgroundColor: '#F97316' },
-          headerTintColor: '#fff'
-        }}
-      />
     </Stack.Navigator>
   );
 }
