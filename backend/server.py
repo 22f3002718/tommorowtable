@@ -933,28 +933,28 @@ async def create_multi_vendor_orders(order_data: MultiVendorOrderCreate, current
         "parent_order_id": parent_order_id,
         "total_amount": grand_total
     }
-        status="completed",
-        description=f"Multi-vendor cart payment ({num_vendors} restaurants) + ₹{order_data.delivery_fee} delivery",
-        balance_before=wallet_balance,
-        balance_after=new_balance,
-        completed_at=datetime.now(timezone.utc)
-    )
+    # #     status="completed",
+    # #     description=f"Multi-vendor cart payment ({num_vendors} restaurants) + ₹{order_data.delivery_fee} delivery",
+    # #     balance_before=wallet_balance,
+    # #     balance_after=new_balance,
+    # #     completed_at=datetime.now(timezone.utc)
+    # # )
     
-    debit_dict = debit_transaction.model_dump()
-    debit_dict['created_at'] = debit_dict['created_at'].isoformat()
-    debit_dict['completed_at'] = debit_dict['completed_at'].isoformat()
+    # debit_dict = debit_transaction.model_dump()
+    # debit_dict['created_at'] = debit_dict['created_at'].isoformat()
+    # debit_dict['completed_at'] = debit_dict['completed_at'].isoformat()
     
-    await db.wallet_transactions.insert_one(debit_dict)
+    # await db.wallet_transactions.insert_one(debit_dict)
     
-    return {
-        "message": f"Successfully created {len(created_orders)} orders",
-        "cart_id": order_data.cart_id,
-        "orders": created_orders,
-        "total_amount": total_amount,
-        "subtotal": subtotal,
-        "delivery_fee": order_data.delivery_fee,
-        "new_wallet_balance": new_balance
-    }
+    # return {
+    #     "message": f"Successfully created {len(created_orders)} orders",
+    #     "cart_id": order_data.cart_id,
+    #     "orders": created_orders,
+    #     "total_amount": total_amount,
+    #     "subtotal": subtotal,
+    #     "delivery_fee": order_data.delivery_fee,
+    #     "new_wallet_balance": new_balance
+    # }
 
 @api_router.get("/orders", response_model=List[Order])
 async def get_orders(current_user: dict = Depends(get_current_user)):
