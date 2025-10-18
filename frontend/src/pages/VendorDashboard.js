@@ -269,7 +269,16 @@ const VendorDashboard = () => {
           {/* Pending Orders */}
           {pendingOrders.length > 0 && (
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Pending Orders</h2>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold text-gray-900">Pending Orders</h2>
+                <Button 
+                  onClick={handleMarkAllReady}
+                  className="bg-green-500 hover:bg-green-600"
+                >
+                  <CheckSquare className="w-4 h-4 mr-2" />
+                  Mark All Ready
+                </Button>
+              </div>
               <div className="space-y-4">
                 {pendingOrders.map((order) => (
                   <div 
