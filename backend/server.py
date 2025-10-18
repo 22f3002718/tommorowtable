@@ -779,7 +779,7 @@ async def create_order(order_data: OrderCreate, current_user: dict = Depends(get
         special_instructions=order_data.special_instructions,
         delivery_slot=get_next_delivery_slot(),
         cart_id=order_data.cart_id,
-        delivery_fee=0.0  # Single vendor order - no delivery fee added here
+        delivery_fee=DELIVERY_FEE
     )
     
     order_dict = order.model_dump()
