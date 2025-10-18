@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { ArrowLeft, Package, Store, Bike, Users, TrendingUp, Wallet, UserCircle, Edit } from 'lucide-react';
+import { ArrowLeft, Package, Store, Bike, Users, TrendingUp, Wallet, UserCircle, Edit, Trash2 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
