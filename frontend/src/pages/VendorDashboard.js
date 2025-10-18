@@ -590,6 +590,51 @@ const VendorDashboard = () => {
               )}
             </div>
           </TabsContent>
+          
+          {/* Past Orders Tab */}
+          <TabsContent value="past">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Past Orders</h2>
+              {completedOrders.length > 0 ? (
+                <div className="space-y-4">
+                  {completedOrders.map((order) => (
+                    <div 
+                      key={order.id} 
+                      className="bg-white rounded-xl shadow-md p-6"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">Order #{order.id.slice(0, 8)}</h3>
+                          <p className="text-sm text-gray-600">{order.customer_name}</p>
+                          <p className="text-xs text-gray-500">{new Date(order.placed_at).toLocaleString()}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xl font-bold text-gray-900">₹{order.total_amount.toFixed(2)}</p>
+                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-2 ${getStatusColor(order.status)}`}>
+                            {order.status.toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        {order.items.map((item, idx) => (
+                          <div key={idx} className="flex justify-between text-sm mb-2">
+                            <span>{item.quantity}x {item.name}</span>
+                            <span className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16 bg-white rounded-2xl">
+                  <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-xl text-gray-500">No completed orders yet</p>
+                </div>
+              )}
+            </div>
+          </TabsContent>
         </Tabs>
 
         {/* Add Menu Item Dialog */}
