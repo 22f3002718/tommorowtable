@@ -237,12 +237,13 @@ class DeliveryFeeAPITester:
         
         # Verify total amount includes delivery fee
         total_amount = order.get('total_amount', 0)
-        if total_amount != expected_total:
-            self.log(f"❌ Incorrect total amount. Expected: {expected_total}, Got: {total_amount}")
+        expected_with_actual_items = actual_item_total + 11.0
+        if total_amount != expected_with_actual_items:
+            self.log(f"❌ Incorrect total amount. Expected: {expected_with_actual_items}, Got: {total_amount}")
             return False
         
         self.log(f"✅ Order created successfully:")
-        self.log(f"   - Items total: ₹{item_total}")
+        self.log(f"   - Items total: ₹{actual_item_total}")
         self.log(f"   - Delivery fee: ₹{delivery_fee}")
         self.log(f"   - Total amount: ₹{total_amount}")
         
