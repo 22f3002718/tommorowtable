@@ -259,9 +259,10 @@ const VendorDashboard = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger value="orders" data-testid="orders-tab">Orders</TabsTrigger>
             <TabsTrigger value="menu" data-testid="menu-tab">Menu Management</TabsTrigger>
+            <TabsTrigger value="past" data-testid="past-tab">Past Orders</TabsTrigger>
           </TabsList>
 
           {/* Orders Tab */}
