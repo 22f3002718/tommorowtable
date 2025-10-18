@@ -303,6 +303,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5E7EB',
     marginVertical: 12,
   },
+  summaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+  },
+  summaryLabel: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  summaryValue: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#1F2937',
+  },
   totalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
