@@ -1607,6 +1607,44 @@ async def admin_update_user(
         "user": updated_user
     }
 
+@api_router.delete("/admin/delete-user/{user_id}")
+async def admin_delete_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete a user (admin only) - for vendor/rider/customer roles"""
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    # Get user
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Prevent deleting admin users
+    if user['role'] == 'admin':
+        raise HTTPException(status_code=400, detail="Cannot delete admin users")
+    
+    # Prevent deleting yourself
+    if user_id == current_user['id']:
+        raise HTTPException(status_code=400, detail="Cannot delete your own account")
+    
+    # Delete user
+    await db.users.delete_one({"id": user_id})
+    
+    # If vendor, also delete their restaurant(s) and menu items
+    if user['role'] == 'vendor':
+        restaurants = await db.restaurants.find({"vendor_id": user_id}).to_list(100)
+        restaurant_ids = [r['id'] for r in restaurants]
+        
+        # Delete menu items
+        await db.menu_items.delete_many({"restaurant_id": {"$in": restaurant_ids}})
+        
+        # Delete restaurants
+        await db.restaurants.delete_many({"vendor_id": user_id})
+    
+    return {
+        "message": f"User {user['name']} ({user['role']}) deleted successfully",
+        "user_id": user_id
+    }
+
 # Health check
 @api_router.get("/")
 async def root():
