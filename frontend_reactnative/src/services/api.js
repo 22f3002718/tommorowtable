@@ -23,6 +23,11 @@ export const createOrder = async (orderData) => {
   return response.data;
 };
 
+export const createMultiVendorOrder = async (orderData) => {
+  const response = await axios.post(`${API_URL}/orders/multi-vendor`, orderData);
+  return response.data;
+};
+
 export const getMyOrders = async () => {
   const response = await axios.get(`${API_URL}/orders/my-orders`);
   return response.data;
