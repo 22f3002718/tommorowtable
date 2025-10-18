@@ -136,6 +136,7 @@ class MenuItem(BaseModel):
     category: str
     image_url: Optional[str] = None
     is_available: bool = True
+    available_count: Optional[int] = None  # Number of items available, None means unlimited
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class MenuItemCreate(BaseModel):
@@ -144,6 +145,7 @@ class MenuItemCreate(BaseModel):
     price: float
     category: str
     image_url: Optional[str] = None
+    available_count: Optional[int] = None  # Optional: vendor can set stock count
 
 class OrderItem(BaseModel):
     menu_item_id: str
