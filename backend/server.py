@@ -289,7 +289,6 @@ class PaytmCallbackData(BaseModel):
 
 # Helper function to check if orders are allowed (before midnight)
 def is_ordering_allowed() -> bool:
-    now = datetime.now(timezone.utc)
     # For demo purposes, always allow ordering
     # In production, you'd check if current time is before midnight
     return True
