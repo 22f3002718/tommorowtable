@@ -42,59 +42,19 @@ export default function RestaurantScreen({ route, navigation }) {
     }
   };
 
-  const addToCart = (item) => {
-    const existing = cart.find((c) => c.id === item.id);
-    if (existing) {
-      setCart(
-        cart.map((c) =>
-          c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c
-        )
-      );
-    } else {
-      setCart([...cart, { ...item, quantity: 1 }]);
-    }
+  const handleAddToCart = (item) => {
+    addToCart(item, restaurant);
   };
 
-  const removeFromCart = (item) => {
-    const existing = cart.find((c) => c.id === item.id);
-    if (existing && existing.quantity > 1) {
-      setCart(
-        cart.map((c) =>
-          c.id === item.id ? { ...c, quantity: c.quantity - 1 } : c
-        )
-      );
-    } else {
-      setCart(cart.filter((c) => c.id !== item.id));
-    }
+  const handleRemoveFromCart = (item) => {
+    removeFromCart(item, restaurant.id);
   };
 
-  const getItemQuantity = (itemId) => {
-    const item = cart.find((c) => c.id === itemId);
-    return item ? item.quantity : 0;
-  };
-
-  const getTotalAmount = () => {
-    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  };
-
-  const DELIVERY_FEE = 11.0;
-
-  const proceedToCheckout = () => {
-    if (cart.length === 0) {
-      Alert.alert('Cart Empty', 'Please add items to cart');
-      return;
-    }
-    navigation.navigate('Checkout', {
-      cart,
-      restaurant,
-      subtotal: getTotalAmount(),
-      deliveryFee: DELIVERY_FEE,
-      totalAmount: getTotalAmount() + DELIVERY_FEE,
-    });
-  };
+  const cart = getRestaurantItems(restaurantId);
+  const totalAmount = getRestaurantTotal(restaurantId);
 
   const renderMenuItem = ({ item }) => {
-    const quantity = getItemQuantity(item.id);
+    const quantity = getItemQuantity(item.id, restaurantId);
     
     return (
       <View style={styles.menuItem}>
