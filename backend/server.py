@@ -868,6 +868,8 @@ async def create_multi_vendor_orders(order_data: MultiVendorOrderCreate, current
             delivery_address=vendor_order_data.delivery_address,
             delivery_latitude=vendor_order_data.delivery_latitude,
             delivery_longitude=vendor_order_data.delivery_longitude,
+            house_number=user.get('house_number'),
+            building_name=user.get('building_name'),
             special_instructions=vendor_order_data.special_instructions,
             delivery_slot=delivery_slot,
             cart_id=order_data.cart_id,
