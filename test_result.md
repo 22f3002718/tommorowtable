@@ -467,6 +467,117 @@ frontend:
         agent: "main"
         comment: "Added comprehensive user edit functionality to AdminDashboard. Features: 1) Edit buttons in Customers, Vendors, and Riders tabs, 2) Edit User Dialog with fields for name, email, phone, and password (optional), 3) handleEditUser and handleUpdateUser functions, 4) Form validation - only sends changed fields to backend, 5) Password field is optional - only updates if provided, 6) Shows user type and ID in dialog, 7) Success/error toasts for user feedback, 8) Refreshes data after successful update. Imported Edit icon from lucide-react."
 
+backend:
+  - task: "Flat Rs 11 Delivery Fee Implementation"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added flat Rs 11 delivery fee to all orders. CHANGES: 1) Updated POST /api/orders endpoint to add DELIVERY_FEE constant (11.0), 2) Calculate total as subtotal + DELIVERY_FEE, 3) Updated error messages to show breakdown with delivery fee, 4) Set delivery_fee field in Order model, 5) Updated transaction description to include delivery fee breakdown. Multi-vendor orders continue to use delivery_fee from request (can be Rs 11 flat)."
+
+reactnative:
+  - task: "Rs 11 Delivery Fee Display in Checkout"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend_reactnative/src/screens/Customer/CheckoutScreen.js, /app/frontend_reactnative/src/screens/Customer/RestaurantScreen.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated checkout flow to display Rs 11 delivery fee. CHANGES: 1) RestaurantScreen - Added DELIVERY_FEE constant (11.0), passes subtotal, deliveryFee, and totalAmount to CheckoutScreen, cart button shows total with delivery fee, 2) CheckoutScreen - Receives subtotal and deliveryFee as separate params, displays fee breakdown with summaryRow styles (Subtotal + Delivery Fee = Total), 3) Added summaryRow, summaryLabel, summaryValue styles for the breakdown display."
+
+  - task: "Rider Dashboard - Show Flat and Building Details"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend_reactnative/src/screens/Rider/RiderDashboardScreen.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated RiderDashboardScreen to display house_number and building_name. CHANGES: 1) Wrapped addressText in addressContent View, 2) Added conditional rendering of addressDetails showing 'Flat: {house_number} • Building: {building_name}', 3) Added addressContent and addressDetails styles with orange color for visibility."
+
+  - task: "Make HomeScreen Scrollable"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend_reactnative/src/screens/Customer/HomeScreen.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed HomeScreen to be fully scrollable. CHANGES: 1) Replaced root View with ScrollView, 2) Removed FlatList and replaced with simple map in restaurantsGrid View, 3) Added flexDirection: 'row' and flexWrap: 'wrap' to restaurantsGrid, 4) Removed flex: 1 from restaurantsSection, added paddingBottom, 5) Moved RefreshControl to ScrollView."
+
+  - task: "Auto-refresh OrdersScreen After Order"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend_reactnative/src/screens/Customer/OrdersScreen.js, /app/frontend_reactnative/src/screens/Customer/CheckoutScreen.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented auto-refresh for OrdersScreen after order placement. CHANGES: 1) OrdersScreen - Added route param to function signature, added useEffect to watch route.params.refresh and trigger fetchData, clears refresh param after fetching, 2) CheckoutScreen - Updated navigation to reset to Home first, then navigate to Orders with refresh: true flag."
+
+  - task: "Clear Cart After Order"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend_reactnative/src/screens/Customer/CheckoutScreen.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Cart clearing implemented via navigation reset. When order is placed successfully, navigation.reset is called which resets the stack to Home, effectively clearing the cart state in RestaurantScreen since it's local state. User returns to Home screen with fresh state."
+
+  - task: "Draggable Pin in LocationPickerModal"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend_reactnative/src/components/LocationPickerModal.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Draggable pin is ALREADY IMPLEMENTED! The Marker component has draggable={true} prop and onDragEnd={handleMapPress} which updates coordinates and performs reverse geocoding to get address. No changes needed - feature was already working."
+
+  - task: "Past Orders Screen for Riders"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend_reactnative/src/screens/Rider/PastOrdersScreen.js, /app/frontend_reactnative/src/navigation/RiderNavigator.js, /app/frontend_reactnative/src/screens/Rider/RiderDashboardScreen.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created comprehensive Past Orders screen for riders. CHANGES: 1) Created PastOrdersScreen.js showing filtered delivered orders with sequence badges, address details (flat/building), order items, delivered status badge, delivery slot, 2) Added to RiderNavigator with proper styling, 3) Added 'View Past Deliveries' button in RiderDashboardScreen with history icon, navigates to PastOrders screen, 4) Styled with actionButtonContainer and pastOrdersButton styles."
+
+documentation:
+  - task: "Complete Setup Guide"
+    implemented: true
+    working: true
+    file: "/app/SETUP_GUIDE.md"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Created comprehensive SETUP_GUIDE.md covering: 1) Prerequisites (Node, Python, MongoDB, mobile dev tools), 2) Installation steps for backend, frontend web, and React Native mobile, 3) Running instructions with supervisorctl commands, 4) React Native running options (Expo Go, iOS simulator, Android emulator, physical device), 5) Database seeding and default accounts, 6) Google Maps API configuration, 7) Key features implementation details, 8) Project structure, 9) Troubleshooting common issues, 10) Service URLs and development workflow, 11) Quick start checklist."
+
 metadata:
   created_by: "main_agent"
   version: "4.0"
