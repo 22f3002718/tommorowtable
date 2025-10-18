@@ -93,7 +93,12 @@ export default function HomeScreen({ navigation }) {
   );
 
   return (
-    <View style={styles.container}>
+    <ScrollView 
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {/* Header */}
       <LinearGradient colors={['#F97316', '#DC2626']} style={styles.header}>
         <View style={styles.headerTop}>
