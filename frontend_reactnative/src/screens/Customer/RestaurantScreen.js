@@ -114,7 +114,7 @@ export default function RestaurantScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <LinearGradient colors={['#F97316', '#DC2626']} style={styles.header}>
+      <LinearGradient colors={['#10B981', '#059669']} style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
