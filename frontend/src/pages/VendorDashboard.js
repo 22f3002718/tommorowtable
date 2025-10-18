@@ -361,14 +361,24 @@ const VendorDashboard = () => {
                     You have {activeOrders.filter(o => o.status === 'ready').length} orders ready. 
                     Optimize delivery routes to save time and assign multiple orders to riders efficiently.
                   </p>
-                  <Button
-                    onClick={() => setShowRouteOptimization(true)}
-                    className="bg-orange-500 hover:bg-orange-600"
-                    disabled={availableRiders.length === 0}
-                  >
-                    <TrendingUp className="w-4 h-4 mr-2" />
-                    Batch & Route Optimize
-                  </Button>
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={() => setShowRouteOptimization(true)}
+                      className="bg-orange-500 hover:bg-orange-600"
+                      disabled={availableRiders.length === 0}
+                    >
+                      <TrendingUp className="w-4 h-4 mr-2" />
+                      Batch & Route Optimize
+                    </Button>
+                    <Button
+                      onClick={handleDownloadCSV}
+                      variant="outline"
+                      className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download CSV
+                    </Button>
+                  </div>
                   {availableRiders.length === 0 && (
                     <p className="text-sm text-red-600 mt-2">
                       No riders available. Please ensure riders are registered.
