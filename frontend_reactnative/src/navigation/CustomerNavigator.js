@@ -62,7 +62,31 @@ function OrdersStack() {
   );
 }
 
+function CartStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="CartMain" 
+        component={CartScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="Checkout" 
+        component={CheckoutScreen}
+        options={{ 
+          title: 'Checkout',
+          headerStyle: { backgroundColor: '#10B981' },
+          headerTintColor: '#fff'
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 export default function CustomerNavigator() {
+  const { getTotalItems } = useCart();
+  const cartItemCount = getTotalItems();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -73,20 +97,58 @@ export default function CustomerNavigator() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Orders') {
             iconName = focused ? 'receipt' : 'receipt-outline';
+          } else if (route.name === 'Cart') {
+            iconName = focused ? 'cart' : 'cart-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'account' : 'account-outline';
           }
 
+          // Add badge for cart
+          if (route.name === 'Cart' && cartItemCount > 0) {
+            return (
+              <View style={styles.iconContainer}>
+                <Icon name={iconName} size={size} color={color} />
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{cartItemCount}</Text>
+                </View>
+              </View>
+            );
+          }
+
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#F97316',
+        tabBarActiveTintColor: '#10B981',
         tabBarInactiveTintColor: 'gray',
         headerShown: false,
       })}
     >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Orders" component={OrdersStack} />
+      <Tab.Screen name="Cart" component={CartStack} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    position: 'relative',
+  },
+  badge: {
+    position: 'absolute',
+    right: -6,
+    top: -4,
+    backgroundColor: '#EF4444',
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+});
