@@ -1119,6 +1119,51 @@ async def mark_all_orders_ready(current_user: dict = Depends(get_current_user)):
     
     return {"message": f"Marked {result.modified_count} orders as ready"}
 
+@api_router.get("/vendor/orders/ready/csv")
+async def download_ready_orders_csv(current_user: dict = Depends(get_current_user)):
+    """Download ready orders as CSV file with OrderID and Items"""
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Only vendors can download orders")
+    
+    # Get vendor's restaurant(s)
+    restaurants = await db.restaurants.find({"vendor_id": current_user['id']}).to_list(100)
+    restaurant_ids = [r['id'] for r in restaurants]
+    
+    # Get all ready orders
+    orders = await db.orders.find(
+        {
+            "restaurant_id": {"$in": restaurant_ids},
+            "status": "ready"
+        },
+        {"_id": 0}
+    ).sort("placed_at", -1).to_list(1000)
+    
+    # Create CSV in memory
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # Write header
+    writer.writerow(['Order ID', 'Items'])
+    
+    # Write data
+    for order in orders:
+        order_id = order['id']
+        # Format items as "ItemName x Quantity"
+        items_str = "; ".join([f"{item['name']} x {item['quantity']}" for item in order.get('items', [])])
+        writer.writerow([order_id, items_str])
+    
+    # Prepare response
+    output.seek(0)
+    response = StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f"attachment; filename=ready_orders_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        }
+    )
+    
+    return response
+
 @api_router.get("/vendor/orders/completed", response_model=List[Order])
 async def get_vendor_completed_orders(current_user: dict = Depends(get_current_user)):
     """Get completed/delivered orders for vendor's restaurants"""
