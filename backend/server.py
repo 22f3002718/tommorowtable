@@ -1211,9 +1211,6 @@ async def get_rider_completed_orders(current_user: dict = Depends(get_current_us
         if isinstance(order.get('updated_at'), str):
             order['updated_at'] = datetime.fromisoformat(order['updated_at'])
     return orders
-    
-    await db.orders.update_one({"id": order_id}, {"$set": update_data})
-    return {"message": "Rating submitted successfully"}
 
 # Rider Routes
 @api_router.get("/riders/available")
