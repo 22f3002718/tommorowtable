@@ -836,58 +836,60 @@ async def create_multi_vendor_orders(order_data: MultiVendorOrderCreate, current
     if not is_ordering_allowed():
         raise HTTPException(status_code=400, detail="Orders closed for today. Please order tomorrow for next-morning delivery.")
     
-    # Calculate total amount across all orders
-    subtotal = 0
-    for order in order_data.orders:
-        order_subtotal = sum(item.price * item.quantity for item in order.items)
-        subtotal += order_subtotal
+    DELIVERY_FEE_PER_RESTAURANT = 11.0
     
-    total_amount = subtotal + order_data.delivery_fee
+    # Calculate total amount across all restaurants
+    subtotal = 0
+    num_restaurants = len(order_data.restaurants)
+    
+    for restaurant_data in order_data.restaurants:
+        restaurant_subtotal = sum(item.price * item.quantity for item in restaurant_data.items)
+        subtotal += restaurant_subtotal
+    
+    total_delivery_fee = DELIVERY_FEE_PER_RESTAURANT * num_restaurants
+    grand_total = subtotal + total_delivery_fee
     
     # Check wallet balance
     user = await db.users.find_one({"id": current_user['id']}, {"_id": 0})
     wallet_balance = user.get('wallet_balance', 0.0)
     
-    if wallet_balance < total_amount:
+    if wallet_balance < grand_total:
         raise HTTPException(
             status_code=400, 
-            detail=f"Insufficient wallet balance. Required: ₹{total_amount:.2f} (₹{subtotal:.2f} + ₹{order_data.delivery_fee:.2f} delivery), Available: ₹{wallet_balance:.2f}"
+            detail=f"Insufficient wallet balance. Required: ₹{grand_total:.2f} (₹{subtotal:.2f} + ₹{total_delivery_fee:.2f} delivery), Available: ₹{wallet_balance:.2f}"
         )
     
-    # Create orders for each vendor
+    # Create orders for each restaurant
     created_orders = []
     delivery_slot = get_next_delivery_slot()
+    parent_order_id = str(uuid.uuid4())  # Link all orders from same cart
     
-    # Distribute delivery fee across vendors (proportionally or equally)
-    num_vendors = len(order_data.orders)
-    delivery_fee_per_vendor = order_data.delivery_fee / num_vendors if num_vendors > 0 else 0
-    
-    for vendor_order_data in order_data.orders:
+    for restaurant_data in order_data.restaurants:
         # Get restaurant details
-        restaurant = await db.restaurants.find_one({"id": vendor_order_data.restaurant_id})
+        restaurant = await db.restaurants.find_one({"id": restaurant_data.restaurant_id})
         if not restaurant:
             continue  # Skip if restaurant not found
         
         # Calculate order subtotal
-        order_subtotal = sum(item.price * item.quantity for item in vendor_order_data.items)
-        order_total = order_subtotal + delivery_fee_per_vendor
+        restaurant_subtotal = sum(item.price * item.quantity for item in restaurant_data.items)
+        restaurant_total = restaurant_subtotal + DELIVERY_FEE_PER_RESTAURANT
         
         order = Order(
             customer_id=current_user['id'],
             customer_name=current_user['name'],
-            restaurant_id=vendor_order_data.restaurant_id,
+            restaurant_id=restaurant_data.restaurant_id,
             restaurant_name=restaurant['name'],
-            items=vendor_order_data.items,
-            total_amount=order_total,
-            delivery_address=vendor_order_data.delivery_address,
-            delivery_latitude=vendor_order_data.delivery_latitude,
-            delivery_longitude=vendor_order_data.delivery_longitude,
-            house_number=user.get('house_number'),
-            building_name=user.get('building_name'),
-            special_instructions=vendor_order_data.special_instructions,
+            items=restaurant_data.items,
+            total_amount=restaurant_total,
+            delivery_address=order_data.delivery_address,
+            delivery_latitude=order_data.delivery_latitude,
+            delivery_longitude=order_data.delivery_longitude,
+            house_number=order_data.house_number or '',
+            building_name=order_data.building_name or '',
+            special_instructions=order_data.special_instructions,
             delivery_slot=delivery_slot,
-            cart_id=order_data.cart_id,
-            delivery_fee=delivery_fee_per_vendor
+            delivery_fee=DELIVERY_FEE_PER_RESTAURANT,
+            parent_order_id=parent_order_id  # Link to cart
         )
         
         order_dict = order.model_dump()
@@ -898,7 +900,7 @@ async def create_multi_vendor_orders(order_data: MultiVendorOrderCreate, current
         created_orders.append(order)
     
     # Deduct total amount from wallet
-    new_balance = wallet_balance - total_amount
+    new_balance = wallet_balance - grand_total
     await db.users.update_one(
         {"id": current_user['id']},
         {"$set": {"wallet_balance": new_balance}}
@@ -908,9 +910,29 @@ async def create_multi_vendor_orders(order_data: MultiVendorOrderCreate, current
     debit_transaction = WalletTransaction(
         user_id=current_user['id'],
         transaction_type="debit",
-        amount=total_amount,
+        amount=grand_total,
         payment_method="order_debit",
-        order_id=order_data.cart_id,  # Use cart_id for reference
+        order_id=parent_order_id,
+        status="completed",
+        description=f"Order payment: {num_restaurants} restaurant(s) - ₹{subtotal:.2f} items + ₹{total_delivery_fee:.2f} delivery",
+        balance_before=wallet_balance,
+        balance_after=new_balance,
+        completed_at=datetime.now(timezone.utc)
+    )
+    
+    transaction_dict = debit_transaction.model_dump()
+    transaction_dict['created_at'] = transaction_dict['created_at'].isoformat()
+    if transaction_dict.get('completed_at'):
+        transaction_dict['completed_at'] = transaction_dict['completed_at'].isoformat()
+    
+    await db.wallet_transactions.insert_one(transaction_dict)
+    
+    return {
+        "message": f"Successfully created {len(created_orders)} orders",
+        "orders": [order.model_dump() for order in created_orders],
+        "parent_order_id": parent_order_id,
+        "total_amount": grand_total
+    }
         status="completed",
         description=f"Multi-vendor cart payment ({num_vendors} restaurants) + ₹{order_data.delivery_fee} delivery",
         balance_before=wallet_balance,
