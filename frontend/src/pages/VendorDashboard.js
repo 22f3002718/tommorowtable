@@ -626,6 +626,13 @@ const VendorDashboard = () => {
                 value={newItem.image_url}
                 onChange={(e) => setNewItem({...newItem, image_url: e.target.value})}
               />
+              <Input
+                type="number"
+                min="0"
+                placeholder="Available Count (optional, leave empty for unlimited)"
+                value={newItem.available_count}
+                onChange={(e) => setNewItem({...newItem, available_count: e.target.value})}
+              />
               <div className="flex space-x-3">
                 <Button type="submit" className="flex-1 bg-green-500 hover:bg-green-600">
                   Add Item
