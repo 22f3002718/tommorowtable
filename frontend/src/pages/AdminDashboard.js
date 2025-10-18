@@ -145,6 +145,20 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteUser = async (user) => {
+    if (!confirm(`Are you sure you want to delete ${user.name}? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${API}/admin/delete-user/${user.id}`);
+      toast.success(`User ${user.name} deleted successfully`);
+      fetchData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to delete user');
+    }
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       placed: 'bg-blue-100 text-blue-700',
