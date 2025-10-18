@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://inventory-tracker-178.preview.emergentagent.com/api"
+BACKEND_URL = "https://deliveryfix.preview.emergentagent.com/api"
 
 class QuickBiteAPITester:
     def __init__(self):

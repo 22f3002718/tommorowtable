@@ -11,7 +11,7 @@ import urllib3
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BACKEND_URL = "https://inventory-tracker-178.preview.emergentagent.com/api"
+BACKEND_URL = "https://deliveryfix.preview.emergentagent.com/api"
 
 def test_registration():
     """Test registration with unique email addresses"""
