@@ -76,6 +76,8 @@ export default function RestaurantScreen({ route, navigation }) {
     return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   };
 
+  const DELIVERY_FEE = 11.0;
+
   const proceedToCheckout = () => {
     if (cart.length === 0) {
       Alert.alert('Cart Empty', 'Please add items to cart');
@@ -84,7 +86,9 @@ export default function RestaurantScreen({ route, navigation }) {
     navigation.navigate('Checkout', {
       cart,
       restaurant,
-      totalAmount: getTotalAmount(),
+      subtotal: getTotalAmount(),
+      deliveryFee: DELIVERY_FEE,
+      totalAmount: getTotalAmount() + DELIVERY_FEE,
     });
   };
 
