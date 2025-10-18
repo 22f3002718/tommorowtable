@@ -135,13 +135,13 @@ export default function RiderDashboardScreen({ navigation }) {
     </View>
   );
 
-  const activeOrders = orders.filter(o => o.status === 'out-for-delivery');
+  const activeOrders = orders.filter(o => o.status !== 'delivered').sort((a, b) => (a.delivery_sequence || 0) - (b.delivery_sequence || 0));
   const completedOrders = orders.filter(o => o.status === 'delivered');
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* Header */}
-      <LinearGradient colors={['#F97316', '#DC2626']} style={styles.header}>
+      <LinearGradient colors={['#10B981', '#059669']} style={styles.header}>
         <View style={styles.headerTop}>
           <Text style={styles.headerTitle}>Rider Dashboard</Text>
           <TouchableOpacity onPress={logout}>
@@ -154,7 +154,7 @@ export default function RiderDashboardScreen({ navigation }) {
       {/* Stats */}
       <View style={styles.statsContainer}>
         <View style={styles.statCard}>
-          <Icon name="truck-delivery" size={32} color="#F97316" />
+          <Icon name="truck-delivery" size={32} color="#10B981" />
           <Text style={styles.statValue}>{activeOrders.length}</Text>
           <Text style={styles.statLabel}>Active Deliveries</Text>
         </View>
@@ -171,32 +171,96 @@ export default function RiderDashboardScreen({ navigation }) {
           style={styles.pastOrdersButton}
           onPress={() => navigation.navigate('PastOrders')}
         >
-          <Icon name="history" size={20} color="#F97316" />
+          <Icon name="history" size={20} color="#10B981" />
           <Text style={styles.pastOrdersText}>View Past Deliveries</Text>
-          <Icon name="chevron-right" size={20} color="#F97316" />
+          <Icon name="chevron-right" size={20} color="#10B981" />
         </TouchableOpacity>
       </View>
 
       {/* Orders List */}
-      <FlatList
-        data={activeOrders.length > 0 ? activeOrders : orders}
-        renderItem={renderOrder}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        ListHeaderComponent={
-          activeOrders.length > 0 ? (
-            <Text style={styles.sectionTitle}>Active Deliveries</Text>
-          ) : null
-        }
-        ListEmptyComponent={
-          <View style={styles.emptyState}>
-            <Icon name="truck-delivery" size={60} color="#D1D5DB" />
-            <Text style={styles.emptyText}>No deliveries assigned</Text>
+      {activeOrders.length > 0 && (
+        <Text style={styles.sectionTitle}>Active Deliveries</Text>
+      )}
+
+      {activeOrders.length > 0 ? (
+        activeOrders.map((item) => (
+          <View key={item.id} style={styles.orderCard}>
+            <View style={styles.orderHeader}>
+              <View style={styles.orderInfo}>
+                {item.delivery_sequence && (
+                  <View style={styles.sequenceBadge}>
+                    <Text style={styles.sequenceText}>#{item.delivery_sequence}</Text>
+                  </View>
+                )}
+                <View>
+                  <Text style={styles.customerName}>{item.customer_name}</Text>
+                  <Text style={styles.restaurantName}>{item.restaurant_name}</Text>
+                </View>
+              </View>
+              <Text style={styles.orderAmount}>₹{item.total_amount.toFixed(2)}</Text>
+            </View>
+
+            <View style={styles.addressSection}>
+              <Icon name="map-marker" size={16} color="#6B7280" />
+              <View style={styles.addressContent}>
+                <Text style={styles.addressText} numberOfLines={2}>
+                  {item.delivery_address}
+                </Text>
+                {(item.house_number || item.building_name) && (
+                  <Text style={styles.addressDetails}>
+                    {item.house_number && `Flat: ${item.house_number}`}
+                    {item.house_number && item.building_name && ' • '}
+                    {item.building_name && `Building: ${item.building_name}`}
+                  </Text>
+                )}
+              </View>
+            </View>
+
+            <View style={styles.orderItems}>
+              {item.items.slice(0, 2).map((orderItem, index) => (
+                <Text key={index} style={styles.orderItemText}>
+                  {orderItem.name} x {orderItem.quantity}
+                </Text>
+              ))}
+              {item.items.length > 2 && (
+                <Text style={styles.moreItems}>+{item.items.length - 2} more items</Text>
+              )}
+            </View>
+
+            <View style={styles.actionButtons}>
+              <TouchableOpacity
+                style={styles.navigateButton}
+                onPress={() => openNavigation(
+                  item.delivery_latitude,
+                  item.delivery_longitude,
+                  item.delivery_address
+                )}
+              >
+                <Icon name="navigation" size={16} color="#fff" />
+                <Text style={styles.navigateButtonText}>Navigate</Text>
+              </TouchableOpacity>
+
+              {item.status === 'out-for-delivery' && (
+                <TouchableOpacity
+                  style={styles.deliveredButton}
+                  onPress={() => handleUpdateStatus(item.id, item.status)}
+                >
+                  <Icon name="check" size={16} color="#fff" />
+                  <Text style={styles.deliveredButtonText}>Mark Delivered</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        }
-      />
-    </View>
+        ))
+      ) : (
+        <View style={styles.emptyState}>
+          <Icon name="truck-delivery" size={60} color="#D1D5DB" />
+          <Text style={styles.emptyText}>No deliveries assigned</Text>
+        </View>
+      )}
+
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    </ScrollView>
   );
 }
 
