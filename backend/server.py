@@ -1089,6 +1089,78 @@ async def update_rider_order_status(order_id: str, status_update: OrderStatusUpd
     
     await db.orders.update_one({"id": order_id}, {"$set": update_data})
     return {"message": "Order status updated", "status": status_update.status}
+
+@api_router.post("/vendor/mark-all-ready")
+async def mark_all_orders_ready(current_user: dict = Depends(get_current_user)):
+    """Mark all placed/confirmed/preparing orders as ready for the vendor's restaurant"""
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Only vendors can mark orders as ready")
+    
+    # Get vendor's restaurant(s)
+    restaurants = await db.restaurants.find({"vendor_id": current_user['id']}).to_list(100)
+    restaurant_ids = [r['id'] for r in restaurants]
+    
+    # Update all orders that are in placed, confirmed, or preparing status
+    result = await db.orders.update_many(
+        {
+            "restaurant_id": {"$in": restaurant_ids},
+            "status": {"$in": ["placed", "confirmed", "preparing"]}
+        },
+        {
+            "$set": {
+                "status": "ready",
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }
+        }
+    )
+    
+    return {"message": f"Marked {result.modified_count} orders as ready"}
+
+@api_router.get("/vendor/orders/completed", response_model=List[Order])
+async def get_vendor_completed_orders(current_user: dict = Depends(get_current_user)):
+    """Get completed/delivered orders for vendor's restaurants"""
+    if current_user['role'] != 'vendor':
+        raise HTTPException(status_code=403, detail="Only vendors can access this endpoint")
+    
+    # Get vendor's restaurant(s)
+    restaurants = await db.restaurants.find({"vendor_id": current_user['id']}).to_list(100)
+    restaurant_ids = [r['id'] for r in restaurants]
+    
+    orders = await db.orders.find(
+        {
+            "restaurant_id": {"$in": restaurant_ids},
+            "status": {"$in": ["delivered", "cancelled"]}
+        },
+        {"_id": 0}
+    ).sort("placed_at", -1).to_list(1000)
+    
+    for order in orders:
+        if isinstance(order.get('placed_at'), str):
+            order['placed_at'] = datetime.fromisoformat(order['placed_at'])
+        if isinstance(order.get('updated_at'), str):
+            order['updated_at'] = datetime.fromisoformat(order['updated_at'])
+    return orders
+
+@api_router.get("/rider/orders/completed", response_model=List[Order])
+async def get_rider_completed_orders(current_user: dict = Depends(get_current_user)):
+    """Get completed/delivered orders for rider"""
+    if current_user['role'] != 'rider':
+        raise HTTPException(status_code=403, detail="Only riders can access this endpoint")
+    
+    orders = await db.orders.find(
+        {
+            "rider_id": current_user['id'],
+            "status": {"$in": ["delivered", "cancelled"]}
+        },
+        {"_id": 0}
+    ).sort("placed_at", -1).to_list(1000)
+    
+    for order in orders:
+        if isinstance(order.get('placed_at'), str):
+            order['placed_at'] = datetime.fromisoformat(order['placed_at'])
+        if isinstance(order.get('updated_at'), str):
+            order['updated_at'] = datetime.fromisoformat(order['updated_at'])
+    return orders
     
     await db.orders.update_one({"id": order_id}, {"$set": update_data})
     return {"message": "Rating submitted successfully"}
