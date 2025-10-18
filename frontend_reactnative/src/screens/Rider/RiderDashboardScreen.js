@@ -84,9 +84,18 @@ export default function RiderDashboardScreen() {
 
       <View style={styles.addressSection}>
         <Icon name="map-marker" size={16} color="#6B7280" />
-        <Text style={styles.addressText} numberOfLines={2}>
-          {item.delivery_address}
-        </Text>
+        <View style={styles.addressContent}>
+          <Text style={styles.addressText} numberOfLines={2}>
+            {item.delivery_address}
+          </Text>
+          {(item.house_number || item.building_name) && (
+            <Text style={styles.addressDetails}>
+              {item.house_number && `Flat: ${item.house_number}`}
+              {item.house_number && item.building_name && ' • '}
+              {item.building_name && `Building: ${item.building_name}`}
+            </Text>
+          )}
+        </View>
       </View>
 
       <View style={styles.orderItems}>
