@@ -129,13 +129,24 @@ class DeliveryFeeAPITester:
             self.log("❌ Failed to get vendor restaurant")
             return False
         
-        # Create a test menu item
-        menu_item_data = {
-            "name": "Test Delivery Item",
-            "description": "Item for testing delivery fee",
-            "price": 100.0,  # Rs 100 for easy calculation
-            "category": "Test Category"
-        }
+        # Create test menu items with different prices
+        menu_items_data = [
+            {
+                "name": "Test Item 100",
+                "description": "₹100 item for testing",
+                "price": 100.0,
+                "category": "Test Category"
+            },
+            {
+                "name": "Test Item 50", 
+                "description": "₹50 item for testing",
+                "price": 50.0,
+                "category": "Test Category"
+            }
+        ]
+        
+        self.menu_items = []
+        for menu_item_data in menu_items_data:
         
         response = self.make_request('POST', f'/restaurants/{self.restaurant_id}/menu', menu_item_data, headers)
         if response and response.status_code == 200:
