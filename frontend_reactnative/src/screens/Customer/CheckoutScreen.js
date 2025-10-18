@@ -101,7 +101,14 @@ export default function CheckoutScreen({ route, navigation }) {
         [
           {
             text: 'OK',
-            onPress: () => navigation.navigate('Orders'),
+            onPress: () => {
+              // Navigate to Orders screen and trigger refresh
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Home' }],
+              });
+              navigation.navigate('Orders', { refresh: true });
+            },
           },
         ]
       );
