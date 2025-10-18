@@ -165,6 +165,18 @@ export default function RiderDashboardScreen({ navigation }) {
         </View>
       </View>
 
+      {/* Past Orders Button */}
+      <View style={styles.actionButtonContainer}>
+        <TouchableOpacity
+          style={styles.pastOrdersButton}
+          onPress={() => navigation.navigate('PastOrders')}
+        >
+          <Icon name="history" size={20} color="#F97316" />
+          <Text style={styles.pastOrdersText}>View Past Deliveries</Text>
+          <Icon name="chevron-right" size={20} color="#F97316" />
+        </TouchableOpacity>
+      </View>
+
       {/* Orders List */}
       <FlatList
         data={activeOrders.length > 0 ? activeOrders : orders}
