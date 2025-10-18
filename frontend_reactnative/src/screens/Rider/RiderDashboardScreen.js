@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getRiderOrders, updateDeliveryStatus } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 
-export default function RiderDashboardScreen() {
+export default function RiderDashboardScreen({ navigation }) {
   const { user, logout } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
