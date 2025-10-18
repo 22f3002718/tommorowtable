@@ -1,13 +1,16 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from '../screens/Customer/HomeScreen';
 import RestaurantScreen from '../screens/Customer/RestaurantScreen';
 import OrdersScreen from '../screens/Customer/OrdersScreen';
+import CartScreen from '../screens/Customer/CartScreen';
 import ProfileScreen from '../screens/Customer/ProfileScreen';
 import WalletScreen from '../screens/Customer/WalletScreen';
 import CheckoutScreen from '../screens/Customer/CheckoutScreen';
+import { useCart } from '../contexts/CartContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
