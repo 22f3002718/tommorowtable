@@ -205,7 +205,6 @@ const VendorDashboard = () => {
 
   const pendingOrders = orders.filter(o => ['placed', 'confirmed'].includes(o.status));
   const activeOrders = orders.filter(o => ['preparing', 'ready'].includes(o.status));
-  const completedOrders = orders.filter(o => ['out-for-delivery', 'delivered'].includes(o.status));
 
   return (
     <div className="min-h-screen bg-gray-50">
