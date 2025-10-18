@@ -889,7 +889,7 @@ async def create_multi_vendor_orders(order_data: MultiVendorOrderCreate, current
             special_instructions=order_data.special_instructions,
             delivery_slot=delivery_slot,
             delivery_fee=DELIVERY_FEE_PER_RESTAURANT,
-            parent_order_id=parent_order_id  # Link to cart
+            cart_id=parent_order_id  # Link to cart
         )
         
         order_dict = order.model_dump()
