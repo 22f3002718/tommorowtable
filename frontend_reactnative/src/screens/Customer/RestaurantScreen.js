@@ -76,14 +76,14 @@ export default function RestaurantScreen({ route, navigation }) {
             <View style={styles.quantityControl}>
               <TouchableOpacity
                 style={styles.quantityButton}
-                onPress={() => removeFromCart(item)}
+                onPress={() => handleRemoveFromCart(item)}
               >
                 <Icon name="minus" size={16} color="#fff" />
               </TouchableOpacity>
               <Text style={styles.quantityText}>{quantity}</Text>
               <TouchableOpacity
                 style={styles.quantityButton}
-                onPress={() => addToCart(item)}
+                onPress={() => handleAddToCart(item)}
               >
                 <Icon name="plus" size={16} color="#fff" />
               </TouchableOpacity>
@@ -91,7 +91,7 @@ export default function RestaurantScreen({ route, navigation }) {
           ) : (
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => addToCart(item)}
+              onPress={() => handleAddToCart(item)}
             >
               <Text style={styles.addButtonText}>ADD</Text>
             </TouchableOpacity>
