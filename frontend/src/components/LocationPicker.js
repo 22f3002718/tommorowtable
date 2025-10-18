@@ -197,7 +197,7 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
           <Button 
             onClick={searchAddress} 
             disabled={searching}
-            className="bg-orange-500 hover:bg-orange-600"
+            className="bg-green-600 hover:bg-green-700"
           >
             {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Search'}
           </Button>
@@ -213,7 +213,7 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
               <button
                 key={idx}
                 onClick={() => selectSearchResult(result)}
-                className="w-full text-left px-3 py-2 hover:bg-orange-50 border-b border-gray-100 last:border-b-0 transition-colors"
+                className="w-full text-left px-3 py-2 hover:bg-green-50 border-b border-gray-100 last:border-b-0 transition-colors"
               >
                 <p className="text-sm font-medium text-gray-900">{result.display_name}</p>
                 {result.address && (
@@ -277,7 +277,7 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
               value={manualAddress}
               onChange={(e) => setManualAddress(e.target.value)}
               placeholder="e.g., Flat 201, Sunrise Apartments, Near City Mall"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 min-h-[80px] text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600 min-h-[80px] text-sm"
               rows="3"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -292,7 +292,7 @@ const LocationPicker = ({ onLocationSelect, initialLocation, showSkip = true, on
         <Button
           onClick={handleConfirm}
           disabled={!position || (!address && !manualAddress.trim())}
-          className="flex-1 bg-orange-500 hover:bg-orange-600"
+          className="flex-1 bg-green-600 hover:bg-green-700"
         >
           Confirm Location & Address
         </Button>

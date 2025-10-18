@@ -2,7 +2,7 @@ import React from 'react';
 
 const StatsCard = ({ icon: Icon, label, value, trend, color = 'orange' }) => {
   const colorClasses = {
-    orange: 'from-orange-400 to-red-500',
+    orange: 'from-green-400 to-emerald-600',
     green: 'from-green-400 to-emerald-500',
     blue: 'from-blue-400 to-indigo-500',
     purple: 'from-purple-400 to-pink-500'

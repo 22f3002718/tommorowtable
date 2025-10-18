@@ -116,11 +116,11 @@ const FloatingCartButton = () => {
       <div className="fixed bottom-20 right-4 z-50">
         <button
           onClick={() => setShowCart(true)}
-          className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-200 flex items-center space-x-3 px-6 py-4"
+          className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-200 flex items-center space-x-3 px-6 py-4"
         >
           <div className="relative">
             <ShoppingCart className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-white text-orange-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            <span className="absolute -top-2 -right-2 bg-white text-green-700 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
               {getCartCount()}
             </span>
           </div>
@@ -176,7 +176,7 @@ const FloatingCartButton = () => {
                           <Plus className="w-4 h-4" />
                         </Button>
                         
-                        <p className="font-bold text-orange-600 min-w-[80px] text-right">
+                        <p className="font-bold text-green-700 min-w-[80px] text-right">
                           ₹{(item.price * item.quantity).toFixed(2)}
                         </p>
                       </div>
@@ -198,7 +198,7 @@ const FloatingCartButton = () => {
               </div>
               <div className="flex justify-between text-xl font-bold text-gray-900 border-t pt-2">
                 <span>Total</span>
-                <span className="text-orange-600">₹{totalAmount.toFixed(2)}</span>
+                <span className="text-green-700">₹{totalAmount.toFixed(2)}</span>
               </div>
             </div>
 
@@ -216,7 +216,7 @@ const FloatingCartButton = () => {
                 Clear Cart
               </Button>
               <Button
-                className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
                 onClick={() => {
                   setShowCart(false);
                   setShowCheckout(true);
@@ -251,7 +251,7 @@ const FloatingCartButton = () => {
                 </div>
                 <div className="flex justify-between font-bold text-base pt-2 border-t">
                   <span>Total</span>
-                  <span className="text-orange-600">₹{totalAmount.toFixed(2)}</span>
+                  <span className="text-green-700">₹{totalAmount.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -281,7 +281,7 @@ const FloatingCartButton = () => {
             <Button
               onClick={handleCheckout}
               disabled={isProcessing || !deliveryAddress}
-              className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
             >
               {isProcessing ? 'Processing...' : `Place Order - ₹${totalAmount.toFixed(2)}`}
             </Button>

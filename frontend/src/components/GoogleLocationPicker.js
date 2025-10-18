@@ -196,7 +196,7 @@ const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = tr
   if (!mapLoaded) {
     return (
       <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-600" />
         <span className="ml-2 text-gray-600">Loading Google Maps...</span>
       </div>
     );
@@ -272,7 +272,7 @@ const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = tr
               value={manualAddress}
               onChange={(e) => setManualAddress(e.target.value)}
               placeholder="e.g., Flat 201, Sunrise Apartments, Near City Mall"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 min-h-[80px] text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600 min-h-[80px] text-sm"
               rows="3"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -287,7 +287,7 @@ const GoogleLocationPicker = ({ onLocationSelect, initialLocation, showSkip = tr
         <Button
           onClick={handleConfirm}
           disabled={!position || (!address && !manualAddress.trim())}
-          className="flex-1 bg-orange-500 hover:bg-orange-600"
+          className="flex-1 bg-green-600 hover:bg-green-700"
         >
           Confirm Location & Address
         </Button>

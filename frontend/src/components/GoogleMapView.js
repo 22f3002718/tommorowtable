@@ -120,7 +120,7 @@ const GoogleMapView = ({ latitude, longitude, address, showRoute = false, riderL
   if (!mapLoaded) {
     return (
       <div className="flex items-center justify-center h-64 bg-gray-100 rounded-lg">
-        <Loader2 className="w-6 h-6 animate-spin text-orange-500" />
+        <Loader2 className="w-6 h-6 animate-spin text-green-600" />
         <span className="ml-2 text-gray-600">Loading map...</span>
       </div>
     );

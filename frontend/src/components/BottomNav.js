@@ -31,7 +31,7 @@ const BottomNav = () => {
               key={index}
               to={item.path}
               className={`flex flex-col items-center justify-center flex-1 h-full space-y-1 transition-colors ${
-                active ? 'text-orange-500' : 'text-gray-500'
+                active ? 'text-green-600' : 'text-gray-500'
               }`}
             >
               <Icon className={`w-6 h-6 ${active ? 'scale-110' : ''} transition-transform`} />

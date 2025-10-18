@@ -277,7 +277,7 @@ const RouteOptimizationDialog = ({
               <Button
                 onClick={handleOptimize}
                 disabled={optimizing || !numRiders}
-                className="w-full mt-4 bg-orange-500 hover:bg-orange-600"
+                className="w-full mt-4 bg-green-600 hover:bg-green-700"
               >
                 {optimizing ? (
                   <>
@@ -307,7 +307,7 @@ const RouteOptimizationDialog = ({
                   />
                 ) : (
                   <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
-                    <Loader2 className="w-6 h-6 animate-spin text-orange-500 mr-2" />
+                    <Loader2 className="w-6 h-6 animate-spin text-green-600 mr-2" />
                     <span>Loading map...</span>
                   </div>
                 )}
