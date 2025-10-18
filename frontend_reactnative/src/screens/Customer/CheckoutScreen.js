@@ -11,13 +11,15 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { createOrder, getWalletBalance, updateLocation } from '../../services/api';
+import { createMultiVendorOrder, getWalletBalance, updateLocation } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
+import { useCart } from '../../contexts/CartContext';
 import LocationPickerModal from '../../components/LocationPickerModal';
 
 export default function CheckoutScreen({ route, navigation }) {
-  const { cart, restaurant, subtotal, deliveryFee, totalAmount } = route.params;
+  const { restaurants, subtotal, totalDeliveryFee, grandTotal } = route.params;
   const { user, updateUser } = useAuth();
+  const { clearCart } = useCart();
   const [address, setAddress] = useState(user?.address || '');
   const [latitude, setLatitude] = useState(user?.latitude || null);
   const [longitude, setLongitude] = useState(user?.longitude || null);
@@ -55,10 +57,10 @@ export default function CheckoutScreen({ route, navigation }) {
       return;
     }
 
-    if (walletBalance < totalAmount) {
+    if (walletBalance < grandTotal) {
       Alert.alert(
         'Insufficient Balance',
-        `Your wallet balance (₹${walletBalance.toFixed(2)}) is less than the order amount (₹${totalAmount.toFixed(2)}). Please add money to your wallet.`,
+        `Your wallet balance (₹${walletBalance.toFixed(2)}) is less than the order amount (₹${grandTotal.toFixed(2)}). Please add money to your wallet.`,
         [
           { text: 'Cancel', style: 'cancel' },
           {
@@ -77,32 +79,38 @@ export default function CheckoutScreen({ route, navigation }) {
       await updateLocation(address, latitude, longitude, houseNumber, buildingName);
       await updateUser({ address, latitude, longitude, house_number: houseNumber, building_name: buildingName });
 
-      // Prepare order data
+      // Prepare multi-vendor order data
       const orderData = {
-        restaurant_id: restaurant.id,
-        items: cart.map(item => ({
-          menu_item_id: item.id,
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
+        restaurants: restaurants.map(restaurant => ({
+          restaurant_id: restaurant.id,
+          items: restaurant.items.map(item => ({
+            menu_item_id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+          })),
         })),
         delivery_address: address,
         delivery_latitude: latitude,
         delivery_longitude: longitude,
+        house_number: houseNumber,
+        building_name: buildingName,
         special_instructions: specialInstructions,
       };
 
-      // Create order
-      await createOrder(orderData);
+      // Create multi-vendor order
+      await createMultiVendorOrder(orderData);
+
+      // Clear the cart
+      clearCart();
 
       Alert.alert(
         'Order Placed!',
-        'Your order has been placed successfully',
+        `Your ${restaurants.length} order${restaurants.length > 1 ? 's have' : ' has'} been placed successfully`,
         [
           {
             text: 'OK',
             onPress: () => {
-              // Navigate to Orders screen and trigger refresh
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'Home' }],
@@ -114,155 +122,144 @@ export default function CheckoutScreen({ route, navigation }) {
       );
     } catch (error) {
       console.error('Error placing order:', error);
-      Alert.alert(
-        'Order Failed',
-        error.response?.data?.detail || 'Failed to place order'
-      );
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to place order. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const sufficientBalance = walletBalance >= totalAmount;
+  const hasInsufficientBalance = walletBalance < grandTotal;
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        {/* Order Summary */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Order Summary</Text>
-          {cart.map((item) => (
-            <View key={item.id} style={styles.orderItem}>
-              <Text style={styles.orderItemName}>
-                {item.name} x {item.quantity}
-              </Text>
-              <Text style={styles.orderItemPrice}>
-                ₹{(item.price * item.quantity).toFixed(2)}
-              </Text>
-            </View>
-          ))}
-          <View style={styles.divider} />
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Subtotal</Text>
-            <Text style={styles.summaryValue}>₹{subtotal.toFixed(2)}</Text>
-          </View>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Delivery Fee</Text>
-            <Text style={styles.summaryValue}>₹{deliveryFee.toFixed(2)}</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total Amount</Text>
-            <Text style={styles.totalAmount}>₹{totalAmount.toFixed(2)}</Text>
-          </View>
-        </View>
-
-        {/* Wallet Balance */}
-        <View style={[styles.section, styles.walletSection]}>
-          <View style={styles.walletHeader}>
-            <Icon name="wallet" size={24} color="#F97316" />
-            <View style={styles.walletInfo}>
-              <Text style={styles.walletLabel}>Wallet Balance</Text>
-              <Text style={[
-                styles.walletBalance,
-                !sufficientBalance && styles.insufficientBalance
-              ]}>
-                ₹{walletBalance.toFixed(2)}
-              </Text>
-            </View>
-          </View>
-          {!sufficientBalance && (
-            <View style={styles.warningBox}>
-              <Icon name="alert-circle" size={16} color="#EF4444" />
-              <Text style={styles.warningText}>
-                Insufficient balance. Please add money to your wallet.
-              </Text>
-            </View>
-          )}
-        </View>
-
+    <View style={styles.container}>
+      <ScrollView style={styles.content}>
         {/* Delivery Location */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Delivery Location</Text>
-          
           <TouchableOpacity
             style={styles.locationButton}
             onPress={() => setLocationModalVisible(true)}
           >
-            <Icon name="map-marker-plus" size={20} color="#F97316" />
-            <Text style={styles.locationButtonText}>
-              {address ? 'Change Delivery Location' : 'Enter Delivery Location'}
-            </Text>
-          </TouchableOpacity>
-
-          {address && (
-            <View style={styles.selectedLocationBox}>
-              <View style={styles.locationInfo}>
-                <Icon name="map-marker" size={20} color="#F97316" />
-                <View style={styles.locationDetails}>
-                  <Text style={styles.locationAddress}>{address}</Text>
-                  {houseNumber && buildingName && (
-                    <Text style={styles.locationSubtext}>
-                      {houseNumber}, {buildingName}
-                    </Text>
-                  )}
-                </View>
-              </View>
-              {latitude && longitude && (
-                <Text style={styles.coordsText}>
-                  {latitude.toFixed(6)}, {longitude.toFixed(6)}
+            <Icon name="map-marker" size={20} color="#10B981" />
+            <View style={styles.locationInfo}>
+              <Text style={styles.locationText}>
+                {address || 'Set your delivery location'}
+              </Text>
+              {(houseNumber || buildingName) && (
+                <Text style={styles.locationDetails}>
+                  {houseNumber && `Flat: ${houseNumber}`}
+                  {houseNumber && buildingName && ' • '}
+                  {buildingName && `Building: ${buildingName}`}
                 </Text>
               )}
             </View>
-          )}
+            <Icon name="chevron-right" size={20} color="#6B7280" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Order Summary */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Order Summary ({restaurants.length} restaurant{restaurants.length > 1 ? 's' : ''})</Text>
+          {restaurants.map((restaurant, idx) => (
+            <View key={restaurant.id} style={styles.restaurantGroup}>
+              <View style={styles.restaurantHeader}>
+                <Icon name="store" size={16} color="#10B981" />
+                <Text style={styles.restaurantName}>{restaurant.name}</Text>
+              </View>
+              {restaurant.items.map((item) => (
+                <View key={item.id} style={styles.orderItem}>
+                  <Text style={styles.itemName}>
+                    {item.name} x {item.quantity}
+                  </Text>
+                  <Text style={styles.itemPrice}>₹{(item.price * item.quantity).toFixed(2)}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
         </View>
 
         {/* Special Instructions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Special Instructions (Optional)</Text>
           <TextInput
-            style={styles.instructionsInput}
-            placeholder="Any special requests?"
+            style={styles.textInput}
+            placeholder="Add any special instructions for delivery"
             value={specialInstructions}
             onChangeText={setSpecialInstructions}
             multiline
-            numberOfLines={4}
+            numberOfLines={3}
           />
         </View>
 
-        {/* Place Order Button */}
+        {/* Bill Details */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Bill Details</Text>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Item Total</Text>
+            <Text style={styles.summaryValue}>₹{subtotal.toFixed(2)}</Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Delivery Fee</Text>
+            <Text style={styles.summaryValue}>₹{totalDeliveryFee.toFixed(2)}</Text>
+          </View>
+          <View style={[styles.summaryRow, styles.totalRow]}>
+            <Text style={styles.totalLabel}>Grand Total</Text>
+            <Text style={styles.totalValue}>₹{grandTotal.toFixed(2)}</Text>
+          </View>
+        </View>
+
+        {/* Wallet Balance */}
+        <View style={[styles.section, styles.walletSection]}>
+          <View style={styles.walletHeader}>
+            <Icon name="wallet" size={20} color="#10B981" />
+            <Text style={styles.walletLabel}>Wallet Balance</Text>
+          </View>
+          <Text style={[styles.walletBalance, hasInsufficientBalance && styles.insufficientBalance]}>
+            ₹{walletBalance.toFixed(2)}
+          </Text>
+          {hasInsufficientBalance && (
+            <View style={styles.warningBox}>
+              <Icon name="alert-circle" size={16} color="#EF4444" />
+              <Text style={styles.warningText}>
+                Insufficient balance. Please add ₹{(grandTotal - walletBalance).toFixed(2)} to your wallet.
+              </Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+
+      {/* Place Order Button */}
+      <View style={styles.footer}>
         <TouchableOpacity
-          style={[styles.placeOrderButton, !sufficientBalance && styles.disabledButton]}
+          style={[styles.placeOrderButton, (loading || hasInsufficientBalance) && styles.disabledButton]}
           onPress={handlePlaceOrder}
-          disabled={loading || !sufficientBalance}
+          disabled={loading || hasInsufficientBalance}
         >
           <LinearGradient
-            colors={sufficientBalance ? ['#F97316', '#DC2626'] : ['#9CA3AF', '#6B7280']}
+            colors={hasInsufficientBalance ? ['#9CA3AF', '#6B7280'] : ['#10B981', '#059669']}
             style={styles.placeOrderGradient}
           >
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.placeOrderText}>Place Order</Text>
+              <>
+                <Text style={styles.placeOrderText}>
+                  {hasInsufficientBalance ? 'Add Money to Wallet' : 'Place Order'}
+                </Text>
+                <Text style={styles.placeOrderAmount}>₹{grandTotal.toFixed(2)}</Text>
+              </>
             )}
           </LinearGradient>
         </TouchableOpacity>
       </View>
 
-      {/* Location Picker Modal */}
       <LocationPickerModal
         visible={locationModalVisible}
         onClose={() => setLocationModalVisible(false)}
         onLocationSelect={handleLocationSelect}
-        initialData={{
-          latitude,
-          longitude,
-          address,
-          house_number: houseNumber,
-          building_name: buildingName,
-        }}
+        initialLocation={{ latitude, longitude, address, house_number: houseNumber, building_name: buildingName }}
       />
-    </ScrollView>
+    </View>
   );
 }
 
@@ -272,48 +269,83 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FAFB',
   },
   content: {
-    padding: 20,
+    flex: 1,
   },
   section: {
     backgroundColor: '#fff',
-    borderRadius: 12,
     padding: 16,
-    marginBottom: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    marginBottom: 8,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '600',
     color: '#1F2937',
     marginBottom: 12,
+  },
+  locationButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F3F4F6',
+    padding: 12,
+    borderRadius: 8,
+    gap: 12,
+  },
+  locationInfo: {
+    flex: 1,
+  },
+  locationText: {
+    fontSize: 14,
+    color: '#1F2937',
+  },
+  locationDetails: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 4,
+  },
+  restaurantGroup: {
+    marginBottom: 16,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  restaurantHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  restaurantName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#10B981',
   },
   orderItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 8,
+    paddingVertical: 6,
   },
-  orderItemName: {
+  itemName: {
     fontSize: 14,
-    color: '#6B7280',
+    color: '#4B5563',
+    flex: 1,
   },
-  orderItemPrice: {
+  itemPrice: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '500',
     color: '#1F2937',
   },
-  divider: {
-    height: 1,
-    backgroundColor: '#E5E7EB',
-    marginVertical: 12,
+  textInput: {
+    backgroundColor: '#F3F4F6',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 14,
+    color: '#1F2937',
+    textAlignVertical: 'top',
   },
   summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 6,
+    marginBottom: 12,
   },
   summaryLabel: {
     fontSize: 14,
@@ -325,41 +357,41 @@ const styles = StyleSheet.create({
     color: '#1F2937',
   },
   totalRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
+    paddingTop: 12,
+    marginTop: 4,
   },
   totalLabel: {
     fontSize: 16,
     fontWeight: '600',
     color: '#1F2937',
   },
-  totalAmount: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#F97316',
+  totalValue: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#10B981',
   },
   walletSection: {
-    borderWidth: 2,
-    borderColor: '#FEF3C7',
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#BBF7D0',
   },
   walletHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-  },
-  walletInfo: {
-    flex: 1,
+    gap: 8,
+    marginBottom: 8,
   },
   walletLabel: {
     fontSize: 14,
-    color: '#6B7280',
+    color: '#059669',
+    fontWeight: '500',
   },
   walletBalance: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: '700',
     color: '#10B981',
-    marginTop: 4,
   },
   insufficientBalance: {
     color: '#EF4444',
@@ -368,87 +400,44 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginTop: 12,
-    padding: 12,
     backgroundColor: '#FEE2E2',
+    padding: 12,
     borderRadius: 8,
+    marginTop: 12,
   },
   warningText: {
-    flex: 1,
     fontSize: 12,
-    color: '#EF4444',
-  },
-  locationButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    padding: 12,
-    backgroundColor: '#FEF3C7',
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  locationButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#F97316',
-  },
-  selectedLocationBox: {
-    marginTop: 12,
-    padding: 12,
-    backgroundColor: '#F9FAFB',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-  },
-  locationInfo: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  locationDetails: {
+    color: '#DC2626',
     flex: 1,
   },
-  locationAddress: {
-    fontSize: 14,
-    color: '#1F2937',
-    fontWeight: '500',
-    marginBottom: 4,
-  },
-  locationSubtext: {
-    fontSize: 12,
-    color: '#6B7280',
-  },
-  coordsText: {
-    fontSize: 11,
-    color: '#9CA3AF',
-    marginTop: 8,
-    textAlign: 'right',
-  },
-  instructionsInput: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 14,
-    color: '#1F2937',
-    backgroundColor: '#F9FAFB',
-    textAlignVertical: 'top',
+  footer: {
+    padding: 16,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
   },
   placeOrderButton: {
-    borderRadius: 12,
+    borderRadius: 8,
     overflow: 'hidden',
-    marginTop: 8,
   },
   disabledButton: {
     opacity: 0.6,
   },
   placeOrderGradient: {
-    paddingVertical: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
   },
   placeOrderText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  placeOrderAmount: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });
