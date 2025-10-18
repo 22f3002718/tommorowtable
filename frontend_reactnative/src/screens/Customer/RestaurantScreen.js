@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   menuItemPrice: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#F97316',
+    color: '#10B981',
   },
   quantityControl: {
     flexDirection: 'row',
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   quantityButton: {
-    backgroundColor: '#F97316',
+    backgroundColor: '#10B981',
     width: 32,
     height: 32,
     borderRadius: 16,
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   addButton: {
-    backgroundColor: '#F97316',
+    backgroundColor: '#10B981',
     paddingHorizontal: 24,
     paddingVertical: 8,
     borderRadius: 8,
