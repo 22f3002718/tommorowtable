@@ -16,7 +16,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import LocationPickerModal from '../../components/LocationPickerModal';
 
 export default function CheckoutScreen({ route, navigation }) {
-  const { cart, restaurant, totalAmount } = route.params;
+  const { cart, restaurant, subtotal, deliveryFee, totalAmount } = route.params;
   const { user, updateUser } = useAuth();
   const [address, setAddress] = useState(user?.address || '');
   const [latitude, setLatitude] = useState(user?.latitude || null);
