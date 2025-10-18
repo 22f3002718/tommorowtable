@@ -16,6 +16,7 @@ const VendorDashboard = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const [orders, setOrders] = useState([]);
+  const [completedOrders, setCompletedOrders] = useState([]);
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState({});
