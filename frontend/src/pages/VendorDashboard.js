@@ -522,6 +522,32 @@ const VendorDashboard = () => {
                           {item.is_available ? 'Available' : 'Out of Stock'}
                         </span>
                       </div>
+                      
+                      {/* Stock Management */}
+                      <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                        <label className="text-xs font-medium text-gray-700 block mb-2">
+                          Stock Count (leave empty for unlimited)
+                        </label>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={item.available_count ?? ''}
+                          onChange={(e) => {
+                            const count = e.target.value === '' ? null : parseInt(e.target.value);
+                            handleUpdateStock(item.id, count);
+                          }}
+                          className="text-sm"
+                          placeholder="Unlimited"
+                        />
+                        {item.available_count !== null && item.available_count !== undefined && (
+                          <p className="text-xs text-gray-500 mt-1">
+                            {item.available_count === 0 
+                              ? '⚠️ Out of stock - item hidden from customers' 
+                              : `${item.available_count} items in stock`}
+                          </p>
+                        )}
+                      </div>
+                      
                       <div className="flex space-x-2">
                         <Button
                           onClick={() => handleToggleAvailability(item.id)}
