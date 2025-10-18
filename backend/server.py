@@ -649,6 +649,39 @@ async def toggle_menu_item_availability(item_id: str, current_user: dict = Depen
     
     return {"message": "Availability updated", "is_available": new_availability}
 
+@api_router.patch("/menu-items/{item_id}/stock")
+async def update_menu_item_stock(item_id: str, stock_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update available stock count for a menu item"""
+    if current_user['role'] not in ['vendor', 'admin']:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Get menu item
+    menu_item = await db.menu_items.find_one({"id": item_id})
+    if not menu_item:
+        raise HTTPException(status_code=404, detail="Menu item not found")
+    
+    # Verify restaurant ownership
+    restaurant = await db.restaurants.find_one({"id": menu_item['restaurant_id']})
+    if not restaurant or (restaurant['vendor_id'] != current_user['id'] and current_user['role'] != 'admin'):
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Update stock count
+    available_count = stock_data.get('available_count')
+    update_data = {"available_count": available_count}
+    
+    # If count is 0, mark as unavailable
+    if available_count == 0:
+        update_data["is_available"] = False
+    elif available_count is not None and available_count > 0:
+        update_data["is_available"] = True
+    
+    await db.menu_items.update_one(
+        {"id": item_id}, 
+        {"$set": update_data}
+    )
+    
+    return {"message": "Stock updated successfully", "available_count": available_count, "is_available": update_data.get("is_available", menu_item.get('is_available', True))}
+
 @api_router.get("/vendor/restaurant", response_model=Restaurant)
 async def get_vendor_restaurant(current_user: dict = Depends(get_current_user)):
     if current_user['role'] != 'vendor':
