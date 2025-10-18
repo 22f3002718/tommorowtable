@@ -113,7 +113,7 @@ const OrdersPage = () => {
     const colors = {
       placed: 'bg-blue-100 text-blue-700',
       confirmed: 'bg-purple-100 text-purple-700',
-      preparing: 'bg-orange-100 text-orange-700',
+      preparing: 'bg-green-100 text-green-700',
       ready: 'bg-green-100 text-green-700',
       'out-for-delivery': 'bg-teal-100 text-teal-700',
       delivered: 'bg-green-200 text-green-800',
@@ -211,7 +211,7 @@ const OrdersPage = () => {
             <p className="text-xl text-gray-500 mb-2">No orders yet</p>
             <p className="text-gray-400 mb-6">Start ordering your favorite meals!</p>
             <Link to="/">
-              <Button className="bg-orange-500 hover:bg-orange-600">Browse Restaurants</Button>
+              <Button className="bg-green-600 hover:bg-green-700">Browse Restaurants</Button>
             </Link>
           </div>
         ) : (
@@ -244,7 +244,7 @@ const OrdersPage = () => {
                   </div>
                   
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-green-600">₹{order.total_amount.toFixed(2)}</p>
                     <p className="text-xs text-gray-500 mt-1">
                       {new Date(order.placed_at).toLocaleDateString()}
                     </p>
@@ -299,7 +299,7 @@ const OrdersPage = () => {
                         }}
                         variant="outline"
                         size="sm"
-                        className="border-orange-500 text-orange-500 hover:bg-orange-50"
+                        className="border-green-600 text-green-600 hover:bg-green-50"
                         data-testid={`rate-order-${order.id}`}
                       >
                         <Star className="w-4 h-4 mr-2" />
@@ -349,14 +349,14 @@ const OrdersPage = () => {
                 onChange={(e) => setReview(e.target.value)}
                 placeholder="Tell us about your experience..."
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
                 data-testid="review-textarea"
               />
             </div>
 
             <Button 
               onClick={submitRating}
-              className="w-full bg-orange-500 hover:bg-orange-600"
+              className="w-full bg-green-600 hover:bg-green-700"
               disabled={loading}
               data-testid="submit-rating-btn"
             >

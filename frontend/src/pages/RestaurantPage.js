@@ -173,7 +173,7 @@ const RestaurantPage = () => {
   if (!restaurant) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
       </div>
     );
   }
@@ -192,7 +192,7 @@ const RestaurantPage = () => {
             {cart.length > 0 && (
               <Button 
                 onClick={() => setShowCheckout(true)} 
-                className="bg-orange-500 hover:bg-orange-600 relative"
+                className="bg-green-600 hover:bg-green-700 relative"
                 data-testid="view-cart-btn"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
@@ -208,11 +208,11 @@ const RestaurantPage = () => {
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-start space-x-6">
-            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-orange-200 to-red-200 flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-green-200 to-red-200 flex items-center justify-center overflow-hidden flex-shrink-0">
               {restaurant.image_url ? (
                 <img src={restaurant.image_url} alt={restaurant.name} className="w-full h-full object-cover" />
               ) : (
-                <ShoppingCart className="w-16 h-16 text-orange-400" />
+                <ShoppingCart className="w-16 h-16 text-green-400" />
               )}
             </div>
             
@@ -225,7 +225,7 @@ const RestaurantPage = () => {
                   <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
                   <span className="font-semibold">{restaurant.rating.toFixed(1)}</span>
                 </div>
-                <span className="px-3 py-1 bg-orange-50 text-orange-600 rounded-lg font-medium">
+                <span className="px-3 py-1 bg-green-50 text-green-700 rounded-lg font-medium">
                   {restaurant.cuisine}
                 </span>
                 <div className="flex items-center text-gray-500">
@@ -264,7 +264,7 @@ const RestaurantPage = () => {
                           <div className="flex-1">
                             <h4 className="text-lg font-bold text-gray-900 mb-1">{item.name}</h4>
                             <p className="text-sm text-gray-600 mb-3">{item.description}</p>
-                            <p className="text-xl font-bold text-orange-500">₹{item.price.toFixed(2)}</p>
+                            <p className="text-xl font-bold text-green-600">₹{item.price.toFixed(2)}</p>
                           </div>
                           {item.image_url && (
                             <img 
@@ -310,7 +310,7 @@ const RestaurantPage = () => {
                         ) : (
                           <Button 
                             onClick={() => addToCart(item)} 
-                            className="w-full mt-4 bg-orange-500 hover:bg-orange-600"
+                            className="w-full mt-4 bg-green-600 hover:bg-green-700"
                             data-testid={`add-to-cart-${item.id}`}
                           >
                             <Plus className="w-4 h-4 mr-2" />
@@ -349,7 +349,7 @@ const RestaurantPage = () => {
               <div className="border-t border-gray-300 pt-3 mt-3">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold">Total</span>
-                  <span className="text-2xl font-bold text-orange-500">₹{cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-green-600">₹{cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -410,7 +410,7 @@ const RestaurantPage = () => {
                   <Button
                     onClick={() => setShowLocationPicker(true)}
                     variant="outline"
-                    className="w-full border-2 border-dashed border-gray-300 hover:border-orange-500 h-12"
+                    className="w-full border-2 border-dashed border-gray-300 hover:border-green-600 h-12"
                   >
                     <MapPin className="w-5 h-5 mr-2" />
                     Select Delivery Location
@@ -428,8 +428,8 @@ const RestaurantPage = () => {
                 />
               </div>
 
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                <div className="flex items-center text-orange-700">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center text-green-700">
                   <Clock className="w-5 h-5 mr-2" />
                   <p className="text-sm font-medium">Delivery tomorrow morning between 7-11 AM</p>
                 </div>
@@ -438,7 +438,7 @@ const RestaurantPage = () => {
 
             <Button 
               onClick={handleCheckout} 
-              className="w-full bg-orange-500 hover:bg-orange-600 h-12 text-lg font-semibold"
+              className="w-full bg-green-600 hover:bg-green-700 h-12 text-lg font-semibold"
               disabled={loading}
               data-testid="place-order-btn"
             >

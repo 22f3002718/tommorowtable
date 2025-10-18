@@ -81,7 +81,7 @@ const VendorDashboard = () => {
     const colors = {
       placed: 'bg-blue-100 text-blue-700',
       confirmed: 'bg-purple-100 text-purple-700',
-      preparing: 'bg-orange-100 text-orange-700',
+      preparing: 'bg-green-100 text-green-700',
       ready: 'bg-green-100 text-green-700',
       'out-for-delivery': 'bg-teal-100 text-teal-700',
       delivered: 'bg-green-200 text-green-800'
@@ -286,7 +286,7 @@ const VendorDashboard = () => {
                 {pendingOrders.map((order) => (
                   <div 
                     key={order.id} 
-                    className="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500"
+                    className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-600"
                     data-testid={`pending-order-${order.id}`}
                   >
                     <div className="flex justify-between items-start mb-4">
@@ -295,7 +295,7 @@ const VendorDashboard = () => {
                         <p className="text-sm text-gray-600">{order.customer_name}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
+                        <p className="text-xl font-bold text-green-600">₹{order.total_amount.toFixed(2)}</p>
                         <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-2 ${getStatusColor(order.status)}`}>
                           {order.status.toUpperCase()}
                         </span>
@@ -337,7 +337,7 @@ const VendorDashboard = () => {
                     {order.status === 'confirmed' && (
                       <Button 
                         onClick={() => updateOrderStatus(order.id, 'preparing')}
-                        className="w-full bg-orange-500 hover:bg-orange-600"
+                        className="w-full bg-green-600 hover:bg-green-700"
                         disabled={loading[order.id]}
                         data-testid={`start-preparing-${order.id}`}
                       >
@@ -353,11 +353,11 @@ const VendorDashboard = () => {
 
           {/* Route Optimization Button - Show when all orders are ready */}
           {activeOrders.filter(o => o.status === 'ready').length > 1 && (
-            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-300 rounded-xl p-6 mb-6">
+            <div className="bg-gradient-to-r from-green-50 to-yellow-50 border-2 border-green-300 rounded-xl p-6 mb-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center">
-                    <TrendingUp className="w-6 h-6 mr-2 text-orange-500" />
+                    <TrendingUp className="w-6 h-6 mr-2 text-green-600" />
                     All Orders Ready for Delivery!
                   </h3>
                   <p className="text-gray-700 mb-4">
@@ -367,7 +367,7 @@ const VendorDashboard = () => {
                   <div className="flex gap-3">
                     <Button
                       onClick={() => setShowRouteOptimization(true)}
-                      className="bg-orange-500 hover:bg-orange-600"
+                      className="bg-green-600 hover:bg-green-700"
                       disabled={availableRiders.length === 0}
                     >
                       <TrendingUp className="w-4 h-4 mr-2" />
@@ -376,7 +376,7 @@ const VendorDashboard = () => {
                     <Button
                       onClick={handleDownloadCSV}
                       variant="outline"
-                      className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                      className="border-green-300 text-green-700 hover:bg-green-50"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Download CSV

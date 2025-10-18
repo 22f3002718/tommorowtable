@@ -163,7 +163,7 @@ const AdminDashboard = () => {
     const colors = {
       placed: 'bg-blue-100 text-blue-700',
       confirmed: 'bg-purple-100 text-purple-700',
-      preparing: 'bg-orange-100 text-orange-700',
+      preparing: 'bg-green-100 text-green-700',
       ready: 'bg-green-100 text-green-700',
       'out-for-delivery': 'bg-teal-100 text-teal-700',
       delivered: 'bg-green-200 text-green-800',
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Overview Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-8">
-          <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-xl shadow-lg p-4 sm:p-6 col-span-2 lg:col-span-1">
+          <div className="bg-gradient-to-br from-green-600 to-emerald-600 text-white rounded-xl shadow-lg p-4 sm:p-6 col-span-2 lg:col-span-1">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8" />
               <span className="text-xl sm:text-2xl font-bold">₹{totalRevenue.toFixed(0)}</span>
@@ -255,7 +255,7 @@ const AdminDashboard = () => {
           
           <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
             <div className="flex items-center justify-between mb-2">
-              <Package className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" />
+              <Package className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
               <span className="text-xl sm:text-2xl font-bold text-gray-900">{stats?.orders?.active_orders || 0}</span>
             </div>
             <p className="text-xs sm:text-sm text-gray-600">Active Orders</p>
@@ -325,7 +325,7 @@ const AdminDashboard = () => {
                         
                         <div className="text-left sm:text-right sm:ml-6 flex justify-between sm:block">
                           <div>
-                            <p className="text-xl sm:text-2xl font-bold text-orange-500">₹{order.total_amount.toFixed(2)}</p>
+                            <p className="text-xl sm:text-2xl font-bold text-green-600">₹{order.total_amount.toFixed(2)}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               {new Date(order.placed_at).toLocaleString()}
                             </p>
@@ -380,12 +380,12 @@ const AdminDashboard = () => {
                       data-testid={`restaurant-${restaurant.id}`}
                     >
                       <div className="flex items-start space-x-4">
-                        <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-200 to-red-200 flex-shrink-0" />
+                        <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-200 to-red-200 flex-shrink-0" />
                         <div className="flex-1">
                           <h3 className="text-lg font-bold text-gray-900 mb-1">{restaurant.name}</h3>
                           <p className="text-sm text-gray-600 mb-2">{restaurant.description}</p>
                           <div className="flex items-center space-x-4 text-sm">
-                            <span className="px-3 py-1 bg-orange-50 text-orange-600 rounded-lg font-medium">
+                            <span className="px-3 py-1 bg-green-50 text-green-700 rounded-lg font-medium">
                               {restaurant.cuisine}
                             </span>
                             <span className="text-gray-600">Rating: {restaurant.rating.toFixed(1)} ⭐</span>
@@ -459,7 +459,7 @@ const AdminDashboard = () => {
                                 setSelectedCustomer(customer);
                                 setShowAddMoneyDialog(true);
                               }}
-                              className="bg-gradient-to-r from-orange-500 to-red-500 text-xs sm:text-sm px-3 py-2"
+                              className="bg-gradient-to-r from-green-600 to-emerald-600 text-xs sm:text-sm px-3 py-2"
                             >
                               <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                               Add Money
@@ -503,8 +503,8 @@ const AdminDashboard = () => {
                       data-testid={`vendor-${vendor.id}`}
                     >
                       <div className="flex items-start space-x-4">
-                        <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-200 to-red-200 flex-shrink-0 flex items-center justify-center">
-                          <Store className="w-8 h-8 text-orange-600" />
+                        <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-200 to-red-200 flex-shrink-0 flex items-center justify-center">
+                          <Store className="w-8 h-8 text-green-700" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-start justify-between">
@@ -591,8 +591,8 @@ const AdminDashboard = () => {
                               </p>
                               <p className="text-xs text-gray-600">Total Deliveries</p>
                             </div>
-                            <div className="text-center px-4 py-2 bg-orange-50 rounded-lg">
-                              <p className="text-2xl font-bold text-orange-600">
+                            <div className="text-center px-4 py-2 bg-green-50 rounded-lg">
+                              <p className="text-2xl font-bold text-green-700">
                                 {rider.stats?.active_deliveries || 0}
                               </p>
                               <p className="text-xs text-gray-600">Active Now</p>
@@ -671,7 +671,7 @@ const AdminDashboard = () => {
                 <Button
                   onClick={handleAddMoney}
                   disabled={!amountToAdd || parseFloat(amountToAdd) <= 0}
-                  className="flex-1 bg-gradient-to-r from-orange-500 to-red-500"
+                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600"
                 >
                   Add ₹{amountToAdd || '0'}
                 </Button>
@@ -751,7 +751,7 @@ const AdminDashboard = () => {
                 </Button>
                 <Button
                   onClick={handleUpdateUser}
-                  className="flex-1 bg-gradient-to-r from-orange-500 to-red-500"
+                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600"
                 >
                   Save Changes
                 </Button>

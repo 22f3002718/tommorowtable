@@ -98,7 +98,7 @@ const HomePage = () => {
                 <>
                   {auth.user.role === 'customer' && (
                     <Link to="/orders">
-                      <Button variant="ghost" size="sm" className="text-gray-700 hover:text-orange-500" data-testid="my-orders-btn">
+                      <Button variant="ghost" size="sm" className="text-gray-700 hover:text-green-600" data-testid="my-orders-btn">
                         My Orders
                       </Button>
                     </Link>
@@ -118,8 +118,8 @@ const HomePage = () => {
                       <Button variant="outline" size="sm" data-testid="admin-dashboard-btn">Admin Dashboard</Button>
                     </Link>
                   )}
-                  <div className="flex items-center space-x-2 px-3 py-2 bg-orange-50 rounded-lg">
-                    <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                  <div className="flex items-center space-x-2 px-3 py-2 bg-green-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center">
                       <User className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-700">{auth.user.name}</span>
@@ -129,7 +129,7 @@ const HomePage = () => {
                   </Button>
                 </>
               ) : (
-                <Button onClick={() => setShowAuth(true)} className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white" data-testid="login-btn">
+                <Button onClick={() => setShowAuth(true)} className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white" data-testid="login-btn">
                   Sign In
                 </Button>
               )}
@@ -139,7 +139,7 @@ const HomePage = () => {
       </header>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white py-8 md:py-12">
+      <div className="bg-gradient-to-br from-green-600 to-emerald-600 text-white py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-3">
@@ -170,8 +170,8 @@ const HomePage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4">
         <div className="grid grid-cols-3 gap-3 md:gap-4">
           <div className="bg-white rounded-xl p-3 md:p-4 shadow-md text-center">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
-              <Zap className="w-5 h-5 md:w-6 md:h-6 text-orange-500" />
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <Zap className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
             </div>
             <p className="text-xs md:text-sm font-semibold text-gray-900">Fast Delivery</p>
             <p className="text-xs text-gray-500 mt-1 hidden md:block">7-11 AM</p>
@@ -222,7 +222,7 @@ const HomePage = () => {
                 data-testid={`restaurant-card-${restaurant.id}`}
               >
                 <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
-                  <div className="relative h-40 md:h-48 bg-gradient-to-br from-orange-100 to-red-100 overflow-hidden">
+                  <div className="relative h-40 md:h-48 bg-gradient-to-br from-green-100 to-red-100 overflow-hidden">
                     {restaurant.image_url ? (
                       <img 
                         src={restaurant.image_url} 
@@ -231,7 +231,7 @@ const HomePage = () => {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Utensils className="w-12 h-12 md:w-16 md:h-16 text-orange-300" />
+                        <Utensils className="w-12 h-12 md:w-16 md:h-16 text-green-300" />
                       </div>
                     )}
                     <div className="absolute top-3 right-3 bg-white px-2.5 py-1 rounded-lg flex items-center space-x-1 shadow-md">
@@ -245,7 +245,7 @@ const HomePage = () => {
                     <p className="text-gray-600 text-sm mb-3 line-clamp-1">{restaurant.description}</p>
                     
                     <div className="flex items-center justify-between">
-                      <span className="inline-block px-2.5 py-1 bg-orange-50 text-orange-600 rounded-lg text-xs font-semibold">
+                      <span className="inline-block px-2.5 py-1 bg-green-50 text-green-700 rounded-lg text-xs font-semibold">
                         {restaurant.cuisine}
                       </span>
                       <div className="flex items-center text-gray-500 text-xs font-medium">
@@ -327,7 +327,7 @@ const HomePage = () => {
 
               <Button 
                 type="submit" 
-                className="w-full bg-orange-500 hover:bg-orange-600" 
+                className="w-full bg-green-600 hover:bg-green-700" 
                 disabled={loading}
                 data-testid="auth-submit-btn"
               >
